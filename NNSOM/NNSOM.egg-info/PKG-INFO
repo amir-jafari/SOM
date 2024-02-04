@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: NNSOM
+Version: 0.0.1
+Summary: Self Organizing Maps
+Home-page: https://github.com/pypa/sampleproject
+Author: Dr.Hagan, Amir Jafari, Lakshmi Sravya Chalapati, Ei Tanaka
+Author-email: amir.h.jafari@okstate.edu
+Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
