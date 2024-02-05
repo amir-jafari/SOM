@@ -17,7 +17,25 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 #np.seterr(all='warn')
 
 def preminmax(p):
-    # Normalize the inputs to be in the range [-1, 1]
+    """ 
+    Normalize the inputs to be in the range [-1, 1]
+    
+    Parameters
+    ----------
+    p : array_like
+        The inputs to be normalized
+        
+    Returns
+    -------
+    pn : array_like
+        The normalized inputs
+        
+    minp : array_like
+        The minimum values of the inputs
+        
+    maxp : array_like
+        The maximum values of the inputs
+    """
     minp = np.amin(p, 1)
     maxp = np.amax(p, 1)
 
@@ -39,7 +57,19 @@ def preminmax(p):
 
 
 def calculate_positions(dim):
-
+    """
+    Calculate the positions of the neurons in the SOM topology
+    
+    Parameters
+    ----------
+    dim : array_like
+        The dimensions of the SOM topology
+        
+    Returns
+    -------
+    position : array_like
+        The positions of the neurons in the SOM topology
+    """
     dims = len(dim)
     position = np.zeros((dims, np.prod(dim)))
     len1 = 1
@@ -69,22 +99,92 @@ def calculate_positions(dim):
 
 
 def cart2pol(x, y):
+    """
+    Convert Cartesian coordinates to polar coordinates
+    
+    Parameters
+    ----------
+    x : array_like
+        The x-coordinates
+        
+    y : array_like
+        The y-coordinates
+    
+    Returns
+    -------
+    theta : array_like
+        The angles of the polar coordinates
+        
+    rho : array_like
+        The radii of the polar coordinates
+    """
     theta = np.arctan2(y, x)
     rho = np.hypot(x, y)
     return theta, rho
 
 def pol2cart(theta, rho):
+    """
+    Convert polar coordinates to Cartesian coordinates
+    
+    Parameters
+    ----------
+    theta : array_like
+        The angles of the polar coordinates
+        
+    rho : array_like
+        The radii of the polar coordinates
+        
+    Returns
+    -------
+    x : array_like
+        The x-coordinates
+    """
     x = rho * np.cos(theta)
     y = rho * np.sin(theta)
     return x, y
 
 def rotate_xy(x1, y1, angle):
+    """
+    Rotate the coordinates (x1, y1) by the angle
+    
+    Parameters
+    ----------
+    x1 : array_like
+        The x-coordinates
+        
+    y1 : array_like
+        The y-coordinates
+        
+    angle : float
+        The angle to rotate the coordinates
+        
+    Returns
+    -------
+    x2 : array_like
+        The rotated x-coordinates
+        
+    y2 : array_like
+        The rotated y-coordinates
+    """
     [a,r] = cart2pol(x1,y1)
     a = a + angle
     x2,y2 = pol2cart(a,r)
     return x2, y2
 
 def normalize_position(position):
+    """
+    Normalize the positions of the neurons in the SOM topology
+    
+    Parameters
+    ----------
+    position : array_like
+        The positions of the neurons in the SOM topology
+        
+    Returns
+    -------
+    posit : array_like
+        The normalized positions of the neurons in the SOM topology
+    """
     shap = position.shape
     numPos = shap[1]
     minPos = np.ndarray.min(position,axis=1)
@@ -101,6 +201,25 @@ def normalize_position(position):
 
 
 def spread_positions(position, positionMean, positionBasis):
+    """
+    Spread the positions of the neurons in the SOM topology
+    
+    Parameters
+    ----------
+    position : array_like
+        The positions of the neurons in the SOM topology
+    
+    positionMean : array_like
+        The mean positions of the neurons in the SOM topology
+    
+    positionBasis : array_like
+        The basis positions of the neurons in the SOM topology
+    
+    Returns
+    -------
+    position1 : array_like
+        The spread positions of the neurons in the SOM topology
+    """
     shappos = position.shape
     numPos = shappos[1]
     position1 = np.repeat(positionMean, numPos, axis=1) + np.matmul(positionBasis, position)
@@ -108,7 +227,19 @@ def spread_positions(position, positionMean, positionBasis):
 
 
 def distances(pos):
-    # Compute the distances between the neurons in the SOM topology
+    """
+    Compute the distances between the neurons in the SOM topology
+    
+    Parameters
+    ----------
+    pos : array_like
+        The positions of the neurons in the SOM topology
+    
+    Returns
+    -------
+    dist : array_like
+        The distances between the neurons in the SOM topology
+    """
     posT = np.transpose(pos)
     dist = cdist(posT, posT, 'euclidean')
 
@@ -122,7 +253,75 @@ def distances(pos):
 
 
 class SOM():
+    """
+    A class to represent a Self-Organizing Map (SOM)
+    
+    ...
+    
+    Attributes
+    ----------
+    dimensions : array_like
+        The dimensions of the SOM topology
+    
+    numNeurons : int
+        The number of neurons in the SOM topology
+        
+    pos : array_like
+        The positions of the neurons in the SOM topology
+        
+    neuron_dist : array_like
+        The distances between the neurons in the SOM topology
+        
+    w : array_like
+        The weight matrix of the SOM
+    
+    sim_flag : bool
+        A flag to indicate if the SOM has been simulated
+        
+    Methods
+    -------
+    init_w(x)
+        Initialize the SOM weights using principal components
+    
+    sim_som(x)
+        Simulate the SOM with x as the input
+        
+    train(x, init_neighborhood=3, epochs=200, steps=100)
+        Train the SOM using the batch SOM algorithm
+        
+    hit_hist(x, textFlag)
+        Create a basic hit histogram
+        
+    neuron_dist_plot()
+        Create a distance map
+        
+    cmplx_hit_hist(x, perc_gb, clust, ind_missClass, ind21, ind12)
+        Create a modified hit histogram
+    
+    gray_hist(x, perc)
+        Create another hit histogram
+        
+    color_hist(x, avg)
+        Create an SOM figure with the size of the hexagons related to the number of elements in the clusters
+        
+    plt_top()
+        Plot the topology of the SOM
+        
+    plt_top_num()
+        Plot the topology of the SOM with numbers for neurons
+        
+    plt_pie(title, perc, *argv)
+        Plot pie charts on SOM cluster locations
+    """
     def __init__(self, dimensions):
+        """
+        Constructs all the necessary attributes for the SOM object.
+        
+        Parameters
+        ----------
+        dimensions : array_like
+            The dimensions of the SOM topology
+        """
 
         self.dimensions = dimensions
         self.numNeurons = np.prod(dimensions)
@@ -140,7 +339,18 @@ class SOM():
         self.sim_flag = True
 
     def init_w(self, x):
-        # Initialize SOM weights using principal components
+        """
+        Initialize the SOM weights using principal components
+        
+        Parameters
+        ----------
+        x : array_like
+            The input data
+            
+        Returns
+        -------
+        None
+        """
 
         # Print Beginning time for initialization
         print('Beginning Initialization')
@@ -198,7 +408,20 @@ class SOM():
         print("Current Time =", current_time)
 
     def sim_som(self, x):
-        # Simulate the SOM, with x as the input
+        """
+        Simulate the SOM with x as the input
+        
+        Parameters
+        ----------
+        x : array_like
+            The input data
+        
+        Returns
+        -------
+        a : array_like
+            The simulated SOM
+        """
+
         shapx = x.shape   # shapes of the input x
         shapw = self.w.shape # weights of the SOM
 
@@ -221,7 +444,27 @@ class SOM():
 
 
     def train(self, x, init_neighborhood=3, epochs=200, steps=100):
-        # Train the SOM using the batch SOM algorithm
+        """
+        Train the SOM using the batch SOM algorithm
+        
+        Parameters
+        ----------
+        x : array_like
+            The input data
+        
+        init_neighborhood : int, optional
+            The initial neighborhood size (default is 3)
+        
+        epochs : int, optional
+            The number of epochs (default is 200)
+            
+        steps : int, optional
+            The number of steps (default is 100)
+        
+        Returns
+        -------
+        None
+        """
 
         w = self.w
         shapw = w.shape
@@ -284,10 +527,32 @@ class SOM():
 
 
     def hit_hist(self, x, textFlag):
-        # Basic hit histogram
-        # x contains the input data
-        # If textFlag is true, the number of members of each cluster
-        # is printed on the cluster.
+        """
+        Generate a basic hit histogram
+        
+        Parameters
+        ----------
+        x : array_like
+            The input data
+            
+        textFlag : bool
+            A flag to indicate if the number of members of each cluster should be printed on the cluster
+        
+        Returns
+        -------
+        fig : Figure
+            The figure of the hit histogram
+        
+        ax : Axes
+            The axes of the hit histogram
+            
+        patches : array_like
+            The patches of the hit histogram
+            
+        text : array_like
+            The text of the hit histogram
+        """
+        
         w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
@@ -360,10 +625,26 @@ class SOM():
 
 
     def neuron_dist_plot(self):
-        # Distance map. The gray hexagons represent cluster centers.
-        # The colors of the elongated hexagons between the cluster
-        # centers represent the distance between the centers. The
-        # darker the color the larger the distance.
+        """
+        Generate a distance map. The gray hexagons represent cluster centers.
+        The colors of the elongated hexagons between the cluster centers represent the distance between the centers.
+        The darker the color the larger the distance.
+        
+        Parameters
+        ----------
+        None
+        
+        Returns
+        -------
+        fig : Figure
+            The figure of the distance map
+            
+        ax : Axes
+            The axes of the distance map
+            
+        patches : array_like
+            The patches of the distance map
+        """
 
         pos = self.pos
         numNeurons = self.numNeurons
@@ -449,17 +730,43 @@ class SOM():
 
 
     def cmplx_hit_hist(self, x, perc_gb, clust, ind_missClass, ind21, ind12):
-        # This is a modified hit histogram, indicating if a cluster contains a
-        # majority of good binders, and indicating how many/type errors occur in
-        # each cluster
-        #
-        # Inputs are
-        #  x - data set
-        #  perc_gb - percent of good binders in each cluster
-        #  clust - list of indices of inputs that belong in each cluster
-        #  ind_missClass - indices of consistently misclassified inputs
-        #  ind21 - indices of false positive cases
-        #  ind12 - indices of false negative cases
+        """
+        Generate a modified hit histogram. This is a modified hit histogram, indicating if a cluster contains a majority of good binders, and indicating how many/type errors occur in each cluster.
+        
+        Parameters
+        ----------
+        x : array_like
+            The input data
+        
+        perc_gb : array_like
+            The percent of good binders in each cluster
+        
+        clust : array_like
+            The list of indices of inputs that belong in each cluster
+            
+        ind_missClass : array_like
+            The indices of consistently misclassified inputs
+            
+        ind21 : array_like
+            The indices of false positive cases
+            
+        ind12 : array_like
+            The indices of false negative cases
+            
+        Returns
+        -------
+        fig : Figure
+            The figure of the modified hit histogram
+        
+        ax : Axes
+        
+        patches : array_like
+            The patches of the modified hit histogram
+            
+        text : array_like
+            The text of the modified hit histogram
+        """
+        
         # Make hit histogram
         fig, ax, patches, text = self.hit_hist(x, True)
 
@@ -495,12 +802,35 @@ class SOM():
         return fig, ax, patches, text
 
     def gray_hist(self, x, perc):
-        # Make another hit histogram figure, and change the colors of the hexagons
-        # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
-        # means more PDB ligands, darker color means more well-docked bad binders.
-
+        """
+        Generate another hit histogram. This is another hit histogram, where the colors of the hexagons are related to the percentage of PDB (or WD) ligands in each cluster. Lighter color means more PDB ligands, darker color means more well-docked bad binders.
+        
+        Parameters
+        ----------
+        x : array_like
+            The input data
+            
+        perc : array_like
+            The percentage of PDB (or WD) ligands in each cluster
+            
+        Returns
+        -------
+        fig : Figure
+            The figure of the another hit histogram
+        
+        ax : Axes
+            The axes of the another hit histogram
+            
+        patches : array_like
+            The patches of the another hit histogram
+            
+        text : array_like
+            The text of the another hit histogram
+        """
+        
         numNeurons = self.numNeurons
 
+        # Make hit histogram
         fig, ax, patches, text = self.hit_hist(x, False)
 
         # Scale the gray scale to the perc value
@@ -518,10 +848,31 @@ class SOM():
 
 
     def color_hist(self, x, avg):
-        # Plot an SOM figure where the size of the hexagons is related to
-        # the number of elements in the clusters, and the color of the
-        # inner hexagon is coded to the variable avg, which could be the
-        # average number of a certain type of bond in the cluster
+        """
+        Generate an SOM figure. This is an SOM figure where the size of the hexagons is related to the number of elements in the clusters, and the color of the inner hexagon is coded to the variable avg, which could be the average number of a certain type of bond in the cluster.
+        
+        Parameters
+        ----------
+        x : array_like
+            The input data
+        
+        avg : array_like
+            The average number of a certain type of bond in the cluster
+            
+        Returns
+        -------
+        fig : Figure
+            The figure of the SOM figure
+        
+        patches : array_like
+            The patches of the SOM figure
+        
+        text : array_like
+            The text of the SOM figure
+        
+        cbar : Colorbar
+            The colorbar of the SOM figure
+        """
 
         # Find the maximum value of avg across all clusters
         dmax = np.amax(np.abs(avg))
@@ -569,7 +920,25 @@ class SOM():
 
 
     def plt_top(self):
-        # Plot the topology of the SOM
+        """
+        Generate a plot of the topology of the SOM
+        
+        Parameters
+        ----------
+        None
+        
+        Returns
+        -------
+        fig : Figure
+            The figure of the topology of the SOM
+            
+        ax : Axes
+            The axes of the topology of the SOM
+            
+        patches : array_like
+            The patches of the topology of the SOM
+        """
+        
         w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
@@ -598,7 +967,28 @@ class SOM():
 
 
     def plt_top_num(self):
-        # Plot the topology of the SOM with numbers for neurons
+        """
+        Generate a plot of the topology of the SOM with numbers for neurons.
+        
+        Parameters
+        ----------
+        None
+        
+        Returns
+        -------
+        fig : Figure
+            The figure of the topology of the SOM with numbers for neurons
+            
+        ax : Axes
+            The axes of the topology of the SOM with numbers for neurons
+            
+        patches : array_like
+            The patches of the topology of the SOM with numbers for neurons
+            
+        text : array_like
+            The text of the topology of the SOM with numbers for neurons
+        """
+        
         w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
@@ -635,10 +1025,31 @@ class SOM():
 
 
     def plt_pie(self, title, perc, *argv):
-        # Plots pie charts on SOM cluster locations. The size of the chart
-        # is related to the percentage of PDB or WD in the cluster.
-        # The arguments are tp, fn, tn and fp.
-        # perc is the percentage of PDB (or WD) in each cluster
+        """
+        Generate a plot of pie charts on SOM cluster locations. The size of the chart is related to the percentage of PDB or WD in the cluster. The arguments are tp, fn, tn and fp. perc is the percentage of PDB (or WD) in each cluster.
+        
+        Parameters
+        ----------
+        title : str
+            The title of the plot
+        
+        perc : array_like
+            The percentage of PDB (or WD) in each cluster
+            
+        *argv : array_like
+            The arguments tp, fn, tn and fp
+            
+        Returns
+        -------
+        fig : Figure
+            The figure of the pie charts on SOM cluster locations
+        
+        ax : Axes
+            The axes of the pie charts on SOM cluster locations
+            
+        h_axes : array_like
+            The axes of the pie charts on SOM cluster locations
+        """
 
         pos = self.pos
 
@@ -759,8 +1170,24 @@ class SOM():
         return fig, ax, h_axes
 
     def plt_wgts(self):
-        # Plots weights on SOM cluster locations.
-        #
+        """
+        Generate a plot of weights on SOM cluster locations.
+        
+        Parameters
+        ----------
+        None
+        
+        Returns
+        -------
+        fig : Figure
+            The figure of weights on SOM cluster locations
+        
+        ax : Axes
+            The axes of weights on SOM cluster locations
+            
+        h_axes : array_like
+            The axes of weights on SOM cluster locations
+        """
 
         pos = self.pos
 
@@ -850,9 +1277,34 @@ class SOM():
 
 
     def simple_grid(self, avg, sizes):
-        # Basic hexagon grid plot
-        # Colors are selected from avg array.
-        # Sizes of inner hexagons are selected from sizes array.
+        """
+        Generate a simple hexagon grid plot. 
+        The colors are selected from avg array. 
+        The sizes of inner hexagons are selected from sizes array.
+        
+        Parameters
+        ----------
+        avg : array_like
+            The average number of a certain type of bond in the cluster
+        
+        sizes : array_like
+            The sizes of inner hexagons
+        
+        Returns
+        -------
+        fig : Figure
+            The figure of the simple hexagon grid plot
+        
+        ax : Axes
+            The axes of the simple hexagon grid plot
+        
+        patches : array_like
+            The patches of the simple hexagon grid plot
+        
+        cbar : Colorbar
+            The colorbar of the simple hexagon grid plot
+        """
+        
         w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
@@ -950,9 +1402,26 @@ class SOM():
 
 
     def plt_dist(self, dist):
-        # Plots distributions of categories on SOM cluster locations.
-        #
-
+        """
+        Generate a plot of distributions of categories on SOM cluster locations.
+        
+        Parameters
+        ----------
+        dist : array_like
+            The distributions of categories on SOM cluster locations
+        
+        Returns
+        -------
+        fig : Figure
+            The figure of the distributions of categories on SOM cluster locations
+        
+        ax : Axes
+            The axes of the distributions of categories on SOM cluster locations
+            
+        h_axes : array_like
+            The axes of the distributions of categories on SOM cluster locations
+        """
+        
         pos = self.pos
 
         # Find the locations and size for each neuron in the SOM
