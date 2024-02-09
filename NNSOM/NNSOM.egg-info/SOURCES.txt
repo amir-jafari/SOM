@@ -1,8 +1,0 @@
-LICENSE
-README.md
-pyproject.toml
-setup.cfg
-NNSOM/NNSOM.egg-info/PKG-INFO
-NNSOM/NNSOM.egg-info/SOURCES.txt
-NNSOM/NNSOM.egg-info/dependency_links.txt
-NNSOM/NNSOM.egg-info/top_level.txt

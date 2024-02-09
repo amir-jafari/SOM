@@ -1,9 +1,7 @@
-#import numpy as np
 import numpy as np
 import scipy.io as sio
-# import tensorflow as tf
-from tensorflow.keras.utils import to_categorical
 import tensorflow as tf
+from tensorflow.keras.utils import to_categorical
 from scipy import sparse
 import networkx as nx
 from datetime import datetime
@@ -39,7 +37,7 @@ def preminmax(p):
 
 
 def calculate_positions(dim):
-
+    # Calculate the positions of the neurons in the SOM
     dims = len(dim)
     position = np.zeros((dims, np.prod(dim)))
     len1 = 1
@@ -69,22 +67,26 @@ def calculate_positions(dim):
 
 
 def cart2pol(x, y):
+    # Convert cartesian coordinates to polar coordinates
     theta = np.arctan2(y, x)
     rho = np.hypot(x, y)
     return theta, rho
 
 def pol2cart(theta, rho):
+    # Convert polar coordinates to cartesian coordinates
     x = rho * np.cos(theta)
     y = rho * np.sin(theta)
     return x, y
 
 def rotate_xy(x1, y1, angle):
+    # Rotate the coordinates x1, y1 by angle
     [a,r] = cart2pol(x1,y1)
     a = a + angle
     x2,y2 = pol2cart(a,r)
     return x2, y2
 
 def normalize_position(position):
+    # Normalize the positions of the neurons to be in the range [-1, 1]
     shap = position.shape
     numPos = shap[1]
     minPos = np.ndarray.min(position,axis=1)
@@ -101,6 +103,7 @@ def normalize_position(position):
 
 
 def spread_positions(position, positionMean, positionBasis):
+    # Spread the positions of the neurons
     shappos = position.shape
     numPos = shappos[1]
     position1 = np.repeat(positionMean, numPos, axis=1) + np.matmul(positionBasis, position)
@@ -122,6 +125,74 @@ def distances(pos):
 
 
 class SOM():
+    """
+    A class to represent a Self-Organizing Map (SOM)
+    
+    Attributes
+    ----------
+    dimensions : {tuple, list or array_like}
+        The dimensions of the SOM
+        For example, if the dimensions are (5, 5), the SOM will have 25 neurons
+    
+    numNeurons : int
+        The number of neurons in the SOM
+        
+    pos : array_like
+        The positions of the neurons in the SOM
+    
+    neuron_dist : array_like
+        The distances between the neurons in the SOM
+        
+    w : array_like
+        The weight matrix of the SOM
+        
+    sim_flag : bool
+        A flag to indicate if the SOM has been simulated or not
+        
+    Methods
+    -------
+    init_w(x)
+        Initialize the weights of the SOM using principal components
+    
+    sim_som(x)
+        Simulate the SOM with x as the input
+        
+    train(x, init_neighborhood=3, epochs=200, steps=100)
+        Train the SOM using the batch SOM algorithm
+    
+    hit_hist(x, textFlag)
+        Make a basic hit histogram of the SOM
+    
+    neuron_dist_plot()
+        Make a distance map of the SOM
+    
+    cmplx_hit_hist(x, perc_gb, clust, ind_missClass, ind21, ind12)
+        Make a modified hit histogram of the SOM
+    
+    gray_hist(x, perc)
+        Make a gray hit histogram of the SOM
+    
+    color_hist(x, avg)
+        Make a color hit histogram of the SOM
+        
+    plt_top()
+        Plot the topology of the SOM
+    
+    plt_top_num()
+        Plot the topology of the SOM with numbers for neurons
+        
+    plt_pie(title, perc, *argv)
+        Plot pie charts on SOM cluster locations
+        
+    plt_wgts()
+        Plot weights on SOM cluster locations
+        
+    simple_grid(avg, sizes)
+        Make a basic hexagon grid. plotColors are selected from avg array. Sizes of inner hexagons are selected from sizes array.
+    
+    plt_dist(dist)  
+        Plots distributions of categories on SOM cluster locations
+    """
     def __init__(self, dimensions):
 
         self.dimensions = dimensions

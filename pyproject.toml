@@ -1,6 +1,42 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "NNSOM"
+version = "0.0.3"
+authors = [
+  {name="Dr.Hagan"},
+  {name="Dr. Amir Jafari", email="amir.h.jafari@okstate.edu"},
+  {name="Lakshmi Sravya Chalapati"},
+  {name="Ei Tanaka"},
 ]
-build-backend = "setuptools.build_meta"
+maintainers = [
+  {name="Dr. Amir Jafari", email="amir.h.jafari@okstate.edu"},
+]
+description = "A SOM package"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = {file="LICENSE"}
+keywords = ["SOM", "Neural Network", "Machine Learning", "Unsupervised Learning", "Clustering"]
+
+[project.urls]
+Repository = "https://github.com/amir-jafari/SOM"
+Issues = "https://github.com/pypa/sampleproject/issues"
