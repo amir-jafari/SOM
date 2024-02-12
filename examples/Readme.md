@@ -6,6 +6,10 @@ This training script is designed to be straightforward and user-friendly for tho
 
 ## Prerequisites
 Before running the script, ensure you have Python installed on your machine. The script is tested with Python 3.8+.
+Additionally, you will need to download the NNSOM package, which contains the SOM class used in the script. 
+```bash
+pip install --upgrade NNSOM
+```
 
 ## Data Preparation
 1. Download the dataset from the following link: [Download Dataset](https://drive.google.com/file/d/1Jc5DFLza0W05gfXd56hj9hSyVAqa3aG8).
