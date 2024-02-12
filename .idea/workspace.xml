@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/examples/NNSOM_train_simple.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/NNSOM_train_simple.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/models/SOM_Model_f4_ep_50_Epoch_200_Seed_1234567_Size_4.pkl" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/models/SOM_init_f4_ep_50_Seed_1234567_Size_4.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
