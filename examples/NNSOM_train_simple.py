@@ -40,6 +40,9 @@ Trained_SOM_File = model_path + "SOM_Model_f4_ep_50_Epoch_" + str(Epochs) + '_Se
     SOM_Row_Num) + ".pkl"
 
 # Load data
+# (needed to be updated the method to make user get the data)
+# You can download the data from the following link:
+# (https://drive.google.com/file/d/1Jc5DFLza0W05gfXd56hj9hSyVAqa3aG8)
 input_file = data_path + 'cv_electra_f4_ep_50_Features.npy'
 X = np.load(input_file)
 

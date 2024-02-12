@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daf807ea-7b31-431f-8eb4-ee41c1a95f47" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SOM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SOM.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/placeholder.txt" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/Readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/data/cv_electra_f4_ep_50_Features.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/NNSOM_train_simple.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/NNSOM_train_simple.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,14 +31,19 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "true",
+    "last_opened_file_path": "/Users/eitanaka/Documents/GW_Univ/SP2024/DATS6501_Data_Science_Capstone/SOM/examples/data",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/examples/data" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/examples/data" />
       <recent name="$PROJECT_DIR$/examples/models" />
@@ -53,7 +57,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1707757721072</updated>
-      <workItem from="1707757728468" duration="3190000" />
+      <workItem from="1707757728468" duration="4446000" />
     </task>
     <servers />
   </component>
@@ -64,12 +68,12 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/examples/SOM_train_simple.py</url>
+          <url>file://$PROJECT_DIR$/examples/NNSOM_train_simple.py</url>
           <line>55</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/examples/SOM_train_simple.py</url>
+          <url>file://$PROJECT_DIR$/examples/NNSOM_train_simple.py</url>
           <line>59</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
