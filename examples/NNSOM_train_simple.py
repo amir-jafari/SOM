@@ -11,22 +11,22 @@ print("Current Time =", current_time)
 import os
 
 # Flag to initialize the som (True), or load previously initialized (False)
-Init_Flag = False
+Init_Flag = True
 
 # Flag to save initialized model
 Init_Save_Flag = False
 
 # Flag to train the som, or load previously trained
-Train_Flag = False
+Train_Flag = True
 
 # Flag to save trained model
-Save_SOM_Flag = False
+Save_SOM_Flag = True
 
 # Set parameters
 SOM_Row_Num = 4
-data_path = os.getcwd() + os.sep + 'data' + os.sep
-model_path = os.getcwd() + os.sep + 'models' + os.sep
-output_path = os.getcwd() + os.sep + 'output' + os.sep
+data_path = os.getcwd() + os.sep
+model_path = os.getcwd() + os.sep
+output_path = os.getcwd() + os.sep
 
 Dimensions = (SOM_Row_Num, SOM_Row_Num)
 Epochs = 200
@@ -57,7 +57,6 @@ X1 = X[:int(tot_num/8)]
 X1 = np.transpose(X1)
 
 X = np.transpose(X)
-
 
 # Train SOM, or load pretrained SOM
 if Train_Flag:

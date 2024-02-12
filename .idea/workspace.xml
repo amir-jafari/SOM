@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="daf807ea-7b31-431f-8eb4-ee41c1a95f47" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/NNSOM_train_simple.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/NNSOM_train_simple.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/models/SOM_Model_f4_ep_50_Epoch_200_Seed_1234567_Size_4.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/models/SOM_init_f4_ep_50_Seed_1234567_Size_4.pkl" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
