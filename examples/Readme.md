@@ -5,7 +5,7 @@ This document provides instructions on how to set up and run the `NNSOM_simple_t
 This training script is designed to be straightforward and user-friendly for those who are new to neural network training.
 
 ## Prerequisites
-Before running the script, ensure you have Python installed on your machine. The script is tested with Python 3.8+. You might also need to install specific Python libraries, which can be found in the `requirements.txt` file.
+Before running the script, ensure you have Python installed on your machine. The script is tested with Python 3.8+.
 
 ## Data Preparation
 1. Download the dataset from the following link: [Download Dataset](https://drive.google.com/file/d/1Jc5DFLza0W05gfXd56hj9hSyVAqa3aG8).
