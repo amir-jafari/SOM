@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb71b177-622b-4098-a484-3c7468f32fd9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Data/Tabular/Iris.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/ex.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SOM.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SOM.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/NNSOMTest_ver3_Training.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/NNSOM_train_simple.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/NNSOM_Iris_example.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/examples/NNSOM_Iris_example.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +71,7 @@
       <workItem from="1708108896301" duration="30000" />
       <workItem from="1708108928830" duration="6000" />
       <workItem from="1708108948883" duration="7132000" />
+      <workItem from="1708279348088" duration="10002000" />
     </task>
     <servers />
   </component>
