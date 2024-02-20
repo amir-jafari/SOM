@@ -65,7 +65,6 @@ def calculate_positions(dim):
 
     return position   #np.transpose(position)
 
-
 def cart2pol(x, y):
     # Convert cartesian coordinates to polar coordinates
     theta = np.arctan2(y, x)
@@ -704,7 +703,6 @@ class SOM():
 
         return fig, ax, patches, text
 
-
     def plt_pie(self, title, perc, *argv):
         # Plots pie charts on SOM cluster locations. The size of the chart
         # is related to the percentage of PDB or WD in the cluster.
@@ -918,7 +916,6 @@ class SOM():
 
         # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
-
 
     def simple_grid(self, avg, sizes):
         # Basic hexagon grid plot
