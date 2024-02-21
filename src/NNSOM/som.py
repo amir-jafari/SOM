@@ -1,126 +1,11 @@
+from utils import *
+
 import numpy as np
-import scipy.io as sio
-import tensorflow as tf
 from tensorflow.keras.utils import to_categorical
-from scipy import sparse
-import networkx as nx
 from datetime import datetime
 from scipy.spatial.distance import cdist
-
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-
-#np.seterr(all='warn')
-
-def preminmax(p):
-    # Normalize the inputs to be in the range [-1, 1]
-    minp = np.amin(p, 1)
-    maxp = np.amax(p, 1)
-
-    equal = np.equal(minp, maxp)
-    nequal = np.logical_not(equal)
-
-    if sum(equal) != 0:
-        print('Some maximums and minimums are equal. Those inputs won''t be transformed.')
-        minp0 = minp*nequal - 1*equal
-        maxp0 = maxp*nequal + 1*equal
-    else:
-        minp0 = minp
-        maxp0 = maxp
-
-    minp0 = np.expand_dims(minp0, axis=1)
-    maxp0 = np.expand_dims(maxp0, axis=1)
-    pn = 2*(p-minp0)/(maxp0-minp0) - 1
-    return pn, minp, maxp
-
-
-def calculate_positions(dim):
-    # Calculate the positions of the neurons in the SOM
-    dims = len(dim)
-    position = np.zeros((dims, np.prod(dim)))
-    len1 = 1
-
-    center = 0
-
-    for i in range(2):
-        dimi = dim[i]
-        newlen = len1 * dimi
-        offset = np.sqrt(1 - center*center)
-
-        if i==1:
-            for j in range(1, dimi):
-                ishift = [center * (j % 2)]
-                doshift = np.array(ishift*len1)
-                position[0, np.arange(len1)+len1*j] = position[0, np.arange(len1)] + doshift
-
-        posi = np.array(range(dimi)) * offset
-        ind2 = np.floor(np.arange(newlen) / len1)
-        ind2 = ind2.astype(int)
-        position[i, np.arange(newlen)] = posi[ind2]
-
-        len1 = newlen
-        center = 0.5
-
-    return position   #np.transpose(position)
-
-def cart2pol(x, y):
-    # Convert cartesian coordinates to polar coordinates
-    theta = np.arctan2(y, x)
-    rho = np.hypot(x, y)
-    return theta, rho
-
-def pol2cart(theta, rho):
-    # Convert polar coordinates to cartesian coordinates
-    x = rho * np.cos(theta)
-    y = rho * np.sin(theta)
-    return x, y
-
-def rotate_xy(x1, y1, angle):
-    # Rotate the coordinates x1, y1 by angle
-    [a,r] = cart2pol(x1,y1)
-    a = a + angle
-    x2,y2 = pol2cart(a,r)
-    return x2, y2
-
-def normalize_position(position):
-    # Normalize the positions of the neurons to be in the range [-1, 1]
-    shap = position.shape
-    numPos = shap[1]
-    minPos = np.ndarray.min(position,axis=1)
-    maxPos = np.ndarray.max(position,axis=1)
-    difPos = maxPos - minPos
-    equal = np.equal(minPos, maxPos)
-    difPos[equal] = 1
-    minPos = np.expand_dims(minPos, axis=1)
-    minPos = np.repeat(minPos, numPos, axis=1)
-    difPos = np.expand_dims(difPos, axis=1)
-    difPos = np.repeat(difPos, numPos, axis=1)
-    posit = 2 * ((position - minPos)/difPos) - 1
-    return posit
-
-
-def spread_positions(position, positionMean, positionBasis):
-    # Spread the positions of the neurons
-    shappos = position.shape
-    numPos = shappos[1]
-    position1 = np.repeat(positionMean, numPos, axis=1) + np.matmul(positionBasis, position)
-    return position1
-
-
-def distances(pos):
-    # Compute the distances between the neurons in the SOM topology
-    posT = np.transpose(pos)
-    dist = cdist(posT, posT, 'euclidean')
-
-    link = dist<=1.00001
-    link = sparse.csr_matrix(1.0*link)
-
-    G = nx.DiGraph(link)
-    dist = nx.floyd_warshall_numpy(G)
-
-    return dist
 
 
 class SOM():
@@ -286,7 +171,7 @@ class SOM():
         # Find out which center was closest to the input
         maxRows = np.argmax(n, axis=0)
         a = to_categorical(maxRows,num_classes=n.shape[0])#made correction-added number of class
-        #  a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change
+        # a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change
         return np.transpose(a)
 
 
@@ -350,7 +235,6 @@ class SOM():
         print('Ending Training')
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
-
 
 
     def hit_hist(self, x, textFlag):
@@ -564,6 +448,7 @@ class SOM():
 
         return fig, ax, patches, text
 
+
     def gray_hist(self, x, perc):
         # Make another hit histogram figure, and change the colors of the hexagons
         # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
@@ -703,6 +588,7 @@ class SOM():
 
         return fig, ax, patches, text
 
+
     def plt_pie(self, title, perc, *argv):
         # Plots pie charts on SOM cluster locations. The size of the chart
         # is related to the percentage of PDB or WD in the cluster.
@@ -756,7 +642,6 @@ class SOM():
         else:
             # Only two colors for well docked bad binders (tn, fp)
             clrs = ['blue', 'red']
-
 
         for neuron in range(numNeurons):
 
@@ -823,9 +708,9 @@ class SOM():
         # fig.tight_layout()
         plt.suptitle(title, fontsize=16)
 
-
         # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
+
 
     def plt_wgts(self):
         # Plots weights on SOM cluster locations.
@@ -916,6 +801,7 @@ class SOM():
 
         # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
+
 
     def simple_grid(self, avg, sizes):
         # Basic hexagon grid plot
@@ -1080,7 +966,6 @@ class SOM():
             width = scale*width
             height = scale*height
 
-
             # Locate the beginning point of the cell
             x1 = xavg - (width/2)
             y1 = yavg - (height/2)
@@ -1093,7 +978,6 @@ class SOM():
             h_axes[neuron].stem(dist[neuron])
             title = ''
             plt.axis('off')
-
 
             # Leave some buffer space between cells
             h_axes[neuron].margins(0.05)

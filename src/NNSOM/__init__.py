@@ -1,1 +1,2 @@
-from NNSOM.som import SOM
+from .som import SOM
+from .utils import *

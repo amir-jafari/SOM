@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "NNSOM"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
   {name="Dr.Hagan"},
   {name="Dr. Amir Jafari", email="amir.h.jafari@okstate.edu"},
@@ -15,7 +15,6 @@ maintainers = [
   {name="Dr. Amir Jafari", email="amir.h.jafari@okstate.edu"},
 ]
 description = "A SOM package"
-readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -34,6 +33,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+readme = "README.md"
 license = {file="LICENSE"}
 keywords = ["SOM", "Neural Network", "Machine Learning", "Unsupervised Learning", "Clustering"]
 

@@ -1,0 +1,2 @@
+class PlotSOM():
+    pass
