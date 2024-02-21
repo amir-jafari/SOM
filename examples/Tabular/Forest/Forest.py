@@ -3,30 +3,33 @@
 # Import Libraries
 from NNSOM.som import SOM
 import numpy as np
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 from scipy.spatial.distance import cdist
 from numpy.random import default_rng
 import matplotlib.pyplot as plt
 import os
 
-# Path
+from utils import forest_eda
+
+# Path Settings
+file_path = os.getcwd() + os.sep
+os.chdir('../../../')
 abs_path = os.getcwd() + os.sep
-data_path = abs_path + 'data' + os.sep
+data_path = abs_path + 'Data' + os.sep + 'Tabular' + os.sep + 'forest' + os.sep
+os.chdir(file_path)
 
 # Set parameters
-SOM_Row_Num = 10
-SOM_Col_Num = 15
+SOM_Row_Num = 8
+SOM_Col_Num = 10
 
 Dimensions = (SOM_Row_Num, SOM_Col_Num)
-Epochs = 500
+Epochs = 1000
 Steps = 100
 Init_neighborhood = 3
 SEED = 1234567
 rng = default_rng(SEED)
 
 # Data Collection and Preprocessing
-# Loading data
+# Loading forest
 with open(data_path + 'cover_p.txt', 'r') as f:
     data = f.readlines()
     data = [list(map(float, x.strip().split())) for x in data]
@@ -38,50 +41,24 @@ with open(data_path + 'cover_t.txt', 'r') as f:
 # Convert to numpy array
 data = np.array(data)
 
-# Normalize the data from -1 to 1 with standardization
-scaler = MinMaxScaler(feature_range=(-1, 1))
-data = scaler.fit_transform(data)
-
-# Create Subplots for the input variables
-df = pd.DataFrame(data[:, 6:9], columns=['7', '8', '9'])
-n = len(df.columns)
-fig, axes = plt.subplots(nrows=n, ncols=n, figsize=(8, 8))
-# Loop through rows
-for i in range(n):
-    # Loop through columns
-    for j in range(n):
-        # Hide lower triangle and diagonal
-        if i > j:
-            axes[i, j].axis('off')
-        # Diagonal: plot histograms
-        if i == j:
-            axes[i, j].hist(df[df.columns[i]], bins=10, color='skyblue', edgecolor='black')
-            axes[i, j].set_ylabel('Frequency')
-        # Upper triangle: plot scatter
-        if i < j:
-            axes[i, j].scatter(df[df.columns[i]], df[df.columns[j]], alpha=0.5, color='darkblue')
-            axes[j, i].set_xlabel(df.columns[i])  # Set x-axis label for corresponding lower triangle plot
-            axes[i, j].set_ylabel(df.columns[j])  # Set y-axis label
-plt.tight_layout()
-plt.show()
+# Visualize the input forest
+fig, axes = forest_eda(data)
 
 tot_num = len(data)
 
-# Randomize to get different results
-X = data[rng.permutation(tot_num)]
-
 # Initializing can take a long time for large datasets
 # Reduce size here. X1 is used for initialization, X is used for training.
-X1 = X[:int(tot_num/8)]
+X1 = data[:int(tot_num/2)]
 X1 = np.transpose(X1)
 
-X = np.transpose(X)
+X = np.transpose(data)
 
 # Train the NETWORK
 som_net = SOM(Dimensions)
 som_net.init_w(X1)
 som_net.train(X, Init_neighborhood, Epochs, Steps)
 
+# Post Processing
 # Compute statistics
 # Distance between each input and each unit
 x_w_dist = cdist(som_net.w, np.transpose(X), 'euclidean')
@@ -152,6 +129,7 @@ for d in dd:
     distortion = np.sum(np.multiply(temp, x_w_dist))/factor2
     print('Distortion (d='+str(d)+') = ' + str(distortion))
 
+
 # Plot the SOM
 # U-Matrix for Trained SOM
 fig11, ax11, pathces, cbar = som_net.simple_grid(mdist, net_ones)
@@ -163,7 +141,6 @@ plt.show()
 closest_input_index = [item[0] if len(item) > 0 else -1 for item in Clust]
 cluster_labels = [target[item] if item != -1 else -1 for item in closest_input_index]
 converted_labels = [str(int(x[0]) if isinstance(x, list) else x) for x in cluster_labels]
-print(converted_labels)
 
 w = som_net.w
 pos = som_net.pos
