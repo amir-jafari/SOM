@@ -26,20 +26,20 @@ for i in range(9):
     plt.imshow(x_train[i])
     plt.axis('off')
 
-# Normalizing the data
+# Normalizing the forest
 x_train = x_train.astype('float32') / 255
 x_test = x_test.astype('float32') / 255
 
-# Reshaping the data
+# Reshaping the forest
 x_train = x_train.reshape(x_train.shape[0], -1)
 x_test = x_test.reshape(x_test.shape[0], -1)
 
-# Input data
+# Input forest
 tot_num = len(x_train)
 # Randomize to get different results
 X = x_train[rng.permutation(tot_num)]
 
-# Initializing can take a long time for larege data sets
+# Initializing can take a long time for larege forest sets
 # Reduce size here. X1 is used for initialization, X is used for training.
 X1 = X[:int(tot_num/8)]
 X1 = np.transpose(X1)
@@ -159,8 +159,8 @@ print(ww.shape)
 
 data = ww
 
-# Assuming `data` is your numpy array with shape (64, 784)
-# Reshape data to (64, 28, 28) to make it easier to handle
+# Assuming `forest` is your numpy array with shape (64, 784)
+# Reshape forest to (64, 28, 28) to make it easier to handle
 images = data.reshape(-1, 28, 28)
 
 # Set up the figure size and grid
