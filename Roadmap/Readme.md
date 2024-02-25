@@ -1,10 +1,10 @@
-## Roadmap
+ ## Roadmap
 
 ### Basic Plot
-- [] Color histogram
-- [] 
-- []
-- []
-- []
+* [] Color histogram
+* [] 
+* []
+* []
+* []
     
 ## 
