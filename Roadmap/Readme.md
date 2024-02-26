@@ -1,6 +1,6 @@
 # Roadmap
 
-## Time Shcedule
+## Time Schedule
 - week 1
 - week 2
 - week 3
