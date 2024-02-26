@@ -4,9 +4,12 @@
 from NNSOM.som import SOM
 import numpy as np
 from scipy.spatial.distance import cdist
+from sklearn.preprocessing import MinMaxScaler
 from numpy.random import default_rng
 import matplotlib.pyplot as plt
 import os
+import sys
+import pickle
 
 from utils import forest_eda
 
@@ -15,7 +18,18 @@ file_path = os.getcwd() + os.sep
 os.chdir('../../../')
 abs_path = os.getcwd() + os.sep
 data_path = abs_path + 'Data' + os.sep + 'Tabular' + os.sep + 'forest' + os.sep
+model_path = file_path + os.sep + 'Models' + os.sep
+output_path = file_path + os.sep + 'Output' + os.sep
 os.chdir(file_path)
+
+# Flag to initialize the som (True), or load previously initialized (False)
+Init_Flag = True
+# Flag to save initialized model
+Init_Save_Flag = False
+# Flag to train the som, or load previously trained
+Train_Flag = True
+# Flag to save trained model
+Save_SOM_Flag = False
 
 # Set parameters
 SOM_Row_Num = 8
@@ -28,6 +42,9 @@ Init_neighborhood = 3
 SEED = 1234567
 rng = default_rng(SEED)
 
+Init_Som_File = model_path + "SOM_init_forest_Seed_" + str(SEED) + '_Size_' + str(SOM_Row_Num) + 'x' + str(SOM_Col_Num) + '.pkl'
+Train_Som_File = model_path + "SOM_Model_forest_Epoch_" + str(Epochs) + "_Seed_" + str(SEED) + '_Size_' + str(SOM_Row_Num) + 'x' + str(SOM_Col_Num) + '.pkl'
+
 # Data Collection and Preprocessing
 # Loading forest
 with open(data_path + 'cover_p.txt', 'r') as f:
@@ -39,24 +56,43 @@ with open(data_path + 'cover_t.txt', 'r') as f:
     target = [list(map(float, x.strip().split())) for x in target]
 
 # Convert to numpy array
-data = np.array(data)
+X = np.array(data)
+
+# Normalize the data from -1 to 1 with standardization
+scaler = MinMaxScaler(feature_range=(-1, 1))
+X = scaler.fit_transform(X)
 
 # Visualize the input forest
-fig, axes = forest_eda(data)
+fig, axes = forest_eda(X)
 
-tot_num = len(data)
+tot_num = len(X)
 
 # Initializing can take a long time for large datasets
 # Reduce size here. X1 is used for initialization, X is used for training.
-X1 = data[:int(tot_num/2)]
-X1 = np.transpose(X1)
-
-X = np.transpose(data)
+X1 = np.transpose(X[:int(tot_num/2)])
+X = np.transpose(X)
 
 # Train the NETWORK
-som_net = SOM(Dimensions)
-som_net.init_w(X1)
-som_net.train(X, Init_neighborhood, Epochs, Steps)
+if Train_Flag:
+    if Init_Flag:
+        som_net = SOM(Dimensions)
+        som_net.init_w(X1)
+        if Init_Save_Flag:
+            with open(Init_Som_File, 'wb') as f:
+                pickle.dump(som_net, f)
+    else:
+        with open(Init_Som_File, 'rb') as f:
+            som_net = pickle.load(f)
+
+    som_net.train(X, Init_neighborhood, Epochs, Steps)
+
+    if Save_SOM_Flag:
+        with open(Train_Som_File, 'wb') as f:
+            pickle.dump(som_net, f)
+
+else:
+    with open(Train_Som_File, 'rb') as f:
+        som_net = pickle.load(f)
 
 # Post Processing
 # Compute statistics
@@ -140,7 +176,7 @@ plt.show()
 # plt_top_labeled(target, dist)
 closest_input_index = [item[0] if len(item) > 0 else -1 for item in Clust]
 cluster_labels = [target[item] if item != -1 else -1 for item in closest_input_index]
-converted_labels = [str(int(x[0]) if isinstance(x, list) else x) for x in cluster_labels]
+converted_labels = [str(int(x[0]) if isinstance(x, list) else " ") for x in cluster_labels]
 
 w = som_net.w
 pos = som_net.pos

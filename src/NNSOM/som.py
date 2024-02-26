@@ -1,11 +1,11 @@
-from utils import *
-
+from .utils import *
 import numpy as np
 from tensorflow.keras.utils import to_categorical
 from datetime import datetime
 from scipy.spatial.distance import cdist
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import pickle
 
 
 class SOM():
@@ -236,6 +236,45 @@ class SOM():
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
 
+    def save_pickle(self, filename, path):
+        """ Save the SOM object to a file using pickle.
+        
+        Parameters
+        ----------
+        filename : str
+            The name of the file to save the SOM object to.
+
+        path : str
+            The path to the file to save the SOM object to.
+
+        Returns
+        -------
+        None
+        """
+        
+        with open(path + filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    def load_pickle(self, filename, path):
+        """ Load the SOM object from a file using pickle.
+
+        Parameters
+        ----------
+        filename : str
+            The name of the file to load the SOM object from.
+
+        path : str
+            The path to the file to load the SOM object from.
+
+        Returns
+        -------
+        None
+        """
+
+        with open(path + filename, 'rb') as f:
+            som = pickle.load(f)
+
+        return som
 
     def hit_hist(self, x, textFlag):
         # Basic hit histogram
