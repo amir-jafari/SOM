@@ -32,7 +32,8 @@ class SOM():
         
     sim_flag : bool
         A flag to indicate if the SOM has been simulated or not
-        
+
+
     Methods
     -------
     init_w(x)
@@ -43,7 +44,11 @@ class SOM():
         
     train(x, init_neighborhood=3, epochs=200, steps=100)
         Train the SOM using the batch SOM algorithm
-    
+
+    save_pickle
+
+    load_pickle
+
     hit_hist(x, textFlag)
         Make a basic hit histogram of the SOM
     
@@ -236,7 +241,7 @@ class SOM():
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
 
-    def save_pickle(self, filename, path):
+    def save_pickle(self, filename, path, data_format='pkl'):
         """ Save the SOM object to a file using pickle.
         
         Parameters
@@ -247,15 +252,21 @@ class SOM():
         path : str
             The path to the file to save the SOM object to.
 
+        data_format : str
+            The format to save the SOM object in. Must be one of: pkl
+
         Returns
         -------
         None
         """
-        
-        with open(path + filename, 'wb') as f:
-            pickle.dump(self, f)
+        if data_format not in ['pkl']:
+            raise ValueError('data_format must be one of: pkl')
 
-    def load_pickle(self, filename, path):
+        if data_format == 'pkl':
+            with open(path + filename, 'wb') as f:
+                pickle.dump(self, f)
+
+    def load_pickle(self, filename, path, data_format='pkl'):
         """ Load the SOM object from a file using pickle.
 
         Parameters
@@ -266,15 +277,20 @@ class SOM():
         path : str
             The path to the file to load the SOM object from.
 
+        data_format : str
+            The format to load the SOM object from. Must be one of: pkl
+
         Returns
         -------
         None
         """
+        if data_format not in ['pkl']:
+            raise ValueError('data_format must be one of: pkl')
 
-        with open(path + filename, 'rb') as f:
-            som = pickle.load(f)
-
-        return som
+        if data_format == 'pkl':
+            with open(path + filename, 'rb') as f:
+                som = pickle.load(f)
+            return som
 
     def hit_hist(self, x, textFlag):
         # Basic hit histogram
