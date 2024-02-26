@@ -10,77 +10,49 @@ import pickle
 
 class SOM():
     """
-    A class to represent a Self-Organizing Map (SOM)
-    
+    A class to represent a Self-Organizing Map (SOM), a type of artificial neural network
+    trained using unsupervised learning to produce a two-dimensional, discretized representation
+    of the input space of the training samples.
+
     Attributes
     ----------
-    dimensions : {tuple, list or array_like}
-        The dimensions of the SOM
-        For example, if the dimensions are (5, 5), the SOM will have 25 neurons
-    
+    dimensions : tuple, list, or array-like
+        The dimensions of the SOM grid. Determines the layout and number of neurons in the map.
     numNeurons : int
-        The number of neurons in the SOM
-        
-    pos : array_like
-        The positions of the neurons in the SOM
-    
-    neuron_dist : array_like
-        The distances between the neurons in the SOM
-        
-    w : array_like
-        The weight matrix of the SOM
-        
+        The total number of neurons in the SOM, calculated as the product of the dimensions.
+    pos : array-like
+        The positions of the neurons in the SOM grid.
+    neuron_dist : array-like
+        The distances between neurons in the SOM.
+    w : array-like
+        The weight matrix of the SOM, representing the feature vectors of the neurons.
     sim_flag : bool
-        A flag to indicate if the SOM has been simulated or not
-
+        A flag indicating whether the SOM has been simulated or not.
 
     Methods
     -------
-    init_w(x)
-        Initialize the weights of the SOM using principal components
-    
-    sim_som(x)
-        Simulate the SOM with x as the input
-        
-    train(x, init_neighborhood=3, epochs=200, steps=100)
-        Train the SOM using the batch SOM algorithm
+    __init__(self, dimensions):
+        Initializes the SOM with the specified dimensions.
 
-    save_pickle
+    init_w(self, x):
+        Initializes the weights of the SOM using principal components analysis on the input data x.
 
-    load_pickle
+    sim_som(self, x):
+        Simulates the SOM with x as the input, determining which neurons are activated by the input vectors.
 
-    hit_hist(x, textFlag)
-        Make a basic hit histogram of the SOM
-    
-    neuron_dist_plot()
-        Make a distance map of the SOM
-    
-    cmplx_hit_hist(x, perc_gb, clust, ind_missClass, ind21, ind12)
-        Make a modified hit histogram of the SOM
-    
-    gray_hist(x, perc)
-        Make a gray hit histogram of the SOM
-    
-    color_hist(x, avg)
-        Make a color hit histogram of the SOM
-        
-    plt_top()
-        Plot the topology of the SOM
-    
-    plt_top_num()
-        Plot the topology of the SOM with numbers for neurons
-        
-    plt_pie(title, perc, *argv)
-        Plot pie charts on SOM cluster locations
-        
-    plt_wgts()
-        Plot weights on SOM cluster locations
-        
-    simple_grid(avg, sizes)
-        Make a basic hexagon grid. plotColors are selected from avg array. Sizes of inner hexagons are selected from sizes array.
-    
-    plt_dist(dist)  
-        Plots distributions of categories on SOM cluster locations
+    train(self, x, init_neighborhood=3, epochs=200, steps=100):
+        Trains the SOM using the batch SOM algorithm on the input data x.
+
+    save_pickle(self, filename, path, data_format='pkl'):
+        Saves the SOM object to a file using the pickle format.
+
+    load_pickle(self, filename, path, data_format='pkl'):
+        Loads a SOM object from a file using the pickle format.
+
+    Visualization methods (hit_hist, neuron_dist_plot, cmplx_hit_hist, gray_hist, color_hist,
+    plt_top, plt_top_num, plt_pie, plt_wgts, simple_grid, plt_dist):
+        Generate various plots to visualize aspects of the SOM, such as the distribution of input
+        data across neurons, the distances between neurons, and the weights of the neurons.
     """
     def __init__(self, dimensions):
 
