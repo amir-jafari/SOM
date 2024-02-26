@@ -1,2 +1,1 @@
-# NNSOM_train_simple.py
-To effectively use NNSOM_simple_training, users should customize parameters and pre- and post-processing methods for their datasets. This script serves as a template for training Self-Organizing Maps (SOMs) and requires adaptation to fit specific data characteristics. Adjustments may include changing SOM dimensions, learning rates, and adapting data normalization and visualization steps to ensure optimal training outcomes and insightful analysis of the results.
+
