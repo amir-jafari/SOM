@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb71b177-622b-4098-a484-3c7468f32fd9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Roadmap/Readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/nnsom-0.0.6-py3-none-any.whl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/nnsom-0.0.6.tar.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/Tabular/Forest/Forest.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Tabular/Forest/Forest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NNSOM/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/NNSOM/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/NNSOM/som.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/NNSOM/som.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,7 +104,7 @@
       <workItem from="1708552461297" duration="5319000" />
       <workItem from="1708717408566" duration="60000" />
       <workItem from="1708718508405" duration="5000" />
-      <workItem from="1708806645426" duration="5322000" />
+      <workItem from="1708806645426" duration="5769000" />
     </task>
     <servers />
   </component>
