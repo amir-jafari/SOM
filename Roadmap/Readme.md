@@ -15,7 +15,6 @@
 - week 12: 
 - week 13:
 
-
 ## 1. SOM Packages Functionality
 
 ### 1.1 Basic Plots
@@ -43,8 +42,8 @@
 - [ ] Triangle
 
 ### 1.5 Save and Load
-- [ ] Save the trained SOM as pickle
-- [ ] Load the trained SOM as pickle
+- [X] Save the trained SOM as pickle
+- [X] Load the trained SOM as pickle
 
 ### 1.6 Interactive Plots
 - [ ] Implement interactive plots with Plotly
