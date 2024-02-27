@@ -1,5 +1,5 @@
 # Roadmap
-Goal: To create a sophisticated SOM package from Sample Code. 
+Goal: To create a sophisticated SOM package. 
 The main methods would be simulation, training, saving and loading a model, calculating distances, handling neighborhoods, and creating plots.
 Regarding the Plot, we need the functionality not only for displaying the result of the cluster of the dataset but also for post-training analysis of other trained models.
 
