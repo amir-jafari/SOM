@@ -1,5 +1,7 @@
 # Roadmap
-
+Goal: To create a sophisticated SOM package from Sample Code. 
+The main methods would be simulation, training, saving and loading a model, calculating distances, handling neighborhoods, and creating plots.
+Regarding the Plot, we need the functionality not only for displaying the result of the cluster of the dataset but also for post-training analysis of other trained models.
 
 ## Time Schedule
 - week 1
@@ -55,13 +57,14 @@
 ### 1.8 Subclustering
 - [ ] Train a subcluster -> Save som and json mapping
 
+
 ## 2. SOM Packages Testing 
 
-### 2.1 Test the SOM packages with some example datasets with labels
+### 2.1 Test the SOM packages as clustering method with some example datasets with labels (text, CV, tabular, etc)
 - [ ] Test the SOM packages with some example datasets with labels
+- [ ] Get the Plot with them.
 
-### 2.2 Train a model and make prediction
-- [ ] Train the SOM with some example datasets without labels and make prediction
-
-### 2.3 Post Training Analysis
-- [ ] Analyze the trained SOM with some example datasets
+### 2.2 Test the SOM as post training tools for a trained model
+- [ ] Train a neural network model with some example datasets and make a prediction.
+- [ ] Get the confusion matrix of the prediction for the rained model
+- [ ] Plot them with SOM cluster and compare them to get insight
