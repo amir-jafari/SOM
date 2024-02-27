@@ -58,7 +58,7 @@ Regarding the Plot, we need the functionality not only for displaying the result
 - [ ] Train a subcluster -> Save som and json mapping
 
 
-## 2. SOM Packages Testing 
+## 2. SOM Packages Testing with example data sets
 
 ### 2.1 Test the SOM packages as clustering method with some example datasets with labels (text, CV, tabular, etc)
 - [ ] Test the SOM packages with some example datasets with labels
