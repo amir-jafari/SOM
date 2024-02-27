@@ -32,29 +32,23 @@ Regarding the Plot, we need the functionality not only for displaying the result
 - [ ] Cosine
 - [ ] Chebyshev
 
-### 1.3 Neighborhood Functions
-- [ ] Gaussian
-- [ ] Bubble
-- [ ] Mexican Hat
-- [ ] Triangle
-
-### 1.4 Save and Load
+### 1.3 Save and Load
 - [X] Save the trained SOM as pickle
 - [X] Load the trained SOM as pickle
 
-### 1.5 Interactive Plots
+### 1.4 Interactive Plots
 - [ ] Implement interactive plots with Plotly
 - [ ] Right click on the cluster to see the cluster information
     - [ ] Plot the cluster center (line or image)
     - [ ] Plot / list the 5 closet inputs to the cluster center
 
-### 1.6 CuPy 
+### 1.5 CuPy (GPU usability)
 - [ ] Implement CuPy for faster computation
 
-### 1.7 Documentation
+### 1.6 Documentation
 - [ ] Add documentation to the functions
 
-### 1.8 Subclustering
+### 1.7 Subclustering
 - [ ] Train a subcluster -> Save som and json mapping
 
 
