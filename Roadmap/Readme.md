@@ -1,7 +1,7 @@
 # Roadmap
 Goal: To create a sophisticated SOM package. 
-The main methods would be simulation, training, saving and loading a model, calculating distances, and creating plots.
-Regarding the plot methods, we need the functionality not only for displaying trained SOM information but also for post-training analysis of other trained models.
+The main methods would be simulation, training, saving and loading a model, calculating distances, and creating plots. 
+Regarding the plot methods, we need the functionality for displaying trained SOM information and for post-training analysis of other trained models.
 
 ## Time Schedule
 - week 1
