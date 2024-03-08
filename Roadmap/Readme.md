@@ -8,10 +8,10 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 - week 2
 - week 3
 - week 4
-- week 5: Now here
-- week 6: 
-- week 7: 
-- week 8: 
+- week 5:
+- week 6: Implementing Plots Functionality tested with Iris data
+- week 7: Implementing Plots Functionality tested with Iris data
+- week 8:
 - week 9: 
 - week 10: 
 - week 11: 
@@ -20,7 +20,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 ## 1. SOM Packages Functionality
 
-### 1.1 Basic Plots
+### 1.1 Plot functions
 - [ ] Color Higtogram: Single number (different color maps as arg)
 - [ ] hit histogram & complex hit hist (combine them in one plot function): Size of the histogram and interior color of histogram and edge color.
 - [ ] U map (neuron dist plot)
