@@ -906,7 +906,7 @@ class SOM():
         cax = cm.ScalarMappable(cmap=cmap)
         cax.set_array(xx)
         #cbar = fig.colorbar(cax)
-        cbar = fig.colorbar(cax, fraction=0.046, pad=0.04)
+        cbar = fig.colorbar(cax, ax=ax, fraction=0.046, pad=0.04)
 
         # plt.colorbar(im, fraction=0.046, pad=0.04)
         #
