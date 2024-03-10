@@ -10,7 +10,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 - week 4:
 - week 5:
 - week 6 (~ Mar 12): Implementing Plots Functionality and  testing with Iris data
-- week 7 (~ Mar 19): Implementing Plots Functionality and testing with Iris data
+- week 7 (~ Mar 19): Implementing Plots Functionality and testing with Iris data / Midterm presentation
 - week 8 (~ Mar 26):
 - week 9 (~ Apr 2): 
 - week 10 (~ Apr 9): 
