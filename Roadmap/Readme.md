@@ -20,24 +20,24 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 ## 1. SOM Packages Functionality
 
 ### 1.1 Plot functions
-- [ ] A. For cases in which there is one additional continuous variable associated with each item: (Lakshmi)
+- [ ] A. For cases in which there is one additional continuous variable associated with each item: (Lakshmi by March 19)
     - [ ] A.1 Shade the hexagon with a greyscale or colorcode using the average of the variable accross the items iin each cluster or with the standard deviation of the variable across the items in the cluster.
     - [ ] A.2 Make a histogram of the variable in each cluster
     - [ ] A.3 Make a boxplot of the variable in ach cluster
     - [ ] A.4 Make a dispersin fan diagram of the variable in each cluster.
     - [ ] A.5 Make a violin plot of the variable in each cluster.
           
-- [ ] B. For cases in which there are one additional discrete variable (finite number of types, e.g. label # ) assosciate with each item: (Lakshmi)
+- [ ] B. For cases in which there are one additional discrete variable (finite number of types, e.g. label # ) assosciate with each item: (Lakshmim by March 19)
     - [ ] B.1 Shade the hexagon with a greyscale or colorcode using the average of the variable accross the items iin each cluster or with the standard deviation of the variable across the items in the cluster.
     - [ ] B.2 Make a bar chart or stem plot of the numbers of each variable type in each cluster.
     - [ ] B.3 Make a pie chart of the percentage of each varriable type in each cluster.
     - [ ] B.4 Make a pie chart of the percentage of each variable type in each cluster.
 
-- [ ] C. For cases in which there are two continuous variables associated with each item: (Ei)
+- [ ] C. For cases in which there are two continuous variables associated with each item: (Ei by March 19)
     - [ ] C.1 make a scatter plot of the two variables in each cluster.
     - [ ] C.2 Perform a regression between the two variables and plot the regression line in each cluster.
     
-- [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and tru class) (Ei)
+- [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and tru class) (Ei by March 19)
     - [ ] D.1 Confusino matrix type grid.
     - [ ] D.2 Grid heatmap.
           
@@ -45,13 +45,13 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [X] F. Neighbor distance plot (U-matrix)
 
-- [ ] G. Weight planes (Lakshmi)
+- [ ] G. Weight planes (Lakshmi by March 19)
 
-- [ ] H. Weight positions (Lakshmi)
+- [ ] H. Weight positions (Lakshmi by March 19)
 
 - [X] I. SOM Topology
 
-- [ ] J. Neighbor connections. (Ei)
+- [ ] J. Neighbor connections. (Ei by March 19)
 
 - [X] K. Complex Hit histogram: For hit histogram can ake interior of hexagon color coded to some additional variable and edges of hecagons couded to some other variable. Witdth of items in the cluster.
       
@@ -59,28 +59,22 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [X] N. Plot a grey scale or color code with the hexagon related to the radius of the cluster (e.g., maximum distance of an item from the cluster center) 
 
-- [ ] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei)
+- [ ] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 19)
     - [ ] O.1 Plot the 5 (or any number) closest items to the cluster center.
     - [ ] O.2 Compute a suc-SOM for the items in the selected cluster
     - [ ] O.3 Save the indices of the items in the cluster. 
 
-### 1.2 Distance Functions
-- [ ] Euclidean
-- [ ] Manhattan
-- [ ] Cosine
-- [ ] Chebyshev
-
-### 1.3 Save and Load
+### 1.2 Save and Load
 - [X] Save the trained SOM as pickle
 - [X] Load the trained SOM as pickle
 
-### 1.4 CuPy (GPU usability)
+### 1.3 CuPy (GPU usability)
 - [ ] Implement CuPy for faster computation
 
-### 1.5 Documentation
+### 1.4 Documentation
 - [ ] Add documentation to the functions
 
-### 1.6 Subclustering
+### 1.5 Subclustering
 - [ ] Train a subcluster -> Save som and json mapping
 
 ## 2. SOM Packages Testing with example data sets
