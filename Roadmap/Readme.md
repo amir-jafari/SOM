@@ -33,9 +33,10 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     - [ ] B.3 Make a pie chart of the percentage of each varriable type in each cluster.
     - [ ] B.4 Make a pie chart of the percentage of each variable type in each cluster.
 
-- [ ] C. For cases in which there are two continuous variables associated with each item: (Ei by March 19)
-    - [ ] C.1 make a scatter plot of the two variables in each cluster.
-    - [ ] C.2 Perform a regression between the two variables and plot the regression line in each cluster.
+- [X] C. For cases in which there are two continuous variables associated with each item: (Ei by March 19)
+    - [X] C.1 make a scatter plot of the two variables in each cluster.
+    - [X] C.2 Perform a regression between the two variables and plot the regression line in each cluster.
+    - [ ] I want to discuss how should the user pass the input data and variables they want to see. (Ei) 
     
 - [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and true class) (Ei by March 19)
     - [ ] D.1 Confusino matrix type grid.
