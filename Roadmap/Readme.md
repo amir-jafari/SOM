@@ -37,7 +37,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     - [ ] C.1 make a scatter plot of the two variables in each cluster.
     - [ ] C.2 Perform a regression between the two variables and plot the regression line in each cluster.
     
-- [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and tru class) (Ei by March 19)
+- [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and true class) (Ei by March 19)
     - [ ] D.1 Confusino matrix type grid.
     - [ ] D.2 Grid heatmap.
           
