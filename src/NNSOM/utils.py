@@ -115,3 +115,9 @@ def distances(pos):
     dist = nx.floyd_warshall_numpy(g)
 
     return dist
+
+def get_hexagon_shape():
+    # Determine the shape of the hexagon to represent each cluster
+    shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
+    shapey = np.array([1, 2, 1, -1, -2, -1]) * np.sqrt(0.75) / 3
+    return shapex, shapey

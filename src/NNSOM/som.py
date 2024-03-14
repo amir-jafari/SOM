@@ -6,7 +6,7 @@ from scipy.spatial.distance import cdist
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import pickle
-
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 class SOM():
     """
@@ -1018,3 +1018,113 @@ class SOM():
 
         # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
+
+    def plt_scatter(self, x, indices, clust, reg_line=True):
+        """ Generate Scatter Plot for Each Neuron.
+
+        Args:
+            x: input data
+            indices: array-like indices e.g. (0, 1) or [0, 1]
+            Clust: list of indices of input data for each cluster
+            reg_line: Flag
+
+        Returns:
+            fig:
+            ax:
+            h_axes:
+        """
+        pos = self.pos
+        numNeurons = self.numNeurons
+
+        # Data preprocessing
+        # This should be updated!!!!
+        x1 = x[indices[0], :]
+        x2 = x[indices[1], :]
+
+        # Determine the shape
+        shapex, shapey = get_hexagon_shape()
+
+        # Create the figure and set axis properties
+        fig, main_ax = plt.subplots(figsize=(8, 8),
+                                    frameon=False,
+                                    layout='constrained')
+        xmin = np.min(pos[0, :]) + np.min(shapex)
+        xmax = np.max(pos[0, :]) + np.max(shapex)
+        ymin = np.min(pos[1, :]) + np.min(shapey)
+        ymax = np.max(pos[1, :]) + np.max(shapey)
+        main_ax.set_xlim([xmin, xmax])
+        main_ax.set_ylim([ymin, ymax])
+        main_ax.set_aspect(1)
+        main_ax.axis('off')
+
+        # Loop over each neuron to draw hexagons
+        for neuron in range(numNeurons):
+            main_ax.fill(pos[0, neuron] + shapex,
+                         pos[1, neuron] + shapey,
+                         facecolor=(1, 1, 1),
+                         edgecolor=(0.8, 0.8, 0.8))
+
+        # Loop over each neuron for scatter plots
+        h_axes = [0] * numNeurons   # create a container for sub_axes
+
+        for neuron in range(numNeurons):
+            # Find the size of the cell in data
+            minx = pos[0, neuron] + np.min(shapex)
+            maxx = pos[0, neuron] + np.max(shapex)
+            miny = pos[1, neuron] + np.min(shapey)
+            maxy = pos[1, neuron] + np.max(shapey)
+
+            # Convert the size of the cell to axes units
+            minxyDis = main_ax.transData.transform((minx, miny))
+            maxxyDis = main_ax.transData.transform((maxx, maxy))
+            minxyAx = main_ax.transAxes.inverted().transform(minxyDis)
+            maxxyAx = main_ax.transAxes.inverted().transform(maxxyDis)
+
+            # Find the width and height of the cell
+            width = maxxyAx[0] - minxyAx[0]
+            height = maxxyAx[1] - minxyAx[1]
+
+            # Find the center point of the cell
+            xavg = np.average([minxyAx[0], maxxyAx[0]])
+            yavg = np.average([minxyAx[1], maxxyAx[1]])
+
+            # Scale the width and height
+            scale = np.sqrt(0.75) / 3 * 2  # Just fit-in the hexagon
+            width = width * scale
+            height = height * scale
+
+            # Locate the beginning point of the cell
+            x0 = xavg - (width / 2)
+            y0 = yavg - (height / 2)
+
+            if len(clust[neuron]) > 0:
+                h_axes[neuron] = inset_axes(main_ax, width='100%', height='100%', loc=3,
+                                            bbox_to_anchor=(x0, y0, width, height),
+                                            bbox_transform=main_ax.transAxes, borderpad=0)
+                h_axes[neuron].set(xticks=[], yticks=[])
+                h_axes[neuron].set_frame_on(False)
+            else:
+                h_axes[neuron] = None
+
+            # Make Scatter Plot for each neuron
+            if len(clust[neuron]) > 0:
+                # Pick specific rows based on the Clust
+                x1_temp = x1[clust[neuron]]
+                x2_temp = x2[clust[neuron]]
+                h_axes[neuron].scatter(x1_temp, x2_temp, s=1, c='k')
+
+                if reg_line:
+                    m, p = np.polyfit(x1_temp, x2_temp, 1)
+                    h_axes[neuron].plot(x1_temp, m * x1_temp + p, c='r', linewidth=1)
+                    title = "Scatter Plot for each neuron with regression lines"
+                else:
+                    title = "Scatter Plot for each neuron without regression lines"
+            else:
+                h_axes[neuron] = None
+
+        plt.suptitle(title, fontsize=16)
+
+        return fig, main_ax, h_axes
+
+
+
