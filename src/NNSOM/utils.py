@@ -121,3 +121,12 @@ def get_hexagon_shape():
     shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
     shapey = np.array([1, 2, 1, -1, -2, -1]) * np.sqrt(0.75) / 3
     return shapex, shapey
+
+def get_edge_shape():
+    # Determine the shape of the elongated hexagon to represent edge between each cluster
+    edgex = np.array([-1, 0, 1, 0]) * 0.5
+    edgey = np.array([0, 1, 0, - 1]) * np.sqrt(0.75) / 3
+
+    return edgex, edgey
+
+

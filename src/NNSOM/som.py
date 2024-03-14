@@ -339,6 +339,53 @@ class SOM():
 
         return fig, ax, patches, text
 
+    def plt_nc(self):
+        # Neighborhood Connection Map. The gray hexagons represent cluster centers.
+        pos = self.pos
+        numNeurons = self.numNeurons
+
+        # Determine the hexagon shape
+        shapex, shapey = get_hexagon_shape()
+        shapex, shapey = shapex * 0.3, shapey * 0.3
+
+        # Determine the elongated hexagon shape
+        edgex, edgey = get_edge_shape()
+
+        # Set up edges
+        neighbors = np.zeros((numNeurons, numNeurons))
+        neighbors[self.neuron_dist <= 1.001] = 1.0
+        neighbors = np.tril(neighbors - np.identity(numNeurons))
+
+        # Get the figure and axes
+        fig, ax = plt.subplots(figsize=(8,8), frameon=False)
+        ax.axis('equal')
+        ax.axis('off')
+        xmin = np.min(pos[0]) + np.min(shapex)
+        xmax = np.max(pos[0]) + np.max(shapex)
+        ymin = np.min(pos[1]) + np.min(shapey)
+        ymax = np.max(pos[1]) + np.max(shapey)
+        ax.set_xlim([xmin, xmax])
+        ax.set_ylim([ymin, ymax])
+
+        # Draw elongated hexagons between neurons
+        patches = []
+        for i in range(numNeurons):
+            for j in np.where(neighbors[:, i] == 1.0)[0]:
+                pdiff = pos[:, j] - pos[:, i]
+                angle = np.arctan2(pdiff[1], pdiff[0])
+                ex, ey = rotate_xy(edgex, edgey, angle)
+                edgePos = (pos[:, i] + pos[:, j]) * 0.5
+                p1 = (2 * pos[:, i] + 1 * pos[:, j]) / 3
+                p2 = (1 * pos[:, i] + 2 * pos[:, j]) / 3
+                temp = ax.fill(edgePos[0] + ex, edgePos[1] + ey, facecolor='none', edgecolor=(0.8, 0.8, 0.8))
+                patches.append(temp)
+                ax.plot([p1[0], p2[0]], [p1[1], p2[1]], '-', color=[1, 0, 0])
+
+        # Setup neurons. Place gray hexagon at neuron locations.
+        for i in range(numNeurons):
+            ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8))
+
+        return fig, ax, patches
 
     def neuron_dist_plot(self):
         # Distance map. The gray hexagons represent cluster centers.
@@ -350,14 +397,12 @@ class SOM():
         numNeurons = self.numNeurons
 
         # Determine the shape of the hexagon to represent each cluster
-        symmetry = 6
-        z = np.sqrt(0.75)/3
-        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
-        shapey = np.array([1, 2, 1, -1, -2, -1]) * z
-        edgex = np.array([-1, 0, 1, 0]) * 0.5
-        edgey = np.array([0, 1, 0, - 1]) * z
+        shapex, shapey = get_hexagon_shape()
         shapex = shapex * 0.3
         shapey = shapey * 0.3
+
+        # Determine the shape of the elongated hexagon
+        edgex, edgey = get_edge_shape()
 
         # Set up edges
         neighbors = np.zeros((numNeurons,numNeurons))
@@ -428,7 +473,6 @@ class SOM():
 
         return fig, ax, patches
 
-
     def cmplx_hit_hist(self, x, perc_gb, clust, ind_missClass, ind21, ind12):
         # This is a modified hit histogram, indicating if a cluster contains a
         # majority of good binders, and indicating how many/type errors occur in
@@ -475,7 +519,6 @@ class SOM():
 
         return fig, ax, patches, text
 
-
     def gray_hist(self, x, perc):
         # Make another hit histogram figure, and change the colors of the hexagons
         # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
@@ -497,7 +540,6 @@ class SOM():
         fig.tight_layout()
 
         return fig, ax, patches, text
-
 
     def color_hist(self, x, avg):
         # Plot an SOM figure where the size of the hexagons is related to
@@ -549,7 +591,6 @@ class SOM():
 
         return fig, patches, text, cbar
 
-
     def plt_top(self):
         # Plot the topology of the SOM
         w = self.w
@@ -577,7 +618,6 @@ class SOM():
         fig.tight_layout()
 
         return fig, ax, patches
-
 
     def plt_top_num(self):
         # Plot the topology of the SOM with numbers for neurons
@@ -614,7 +654,6 @@ class SOM():
         fig.tight_layout()
 
         return fig, ax, patches, text
-
 
     def plt_pie(self, title, perc, *argv):
         # Plots pie charts on SOM cluster locations. The size of the chart
@@ -738,7 +777,6 @@ class SOM():
         # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
 
-
     def plt_wgts(self):
         # Plots weights on SOM cluster locations.
         #
@@ -828,7 +866,6 @@ class SOM():
 
         # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
-
 
     def simple_grid(self, avg, sizes):
         # Basic hexagon grid plot
@@ -928,7 +965,6 @@ class SOM():
         fig.tight_layout()
 
         return fig, ax, patches, cbar
-
 
     def plt_dist(self, dist):
         # Plots distributions of categories on SOM cluster locations.

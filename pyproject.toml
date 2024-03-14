@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "NNSOM"
-version = "0.0.10"
+version = "0.0.11"
 authors = [
   {name="Dr.Hagan"},
   {name="Dr. Amir Jafari", email="amir.h.jafari@okstate.edu"},
