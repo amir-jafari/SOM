@@ -52,7 +52,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [X] I. SOM Topology
 
-- [ ] J. Neighbor connections. (Ei by March 19)
+- [X] J. Neighbor connections. (Ei by March 19)
 
 - [X] K. Complex Hit histogram: For hit histogram can ake interior of hexagon color coded to some additional variable and edges of hecagons couded to some other variable. Witdth of items in the cluster.
       
