@@ -31,7 +31,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     - [ ] B.1 Shade the hexagon with a greyscale or colorcode using the average of the variable accross the items iin each cluster or with the standard deviation of the variable across the items in the cluster.
     - [ ] B.2 Make a bar chart or stem plot of the numbers of each variable type in each cluster.
     - [ ] B.3 Make a pie chart of the percentage of each varriable type in each cluster.
-    - [ ] B.4 Make a pie chart of the percentage of each variable type in each cluster.
+    - [ ] B.4 Make a fan plot of the variables in each cluster.
 
 - [X] C. For cases in which there are two continuous variables associated with each item: (Ei by March 19)
     - [X] C.1 make a scatter plot of the two variables in each cluster.
