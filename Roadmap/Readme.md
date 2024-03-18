@@ -31,7 +31,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     - [ ] B.1 Shade the hexagon with a greyscale or colorcode using the average of the variable accross the items iin each cluster or with the standard deviation of the variable across the items in the cluster.
     - [ ] B.2 Make a bar chart or stem plot of the numbers of each variable type in each cluster.
     - [ ] B.3 Make a pie chart of the percentage of each varriable type in each cluster.
-    - [ ] B.4 Make a pie chart of the percentage of each variable type in each cluster.
+    - [ ] B.4 Make a fan plot of the variables in each cluster.
 
 - [X] C. For cases in which there are two continuous variables associated with each item: (Ei by March 19)
     - [X] C.1 make a scatter plot of the two variables in each cluster.
@@ -62,12 +62,13 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [ ] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 19)
     - [ ] O.1 Plot the 5 (or any number) closest items to the cluster center.
-    - [ ] O.2 Compute a suc-SOM for the items in the selected cluster
-    - [ ] O.3 Save the indices of the items in the cluster. 
+    - [ ] O.2 Compute a sub-SOM for the items in the selected cluster
 
-### 1.2 Save and Load
+### 1.2 Save and Load Functions (SOM / Input data)
 - [X] Save the trained SOM as pickle
 - [X] Load the trained SOM as pickle
+- [ ] Save the indices of the items in the cluster.
+- [ ] Load the indices of the items in the cluster.
 
 ### 1.3 CuPy (GPU usability)
 - [ ] Implement CuPy for faster computation
