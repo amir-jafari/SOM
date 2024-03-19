@@ -20,7 +20,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 ## 1. SOM Packages Functionality
 
 ### 1.1 Plot functions
-- [X] A. For cases in which there is one additional continuous variable associated with each item: (Lakshmi by March 19)
+- [X] A. For cases in which there is one additional continuous variable associated with each item: (Lakshmi by March 24)
     - [X] A.1 Shade the hexagon with a greyscale or colorcode using the average of the variable accross the items iin each cluster or with the standard deviation of the variable across the items in the cluster.
     - [X] A.2 Make a histogram of the variable in each cluster
     - [X] A.3 Make a boxplot of the variable in ach cluster
