@@ -55,7 +55,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [X] K. Complex Hit histogram: For hit histogram can ake interior of hexagon color coded to some additional variable and edges of hecagons couded to some other variable. Witdth of items in the cluster.
       
-- [ ] L. For any of plots, could have the size of the plots related to the number of items in the clusters. (Sometimes make the radius of the pie plots proportioanl to the number of items in the cluster.)
+- [X] L. For any of plots, could have the size of the plots related to the number of items in the clusters. (Sometimes make the radius of the pie plots proportioanl to the number of items in the cluster.)
 
 - [X] N. Plot a grey scale or color code with the hexagon related to the radius of the cluster (e.g., maximum distance of an item from the cluster center) 
 
