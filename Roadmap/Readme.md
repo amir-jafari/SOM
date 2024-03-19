@@ -10,7 +10,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 - week 4:
 - week 5:
 - week 6 (~ Mar 12): Implementing Plot Functions in SOM class and  testing with Iris data
-- week 7 (~ Mar 19): Implementing Plot Functions in SOM class and testing with Iris data / Midterm presentation
+- week 7 (~ Mar 19): Implementing Plot Functions in SOM class and testing with Iris data by March 24 on Sunday
 - week 8 (~ Mar 26):
 - week 9 (~ Apr 2): 
 - week 10 (~ Apr 9): 
@@ -33,11 +33,11 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     - [X] B.3 Make a pie chart of the percentage of each varriable type in each cluster.
     - [ ] B.4 Make a fan plot of the variables in each cluster.
 
-- [X] C. For cases in which there are two continuous variables associated with each item: (Ei by March 19)
+- [X] C. For cases in which there are two continuous variables associated with each item: (Ei by March 24)
     - [X] C.1 make a scatter plot of the two variables in each cluster.
     - [X] C.2 Perform a regression between the two variables and plot the regression line in each cluster.
     
-- [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and true class) (Ei by March 19)
+- [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and true class) (Ei by March 24)
     - [ ] D.1 Confusino matrix type grid.
     - [ ] D.2 Grid heatmap.
           
@@ -45,13 +45,13 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [X] F. Neighbor distance plot (U-matrix)
 
-- [ ] G. Weight planes (Lakshmi by March 19)
+- [ ] G. Weight planes (Lakshmi by March 24)
 
-- [ ] H. Weight positions (Lakshmi by March 19)
+- [ ] H. Weight positions (Lakshmi by March 24)
 
 - [X] I. SOM Topology
 
-- [X] J. Neighbor connections. (Ei by March 19)
+- [X] J. Neighbor connections. (Ei by March 24)
 
 - [X] K. Complex Hit histogram: For hit histogram can ake interior of hexagon color coded to some additional variable and edges of hecagons couded to some other variable. Witdth of items in the cluster.
       
@@ -59,7 +59,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [X] N. Plot a grey scale or color code with the hexagon related to the radius of the cluster (e.g., maximum distance of an item from the cluster center) 
 
-- [ ] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 19)
+- [ ] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 24)
     - [ ] O.1 Plot the 5 (or any number) closest items to the cluster center.
     - [ ] O.2 Compute a sub-SOM for the items in the selected cluster
 
