@@ -1,20 +1,133 @@
+from .som import SOM
+from .utils import *
+
 import numpy as np
 import matplotlib.pyplot as plt
-import utils
 import matplotlib.cm as cm
-from . import SOM
-import mpl_toolkits
-class Plots(SOM):
-    def __init__(self, w, pos, numNeurons):
-        self.pos = pos
-        self.numNeurons = numNeurons
-        self.w = w
+
+class SOMPlots(SOM):
+    """
+    SOMPlots extends the SOM class by adding visualization capabilities to
+    the Self-Organizing Map (SOM). It allows for the graphical representation
+    of the SOM's structure, the distribution of input data across its neurons,
+    and various other analytical visualizations that aid in the interpretation
+    of the SOM's behavior and characteristics.
+
+    Attributes:
+        dimensions (tuple): The dimensions of the SOM grid.
+
+    Methods:
+        plt_top():
+            Plots the topology of the SOM using hexagonal units.
+        plt_top_num():
+            Plots the topology of the SOM with numbered neurons.
+        hit_hist(x, textFlag):
+            Plots a hit histogram showing how many data points are mapped to each neuron.
+        gray_hist(x, perc):
+            Plots a histogram with neurons colored in shades of gray based on a given percentage value.
+        color_hist(x, avg):
+            Plots a color-coded histogram based on the average values provided for each neuron.
+        cmplx_hit_hist(x, perc_gb, clust, ind_missClass, ind21, ind12):
+            Plots a complex hit histogram showing the distribution of data and misclassifications.
+        plt_nc():
+            Plots the neighborhood connections between the SOM neurons.
+        neuron_dist_plot():
+            Plots the distances between neurons to visualize the SOM's topology.
+        simple_grid(avg, sizes):
+            Plots a simple hexagonal grid with varying colors and sizes based on provided data.
+        setup_axes():
+            Sets up the axes for plotting individual neuron statistics.
+        plt_dist(dist):
+            Plots distributions of values across the SOM neurons.
+        plt_wgts():
+            Plots the weights of the SOM neurons as line graphs.
+        plt_pie(title, perc, *argv):
+            Plots pie charts for each neuron to show data distribution in categories.
+        plt_histogram(som, data):
+            Plots histograms for each neuron to show the distribution of data.
+        plt_boxplot(data):
+            Plots boxplots for each neuron to show the distribution of data.
+        plt_dispersion_fan_plot(data):
+            Plots dispersion or fan plots for each neuron.
+        plt_violin_plot(som, data):
+            Plots violin plots for each neuron to show the distribution of data.
+        plt_scatter(x, indices, clust, reg_line=True):
+            Plots scatter graphs for each neuron to show the distribution of two variables.
+        multiplot(plot_type, *args):
+            Facilitates plotting of multiple types of graphs based on the plot_type argument.
+    """
+    def __init__(self, dimensions):
+        super().__init__(dimensions)
+
+    def plt_top(self):
+        # Plot the topology of the SOM
+        w = self.w
+        pos = self.pos
+        numNeurons = self.numNeurons
+        z = np.sqrt(0.75)
+        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
+        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
+
+        fig, ax = plt.subplots(frameon=False)
+        plt.axis('equal')
+        xmin = np.min(pos[0]) + np.min(shapex)
+        xmax = np.max(pos[0]) + np.max(shapex)
+        ymin = np.min(pos[1]) + np.min(shapey)
+        ymax = np.max(pos[1]) + np.max(shapey)
+        ax.set_xlim([xmin, xmax])
+        ax.set_ylim([ymin, ymax])
+
+        patches = []
+        for i in range(numNeurons):
+            temp = plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
+            patches.append(temp)
+
+        # Get rid of extra white space on sides
+        fig.tight_layout()
+
+        return fig, ax, patches
+
+    def plt_top_num(self):
+        # Plot the topology of the SOM with numbers for neurons
+        w = self.w
+        pos = self.pos
+        numNeurons = self.numNeurons
+        z = np.sqrt(0.75)
+        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
+        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
+
+        fig, ax = plt.subplots(frameon=False)
+        ax.axis('off')
+        plt.axis('equal')
+        xmin = np.min(pos[0]) + np.min(shapex)
+        xmax = np.max(pos[0]) + np.max(shapex)
+        ymin = np.min(pos[1]) + np.min(shapey)
+        ymax = np.max(pos[1]) + np.max(shapey)
+        ax.set_xlim([xmin, xmax])
+        ax.set_ylim([ymin, ymax])
+
+        patches = []
+        for i in range(numNeurons):
+            temp = plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
+            patches.append(temp)
+
+        text = []
+        for i in range(numNeurons):
+            temp = plt.text(pos[0, i], pos[1, i], str(i), horizontalalignment='center', verticalalignment='center', color='b')
+            temp._fontproperties._weight = 'bold'
+            temp._fontproperties._size = 12.0
+            text.append(temp)
+
+        # Get rid of extra white space on sides
+        fig.tight_layout()
+
+        return fig, ax, patches, text
+
     def hit_hist(self, x, textFlag):
         # Basic hit histogram
         # x contains the input data
         # If textFlag is true, the number of members of each cluster
         # is printed on the cluster.
-        w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
 
@@ -84,6 +197,78 @@ class Plots(SOM):
 
         return fig, ax, patches, text
 
+    def gray_hist(self, x, perc):
+        # Make another hit histogram figure, and change the colors of the hexagons
+        # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
+        # means more PDB ligands, darker color means more well-docked bad binders.
+
+        numNeurons = self.numNeurons
+
+        fig, ax, patches, text = self.hit_hist(x, False)
+
+        # Scale the gray scale to the perc value
+        for neuron in range(numNeurons):
+            scale = perc[neuron] / 100.0
+            color = [scale for i in range(3)]
+            color.append(1.0)
+            color = tuple(color)
+            patches[neuron][0]._facecolor = color
+
+        # Get rid of extra white space on sides
+        fig.tight_layout()
+
+        return fig, ax, patches, text
+
+    def color_hist(self, x, avg):
+        # Plot an SOM figure where the size of the hexagons is related to
+        # the number of elements in the clusters, and the color of the
+        # inner hexagon is coded to the variable avg, which could be the
+        # average number of a certain type of bond in the cluster
+
+        # Find the maximum value of avg across all clusters
+        dmax = np.amax(np.abs(avg))
+        numNeurons = self.numNeurons
+
+        fig, ax, patches, text = self.hit_hist(x, False)
+
+        # Use the jet color map
+        cmap = plt.get_cmap('jet')
+        xx = np.zeros(numNeurons)
+
+        # Adjust the color of the hexagon according to the avg value
+        for neuron in range(numNeurons):
+            xx[neuron] = avg[neuron] / dmax
+            color = cmap(xx[neuron])
+            patches[neuron][0]._facecolor = color
+
+        fig.tight_layout()
+
+        # # Add a color bar the the figure to indicate levels
+        # # create an axes on the right side of ax. The width of cax will be 5%
+        # # of ax and the padding between cax and ax will be fixed at 0.05 inch.
+        # divider = make_axes_locatable(ax)
+        # cax = divider.append_axes("right", size="5%", pad=0.05)
+        #
+        # cbar = plt.colorbar(ax, cax=cax, cmap=cmap)
+
+        cax = cm.ScalarMappable(cmap=cmap)
+        cax.set_array(xx)
+        cbar = fig.colorbar(cax)
+
+        # Adjust the tick labels to the correct scale
+        ticklab = cbar.ax.get_yticks()
+        numticks = len(ticklab)
+        ticktext = []
+        for i in range(numticks):
+            ticktext.append('%.2f' % (dmax * ticklab[i]))
+
+        cbar.ax.set_yticklabels(ticktext)
+
+        # Get rid of extra white space on sides
+        fig.tight_layout()
+
+        return fig, patches, text, cbar
+
     def cmplx_hit_hist(self, x, perc_gb, clust, ind_missClass, ind21, ind12):
         # This is a modified hit histogram, indicating if a cluster contains a
         # majority of good binders, and indicating how many/type errors occur in
@@ -136,11 +321,11 @@ class Plots(SOM):
         numNeurons = self.numNeurons
 
         # Determine the hexagon shape
-        shapex, shapey = utils.get_hexagon_shape()
+        shapex, shapey = get_hexagon_shape()
         shapex, shapey = shapex * 0.3, shapey * 0.3
 
         # Determine the elongated hexagon shape
-        edgex, edgey = utils.get_edge_shape()
+        edgex, edgey = get_edge_shape()
 
         # Set up edges
         neighbors = np.zeros((numNeurons, numNeurons))
@@ -148,7 +333,7 @@ class Plots(SOM):
         neighbors = np.tril(neighbors - np.identity(numNeurons))
 
         # Get the figure and axes
-        fig, ax = plt.subplots(figsize=(8,8), frameon=False)
+        fig, ax = plt.subplots(figsize=(8, 8), frameon=False)
         ax.axis('equal')
         ax.axis('off')
         xmin = np.min(pos[0]) + np.min(shapex)
@@ -164,7 +349,7 @@ class Plots(SOM):
             for j in np.where(neighbors[:, i] == 1.0)[0]:
                 pdiff = pos[:, j] - pos[:, i]
                 angle = np.arctan2(pdiff[1], pdiff[0])
-                ex, ey = utils.rotate_xy(edgex, edgey, angle)
+                ex, ey = rotate_xy(edgex, edgey, angle)
                 edgePos = (pos[:, i] + pos[:, j]) * 0.5
                 p1 = (2 * pos[:, i] + 1 * pos[:, j]) / 3
                 p2 = (1 * pos[:, i] + 2 * pos[:, j]) / 3
@@ -198,13 +383,12 @@ class Plots(SOM):
         shapey = shapey * 0.3
 
         # Set up edges
-        neighbors = np.zeros((numNeurons,numNeurons))
-        neighbors[self.neuron_dist<=1.001] = 1.0
+        neighbors = np.zeros((numNeurons, numNeurons))
+        neighbors[self.neuron_dist <= 1.001] = 1.0
         neighbors = np.tril(neighbors - np.identity(numNeurons))
 
         # Get the figure, remove the frame, and find the limits
-        # of the axis that will fit all of the hexagons
-        #       # fig, ax = plt.subplots(frameon=False, figsize=(8, 8))
+        # of the axis that will fit hexagons
         fig, ax = plt.subplots(figsize=(8, 8))
         plt.axis('equal')
         plt.axis('off')
@@ -219,14 +403,14 @@ class Plots(SOM):
         numEdges = int(np.sum(neighbors))
         patches = []
         for i in range(numNeurons):
-            for j in np.where(neighbors[:,i]==1.0)[0]:
+            for j in np.where(neighbors[:, i] == 1.0)[0]:
                 pdiff = pos[:, j]-pos[:, i]
                 angle = np.arctan2(pdiff[1], pdiff[0])
-                ex, ey = utils.rotate_xy(edgex, edgey, angle)
-                edgePos = (pos[:, i] + pos[:, j])*0.5
-                p1 = (2 * pos[:, i] + 1 * pos[:, j])/ 3
-                p2 = (1 * pos[:, i] + 2 * pos[:, j])/ 3
-                temp  = plt.fill(edgePos[0]+ex, edgePos[1]+ey, facecolor=np.random.rand(1,3), edgecolor='none')
+                ex, ey = rotate_xy(edgex, edgey, angle)
+                edgePos = (pos[:, i] + pos[:, j]) * 0.5
+                p1 = (2 * pos[:, i] + 1 * pos[:, j]) / 3
+                p2 = (1 * pos[:, i] + 2 * pos[:, j]) / 3
+                temp = plt.fill(edgePos[0]+ex, edgePos[1]+ey, facecolor=np.random.rand(1,3), edgecolor='none')
                 patches.append(temp)
                 plt.plot([p1[0], p2[0]], [p1[1], p2[1]], '-', color=[1, 0, 0])
         # Setup neurons. Place gray hexagon at neuron locations.
@@ -238,172 +422,33 @@ class Plots(SOM):
         levels = np.zeros(numEdges)
         k = 0
         for i in range(numNeurons):
-            for j in np.where(neighbors[:,i]==1.0)[0]:
-                levels[k] = np.sqrt(np.sum((weights[i,:] - weights[j,:]) ** 2))
+            for j in np.where(neighbors[:, i] == 1.0)[0]:
+                levels[k] = np.sqrt(np.sum((weights[i, :] - weights[j, :]) ** 2))
                 k = k + 1
         mn = np.amin(levels)
         mx = np.amax(levels)
-        if mx==mn:
-            levels = np.zeros(1,numEdges) + 0.5
+        if mx == mn:
+            levels = np.zeros(1, numEdges) + 0.5
         else:
-            levels  = (levels - mn)/(mx - mn)
+            levels = (levels - mn)/(mx - mn)
 
         # Make the face color black for the maximum distance and
         # yellow for the minimum distance. The middle distance  will
         # be red.
         k = 0
         for i in range(numNeurons):
-            for j in np.where(neighbors[:,i]==1.0)[0]:
-                level =  1 - levels[k]
+            for j in np.where(neighbors[:, i] == 1.0)[0]:
+                level = 1 - levels[k]
                 red = np.amin([level * 2, 1])
                 green = np.amax([level * 2 - 1, 0])
                 c = (red, green, 0, 1.0)
-                patches[k][0]._facecolor =  c
+                patches[k][0]._facecolor = c
                 k = k + 1
 
         # Get rid of extra white space on sides
         fig.tight_layout()
 
         return fig, ax, patches
-
-
-    def gray_hist(self, x, perc):
-        # Make another hit histogram figure, and change the colors of the hexagons
-        # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
-        # means more PDB ligands, darker color means more well-docked bad binders.
-
-        numNeurons = self.numNeurons
-
-        fig, ax, patches, text = self.hit_hist(x, False)
-
-        # Scale the gray scale to the perc value
-        for neuron in range(numNeurons):
-            scale = perc[neuron] / 100.0
-            color = [scale for i in range(3)]
-            color.append(1.0)
-            color = tuple(color)
-            patches[neuron][0]._facecolor = color
-
-        # Get rid of extra white space on sides
-        fig.tight_layout()
-
-        return fig, ax, patches, text
-
-
-    def color_hist(self, x, avg):
-        # Plot an SOM figure where the size of the hexagons is related to
-        # the number of elements in the clusters, and the color of the
-        # inner hexagon is coded to the variable avg, which could be the
-        # average number of a certain type of bond in the cluster
-
-        # Find the maximum value of avg across all clusters
-        dmax = np.amax(np.abs(avg))
-        numNeurons = self.numNeurons
-
-        fig, ax, patches, text = self.hit_hist(x, False)
-
-        # Use the jet color map
-        cmap = plt.get_cmap('jet')
-        xx = np.zeros(numNeurons)
-
-        # Adjust the color of the hexagon according to the avg value
-        for neuron in range(numNeurons):
-            xx[neuron] = avg[neuron] / dmax
-            color = cmap(xx[neuron])
-            patches[neuron][0]._facecolor = color
-
-        fig.tight_layout()
-
-        # # Add a color bar the the figure to indicate levels
-        # # create an axes on the right side of ax. The width of cax will be 5%
-        # # of ax and the padding between cax and ax will be fixed at 0.05 inch.
-        # divider = make_axes_locatable(ax)
-        # cax = divider.append_axes("right", size="5%", pad=0.05)
-        #
-        # cbar = plt.colorbar(ax, cax=cax, cmap=cmap)
-
-        cax = cm.ScalarMappable(cmap=cmap)
-        cax.set_array(xx)
-        cbar = fig.colorbar(cax)
-
-        # Adjust the tick labels to the correct scale
-        ticklab = cbar.ax.get_yticks()
-        numticks = len(ticklab)
-        ticktext = []
-        for i in range(numticks):
-            ticktext.append('%.2f' % (dmax * ticklab[i]))
-
-        cbar.ax.set_yticklabels(ticktext)
-
-        # Get rid of extra white space on sides
-        fig.tight_layout()
-
-        return fig, patches, text, cbar
-
-    def plt_top(self):
-        # Plot the topology of the SOM
-        w = self.w
-        pos = self.pos
-        numNeurons = self.numNeurons
-        z = np.sqrt(0.75)
-        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
-        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
-
-        fig, ax = plt.subplots(frameon=False)
-        plt.axis('equal')
-        xmin = np.min(pos[0]) + np.min(shapex)
-        xmax = np.max(pos[0]) + np.max(shapex)
-        ymin = np.min(pos[1]) + np.min(shapey)
-        ymax = np.max(pos[1]) + np.max(shapey)
-        ax.set_xlim([xmin, xmax])
-        ax.set_ylim([ymin, ymax])
-
-        patches = []
-        for i in range(numNeurons):
-            temp = plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
-            patches.append(temp)
-
-        # Get rid of extra white space on sides
-        fig.tight_layout()
-
-        return fig, ax, patches
-
-
-    def plt_top_num(self):
-        # Plot the topology of the SOM with numbers for neurons
-        w = self.w
-        pos = self.pos
-        numNeurons = self.numNeurons
-        z = np.sqrt(0.75)
-        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
-        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
-
-        fig, ax = plt.subplots(frameon=False)
-        ax.axis('off')
-        plt.axis('equal')
-        xmin = np.min(pos[0]) + np.min(shapex)
-        xmax = np.max(pos[0]) + np.max(shapex)
-        ymin = np.min(pos[1]) + np.min(shapey)
-        ymax = np.max(pos[1]) + np.max(shapey)
-        ax.set_xlim([xmin, xmax])
-        ax.set_ylim([ymin, ymax])
-
-        patches = []
-        for i in range(numNeurons):
-            temp = plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
-            patches.append(temp)
-
-        text = []
-        for i in range(numNeurons):
-            temp = plt.text(pos[0, i], pos[1, i], str(i), horizontalalignment='center', verticalalignment='center', color='b')
-            temp._fontproperties._weight = 'bold'
-            temp._fontproperties._size = 12.0
-            text.append(temp)
-
-        # Get rid of extra white space on sides
-        fig.tight_layout()
-
-        return fig, ax, patches, text
 
     def simple_grid(self, avg, sizes):
         # Basic hexagon grid plot
@@ -505,39 +550,40 @@ class Plots(SOM):
         return fig, ax, patches, cbar
 
     def setup_axes(self):
-        # Plots distributions of categories on SOM cluster locations.
-        #
-
+        # Setup figure, axes and sub-axes for plots
         pos = self.pos
-
-        # Find the locations and size for each neuron in the SOM
-        w = self.w
         numNeurons = self.numNeurons
-        z = np.sqrt(0.75)
-        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
+
+        # Determine the hexagon shape
+        shapex, shapey = get_hexagon_shape()
         shminx = np.min(shapex)
         shmaxx = np.max(shapex)
-        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
         shminy = np.min(shapey)
         shmaxy = np.max(shapey)
 
         # Create the figure and get the transformations from data
         # to pixel and from pixel to axes.
-        fig, ax = plt.subplots(frameon=False, figsize=(8, 8))
-        ax.axis('off')
-        plt.axis('equal')
-        transDat = ax.transData
-        transAxi = ax.transAxes.inverted()
+        fig, ax = plt.subplots(frameon=False,
+                               figsize=(8, 8),
+                               layout='constrained')
 
-        # Find how big the axes needs to be to fit the hexagons
+        # Set the main axes properties
         xmin = np.min(pos[0]) + np.min(shapex)
         xmax = np.max(pos[0]) + np.max(shapex)
         ymin = np.min(pos[1]) + np.min(shapey)
         ymax = np.max(pos[1]) + np.max(shapey)
         ax.set_xlim([xmin, xmax])
         ax.set_ylim([ymin, ymax + 0.5])
+        ax.axis('off')
+        ax.set_aspect('equal')
 
-        h_axes = [0] * numNeurons
+        # Draw hexagon
+        for neuron in range(numNeurons):
+            ax.fill(pos[0, neuron] + shapex, pos[1, neuron] + shapey,
+                    facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
+
+        # Loop over to create sub-axe in each cluster
+        h_axes = [0] * numNeurons   # A container for sub-axes
 
         for neuron in range(numNeurons):
             # Find the size of the cell in data units
@@ -547,10 +593,10 @@ class Plots(SOM):
             maxy = pos[1, neuron] + shmaxy
 
             # Convert the size of the cell to axes units
-            minxyDis = transDat.transform([minx, miny])
-            maxxyDis = transDat.transform([maxx, maxy])
-            minxyAx = transAxi.transform(minxyDis)
-            maxxyAx = transAxi.transform(maxxyDis)
+            minxyDis = ax.transDatatransform([minx, miny])
+            maxxyDis = ax.transData.transform([maxx, maxy])
+            minxyAx = ax.transAxes.inverted().transform(minxyDis)
+            maxxyAx = ax.transAxes.inverted().transform(maxxyDis)
 
             # Find the width and height of the cell
             width = maxxyAx[0] - minxyAx[0]
@@ -561,65 +607,65 @@ class Plots(SOM):
             yavg = np.average([minxyAx[1], maxxyAx[1]])
 
             # Scale the width and height
-            # scale = 0.75
-            scale = 0.65
-            width = scale * width
-            height = scale * height
+            scale = np.sqrt(0.75) / 3 * 2  # Just fit-in the hexagon
+            width = width * scale
+            height = height * scale
 
             # Locate the beginning point of the cell
-            x1 = xavg - (width / 2)
-            y1 = yavg - (height / 2)
+            x0 = xavg - (width / 2)
+            y0 = yavg - (height / 2)
 
-            # Place the axis in the cell for the pie chart
-            place = [x1, y1, width, height]
-            h_axes[neuron] = plt.axes(place)
+            # Create sub-axes
+            h_axes[neuron] = inset_axes(ax, width='100%', height='100%', loc=3,
+                                        bbox_to_anchor=(x0, y0, width, height),
+                                        bbox_transform=ax.transAxes, borderpad=0)
+            h_axes[neuron].set(xticks=[], yticks=[])
+            h_axes[neuron].set_frame_on(False)
+
         return fig, ax, h_axes
 
     def plt_dist(self, dist):
+        # Plot distribution
+        # Purpose:
+
         numNeurons = self.numNeurons
+
+        # Setup figure, axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
+
+        # Draw stem plot
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].stem(dist[neuron])
-            title = 'dist plot'
-            plt.axis('off')
 
-            # Leave some buffer space between cells
-            h_axes[neuron].margins(0.05)
-
-            # # Make scales on both axes equal
-            # plt.axis('equal')
-
-            # Get rid of extra white space on sides
-            # fig.tight_layout()
+        title = 'dist plot'
         plt.suptitle(title, fontsize=16)
+
         return fig, ax, h_axes
 
     def plt_wgts(self):
+        # Plot neuron weight as line
+        # Purpose:
+
         numNeurons = self.numNeurons
         w =self.w
+
+        # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
+
+        # Draw line plots
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].plot(w[neuron])
-            title = 'Cluster Centers as Lines'
-            plt.axis('off')
 
-            # Leave some buffer space between cells
-            h_axes[neuron].margins(0.05)
-
-            # # Make scales on both axes equal
-            # plt.axis('equal')
-
-            # Get rid of extra white space on sides
-
-        fig.tight_layout()
+        title = 'Cluster Centers as Lines'
         plt.suptitle(title, fontsize=16)
 
-            # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
 
-    def plt_pie(self,title, perc, *argv):
+    def plt_pie(self, title, perc, *argv):
+        # Generate pie plot in the hexagon.
+        # Purpose:
 
         pos = self.pos
 
@@ -643,7 +689,11 @@ class Plots(SOM):
         else:
             # Only two colors for well docked bad binders (tn, fp)
             clrs = ['blue', 'red']
+
+        # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
+
+        # Draw pie plot in each neuron
         for neuron in range(numNeurons):
             # Scale the size of the pie chart according to the percent of PDB
             # data (or WD data) in that cell
@@ -665,108 +715,80 @@ class Plots(SOM):
                 nums = [0.0, 1.0, 0.0, 0.0]
             h_axes[neuron].pie(nums, colors=clrs)
 
-            # Leave some buffer space between cells
-            h_axes[neuron].margins(0.05)
-
-            # Make scales on both axes equal
-            plt.axis('equal')
-
-                # Get rid of extra white space on sides
-                # fig.tight_layout()
         plt.suptitle(title, fontsize=16)
 
-            # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
 
     def plt_histogram(self, som,data):
+        # Create histogram.
+        # Purpose:
+
         numNeurons = self.numNeurons
+
+        # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
+
+        # Draw histogram
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].hist(data[neuron])
-            title = 'Cluster Centers as Lines'
-            plt.axis('off')
 
-            # Leave some buffer space between cells
-            h_axes[neuron].margins(0.05)
-
-            # # Make scales on both axes equal
-            # plt.axis('equal')
-
-            # Get rid of extra white space on sides
-
-        fig.tight_layout()
+        title = 'Cluster Centers as Lines'
         plt.suptitle(title, fontsize=16)
 
-            # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
+
     def plt_boxplot(self, data):
+        # Create the box plot
+        # Purpose:
+
         numNeurons = self.numNeurons
+
+        # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
-        title = 'Cluster Centers as BoxPlot'
+
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].boxplot(data[neuron])
-            plt.axis('off')
 
-            # Leave some buffer space between cells
-            h_axes[neuron].margins(0.05)
-
-            # # Make scales on both axes equal
-            # plt.axis('equal')
-
-            # Get rid of extra white space on sides
-
-        fig.tight_layout()
+        title = 'Cluster Centers as BoxPlot'
         plt.suptitle(title, fontsize=16)
 
-            # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
+
     def plt_dispersion_fan_plot(self, data):
+        # Create the dispersion fan plot
+        # Purpose:
         numNeurons = self.numNeurons
+
+        # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
+
+        # Draw histogram in each neuron
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].hist(data[neuron])
-            title = 'Cluster Centers as Lines'
-            plt.axis('off')
 
-            # Leave some buffer space between cells
-            h_axes[neuron].margins(0.05)
-
-            # # Make scales on both axes equal
-            # plt.axis('equal')
-
-            # Get rid of extra white space on sides
-
-        fig.tight_layout()
+        title = 'Dispersion fan plot'
         plt.suptitle(title, fontsize=16)
 
-            # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
 
-
     def plt_violin_plot(self, som, data):
+        # Create violin plot.
+        # Purpose: ...
         numNeurons = self.numNeurons
+
+        # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
+
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].violin(data[neuron])
-            title = 'Cluster Centers as Lines'
-            plt.axis('off')
 
-            # Leave some buffer space between cells
-            h_axes[neuron].margins(0.05)
-
-            # # Make scales on both axes equal
-            # plt.axis('equal')
-
-            # Get rid of extra white space on sides
-
-        fig.tight_layout()
+        title = 'violin plot'
         plt.suptitle(title, fontsize=16)
 
-            # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
 
     def multiplot(self, plot_type, *args):
@@ -785,20 +807,17 @@ class Plots(SOM):
         if plot_type not in plot_functions:
             raise ValueError("Invalid plot type.")
 
-
     def plt_scatter(self, x, indices, clust, reg_line=True):
         """ Generate Scatter Plot for Each Neuron.
 
         Args:
             x: input data
             indices: array-like indices e.g. (0, 1) or [0, 1]
-            Clust: list of indices of input data for each cluster
+            clust: list of indices of input data for each cluster
             reg_line: Flag
 
         Returns:
-            fig:
-            ax:
-            h_axes:
+            fig, ax, h_axes
         """
         pos = self.pos
         numNeurons = self.numNeurons
@@ -808,71 +827,11 @@ class Plots(SOM):
         x1 = x[indices[0], :]
         x2 = x[indices[1], :]
 
-        # Determine the shape
-        shapex, shapey = utils.get_hexagon_shape()
+        # Setup figure, main axes, and sub-axes
+        fig, ax, h_axes = self.setup_axes()
 
-        # Create the figure and set axis properties
-        fig, main_ax = plt.subplots(figsize=(8, 8),
-                                    frameon=False,
-                                    layout='constrained')
-        xmin = np.min(pos[0, :]) + np.min(shapex)
-        xmax = np.max(pos[0, :]) + np.max(shapex)
-        ymin = np.min(pos[1, :]) + np.min(shapey)
-        ymax = np.max(pos[1, :]) + np.max(shapey)
-        main_ax.set_xlim([xmin, xmax])
-        main_ax.set_ylim([ymin, ymax])
-        main_ax.set_aspect(1)
-        main_ax.axis('off')
-
-        # Loop over each neuron to draw hexagons
+        # Loop over each neuron for hexagons and scatter plots
         for neuron in range(numNeurons):
-            main_ax.fill(pos[0, neuron] + shapex,
-                         pos[1, neuron] + shapey,
-                         facecolor=(1, 1, 1),
-                         edgecolor=(0.8, 0.8, 0.8))
-
-        # Loop over each neuron for scatter plots
-        h_axes = [0] * numNeurons   # create a container for sub_axes
-
-        for neuron in range(numNeurons):
-            # Find the size of the cell in data
-            minx = pos[0, neuron] + np.min(shapex)
-            maxx = pos[0, neuron] + np.max(shapex)
-            miny = pos[1, neuron] + np.min(shapey)
-            maxy = pos[1, neuron] + np.max(shapey)
-
-            # Convert the size of the cell to axes units
-            minxyDis = main_ax.transData.transform((minx, miny))
-            maxxyDis = main_ax.transData.transform((maxx, maxy))
-            minxyAx = main_ax.transAxes.inverted().transform(minxyDis)
-            maxxyAx = main_ax.transAxes.inverted().transform(maxxyDis)
-
-            # Find the width and height of the cell
-            width = maxxyAx[0] - minxyAx[0]
-            height = maxxyAx[1] - minxyAx[1]
-
-            # Find the center point of the cell
-            xavg = np.average([minxyAx[0], maxxyAx[0]])
-            yavg = np.average([minxyAx[1], maxxyAx[1]])
-
-            # Scale the width and height
-            scale = np.sqrt(0.75) / 3 * 2  # Just fit-in the hexagon
-            width = width * scale
-            height = height * scale
-
-            # Locate the beginning point of the cell
-            x0 = xavg - (width / 2)
-            y0 = yavg - (height / 2)
-
-            if len(clust[neuron]) > 0:
-                h_axes[neuron] = inset_axes(main_ax, width='100%', height='100%', loc=3,
-                                            bbox_to_anchor=(x0, y0, width, height),
-                                            bbox_transform=main_ax.transAxes, borderpad=0)
-                h_axes[neuron].set(xticks=[], yticks=[])
-                h_axes[neuron].set_frame_on(False)
-            else:
-                h_axes[neuron] = None
-
             # Make Scatter Plot for each neuron
             if len(clust[neuron]) > 0:
                 # Pick specific rows based on the Clust
@@ -891,19 +850,5 @@ class Plots(SOM):
 
         plt.suptitle(title, fontsize=16)
 
-        return fig, main_ax, h_axes
+        return fig, ax, h_axes
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    pass
