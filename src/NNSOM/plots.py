@@ -2,16 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import utils
 import matplotlib.cm as cm
-
-class Plots():
-    def hit_hist(self,som, x, textFlag):
+from . import SOM
+import mpl_toolkits
+class Plots(SOM):
+    def hit_hist(self, x, textFlag):
         # Basic hit histogram
         # x contains the input data
         # If textFlag is true, the number of members of each cluster
         # is printed on the cluster.
-        w = som.w
-        pos = som.pos
-        numNeurons = som.numNeurons
+        w = self.w
+        pos = self.pos
+        numNeurons = self.numNeurons
 
         # Determine the shape of the hexagon to represent each cluster
         z = np.sqrt(0.75)
@@ -50,12 +51,12 @@ class Plots():
                 text.append(temp)
 
         # Compute the SOM outputs for the data set
-        if hasattr(som, 'sim_flag') and som.sim_flag:
-            outputs = som.sim_som(x)
+        if self.sim_flag:
+            outputs = self.sim_som(x)
             outputs = outputs
-            som.sim_flag = False
+            self.sim_flag = False
         else:
-            outputs = som.outputs
+            outputs = self.outputs
 
         # Find out how many inputs fall into each cluster
         hits = np.sum(outputs, axis=1)
@@ -79,7 +80,7 @@ class Plots():
 
         return fig, ax, patches, text
 
-    def cmplx_hit_hist(self,som, x, perc_gb, clust, ind_missClass, ind21, ind12):
+    def cmplx_hit_hist(self, x, perc_gb, clust, ind_missClass, ind21, ind12):
         # This is a modified hit histogram, indicating if a cluster contains a
         # majority of good binders, and indicating how many/type errors occur in
         # each cluster
@@ -94,7 +95,7 @@ class Plots():
         # Make hit histogram
         fig, ax, patches, text = self.hit_hist(x, True)
 
-        numNeurons = som.numNeurons
+        numNeurons = self.numNeurons
 
         for neuron in range(numNeurons):
 
@@ -125,10 +126,10 @@ class Plots():
 
         return fig, ax, patches, text
 
-    def plt_nc(self,som):
+    def plt_nc(self):
         # Neighborhood Connection Map. The gray hexagons represent cluster centers.
-        pos = som.pos
-        numNeurons = som.numNeurons
+        pos = self.pos
+        numNeurons = self.numNeurons
 
         # Determine the hexagon shape
         shapex, shapey = utils.get_hexagon_shape()
@@ -173,14 +174,14 @@ class Plots():
 
         return fig, ax, patches
 
-    def neuron_dist_plot(self,som):
+    def neuron_dist_plot(self):
         # Distance map. The gray hexagons represent cluster centers.
         # The colors of the elongated hexagons between the cluster
         # centers represent the distance between the centers. The
         # darker the color the larger the distance.
 
-        pos = som.pos
-        numNeurons = som.numNeurons
+        pos = self.pos
+        numNeurons = self.numNeurons
 
         # Determine the shape of the hexagon to represent each cluster
         symmetry = 6
@@ -229,7 +230,7 @@ class Plots():
             plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8))
 
         # Find the distance between neighboring weights.
-        weights = som.w
+        weights = self.w
         levels = np.zeros(numEdges)
         k = 0
         for i in range(numNeurons):
@@ -262,12 +263,12 @@ class Plots():
         return fig, ax, patches
 
 
-    def gray_hist(self,som, x, perc):
+    def gray_hist(self, x, perc):
         # Make another hit histogram figure, and change the colors of the hexagons
         # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
         # means more PDB ligands, darker color means more well-docked bad binders.
 
-        numNeurons = som.numNeurons
+        numNeurons = self.numNeurons
 
         fig, ax, patches, text = self.hit_hist(x, False)
 
@@ -285,7 +286,7 @@ class Plots():
         return fig, ax, patches, text
 
 
-    def color_hist(self, som, x, avg):
+    def color_hist(self, x, avg):
         # Plot an SOM figure where the size of the hexagons is related to
         # the number of elements in the clusters, and the color of the
         # inner hexagon is coded to the variable avg, which could be the
@@ -293,7 +294,7 @@ class Plots():
 
         # Find the maximum value of avg across all clusters
         dmax = np.amax(np.abs(avg))
-        numNeurons = som.numNeurons
+        numNeurons = self.numNeurons
 
         fig, ax, patches, text = self.hit_hist(x, False)
 
@@ -400,13 +401,13 @@ class Plots():
 
         return fig, ax, patches, text
 
-    def simple_grid(self, som, avg, sizes):
+    def simple_grid(self, avg, sizes):
         # Basic hexagon grid plot
         # Colors are selected from avg array.
         # Sizes of inner hexagons are selected from sizes array.
-        w = som.w
-        pos = som.pos
-        numNeurons = som.numNeurons
+        w = self.w
+        pos = self.pos
+        numNeurons = self.numNeurons
 
         # Determine the shape of the hexagon to represent each cluster
         z = np.sqrt(0.75)
@@ -499,15 +500,15 @@ class Plots():
 
         return fig, ax, patches, cbar
 
-    def setup_axes(self,som):
+    def setup_axes(self):
         # Plots distributions of categories on SOM cluster locations.
         #
 
-        pos = som.pos
+        pos = self.pos
 
         # Find the locations and size for each neuron in the SOM
-        w = som.w
-        numNeurons = som.numNeurons
+        w = self.w
+        numNeurons = self.numNeurons
         z = np.sqrt(0.75)
         shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
         shminx = np.min(shapex)
@@ -570,9 +571,9 @@ class Plots():
             h_axes[neuron] = plt.axes(place)
         return fig, ax, h_axes
 
-    def plt_dist(self, som, dist):
-        numNeurons = som.numNeurons
-        fig, ax, h_axes = self.setup_axes(som)
+    def plt_dist(self, dist):
+        numNeurons = self.numNeurons
+        fig, ax, h_axes = self.setup_axes()
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].stem(dist[neuron])
@@ -590,10 +591,10 @@ class Plots():
         plt.suptitle(title, fontsize=16)
         return fig, ax, h_axes
 
-    def plt_wgts(self, som):
-        numNeurons = som.numNeurons
-        w =som.w
-        fig, ax, h_axes = self.setup_axes(som)
+    def plt_wgts(self):
+        numNeurons = self.numNeurons
+        w =self.w
+        fig, ax, h_axes = self.setup_axes()
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].plot(w[neuron])
@@ -614,9 +615,9 @@ class Plots():
             # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
 
-    def plt_pie(self,som, title, perc, *argv):
+    def plt_pie(self,title, perc, *argv):
 
-        pos = som.pos
+        pos = self.pos
 
         # Pull out the statistics (tp, fn, tn, fp) from the arguments
         numst = []
@@ -629,8 +630,8 @@ class Plots():
             pdb = True
 
         # Find the locations and size for each neuron in the SOM
-        w = som.w
-        numNeurons = som.numNeurons
+        w = self.w
+        numNeurons = self.numNeurons
 
         # Assign the colors for the pie chart (tp, fn, tn, fp)
         if pdb:
@@ -638,7 +639,7 @@ class Plots():
         else:
             # Only two colors for well docked bad binders (tn, fp)
             clrs = ['blue', 'red']
-        fig, ax, h_axes = self.setup_axes(som)
+        fig, ax, h_axes = self.setup_axes()
         for neuron in range(numNeurons):
             # Scale the size of the pie chart according to the percent of PDB
             # data (or WD data) in that cell
@@ -674,8 +675,8 @@ class Plots():
         return fig, ax, h_axes
 
     def plt_histogram(self, som,data):
-        numNeurons = som.numNeurons
-        fig, ax, h_axes = self.setup_axes(som)
+        numNeurons = self.numNeurons
+        fig, ax, h_axes = self.setup_axes()
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].hist(data[neuron])
@@ -695,9 +696,9 @@ class Plots():
 
             # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
-    def plt_boxplot(self, som, data):
-        numNeurons = som.numNeurons
-        fig, ax, h_axes = self.setup_axes(som)
+    def plt_boxplot(self, data):
+        numNeurons = self.numNeurons
+        fig, ax, h_axes = self.setup_axes()
         title = 'Cluster Centers as BoxPlot'
         for neuron in range(numNeurons):
             # Make graph
@@ -717,9 +718,9 @@ class Plots():
 
             # Return handles to figure, axes and pie charts
         return fig, ax, h_axes
-    def plt_dispersion_fan_plot(self,som, data):
-        numNeurons = som.numNeurons
-        fig, ax, h_axes = self.setup_axes(som)
+    def plt_dispersion_fan_plot(self, data):
+        numNeurons = self.numNeurons
+        fig, ax, h_axes = self.setup_axes()
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].hist(data[neuron])
@@ -742,8 +743,8 @@ class Plots():
 
 
     def plt_violin_plot(self, som, data):
-        numNeurons = som.numNeurons
-        fig, ax, h_axes = self.setup_axes(som)
+        numNeurons = self.numNeurons
+        fig, ax, h_axes = self.setup_axes()
         for neuron in range(numNeurons):
             # Make graph
             h_axes[neuron].violin(data[neuron])
@@ -781,7 +782,7 @@ class Plots():
             raise ValueError("Invalid plot type.")
 
 
-    def plt_scatter(self,som, x, indices, clust, reg_line=True):
+    def plt_scatter(self, x, indices, clust, reg_line=True):
         """ Generate Scatter Plot for Each Neuron.
 
         Args:
@@ -795,8 +796,8 @@ class Plots():
             ax:
             h_axes:
         """
-        pos = som.pos
-        numNeurons = som.numNeurons
+        pos = self.pos
+        numNeurons = self.numNeurons
 
         # Data preprocessing
         # This should be updated!!!!
@@ -860,7 +861,7 @@ class Plots():
             y0 = yavg - (height / 2)
 
             if len(clust[neuron]) > 0:
-                h_axes[neuron] = utils.inset_axes(main_ax, width='100%', height='100%', loc=3,
+                h_axes[neuron] = inset_axes(main_ax, width='100%', height='100%', loc=3,
                                             bbox_to_anchor=(x0, y0, width, height),
                                             bbox_transform=main_ax.transAxes, borderpad=0)
                 h_axes[neuron].set(xticks=[], yticks=[])
