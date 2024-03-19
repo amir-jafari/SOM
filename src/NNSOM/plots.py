@@ -5,6 +5,10 @@ import matplotlib.cm as cm
 from . import SOM
 import mpl_toolkits
 class Plots(SOM):
+    def __init__(self, w, pos, numNeurons):
+        self.pos = pos
+        self.numNeurons = numNeurons
+        self.w = w
     def hit_hist(self, x, textFlag):
         # Basic hit histogram
         # x contains the input data
