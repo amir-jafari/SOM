@@ -8,7 +8,7 @@ import pickle
 from datetime import datetime
 from scipy.spatial.distance import cdist
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import os
 now = datetime.now()
 from numpy.random import default_rng
@@ -23,9 +23,6 @@ data_path = abs_path + 'Data' + os.sep + 'Tabular' + os.sep + 'Titanic' + os.sep
 model_path = file_path + os.sep + 'Models' + os.sep
 output_path = file_path + os.sep + 'Output' + os.sep
 os.chdir(file_path)
-
-# Load Titanic dataset
-titanic_df = pd.read_csv(data_path + 'titanic.csv')
 
 # Flag to initialize the som (True), or load previously initialized (False)
 Init_Flag = True
@@ -48,25 +45,25 @@ Init_neighborhood = 3
 SEED = 1234567
 rng = default_rng(SEED)
 
+# Load data
+input_file = data_path + 'titanic.csv'
+titanic_df = pd.read_csv(input_file)
 
-# Preprocess the data
-titanic_df.dropna(inplace=True)  # Remove rows with missing values for simplicity
-titanic_df = titanic_df[['Pclass', 'Age', 'Fare', 'Survived']]  # Select relevant features
-print(titanic_df.head())
-scaler = StandardScaler()
-X = scaler.fit_transform(titanic_df.values)
-X = pd.DataFrame(X, columns=['Pclass', 'Age', 'Fare', 'Survived' ])
-tot_num = len(X)
+titanic_df.dropna(inplace=True)
+titanic_df = titanic_df[['Pclass', 'Age', 'Fare', 'Survived']]
 
 # Randomize to get different results
-X = X[rng.permutation(tot_num)]
+titanic_df = titanic_df.sample(frac=1, random_state=42).reset_index(drop=True)
 
-# Initializing can take a long time for larege data sets
+# Convert the dataset to a NumPy array
+X = titanic_df.values
+
+# Initializing can take a long time for large datasets
 # Reduce size here. X1 is used for initialization, X is used for training.
-X1 = X[:int(tot_num/8)]
+X1 = X[:int(len(X) / 8)]  # Adjust the fraction as needed
 X1 = np.transpose(X1)
 
-X = np.transpose(X)
+X = np.transpose(X)  # Transpose if necessary for your model
 
 
 Init_Som_File = model_path + "SOM_init_titanic.pkl"
@@ -84,21 +81,19 @@ if Train_Flag:
             som_net = pickle.load(file_to_read)
     # Train the SOM
     som_net.train(X, Init_neighborhood, Epochs, Steps)
+else:
+    # Read in trained network
+    file_to_read = open(Trained_SOM_File, "rb")
+    som_net = pickle.load(file_to_read)
 
-    # Check if the directory exists, if not, create it
-    model_dir = os.path.dirname(Trained_SOM_File)
-    if not os.path.exists(model_dir):
-        os.makedirs(model_dir)
 
-    # Save trained SOM
-    with open(Trained_SOM_File, 'wb') as filehandler:
-        pickle.dump(som_net, filehandler, pickle.HIGHEST_PROTOCOL)
+if Save_SOM_Flag:
+    filehandler = open(Trained_SOM_File, 'wb')
+    pickle.dump(som_net, filehandler, pickle.HIGHEST_PROTOCOL)
 
-print(X)
-print(som_net.w)
 # Compute statistics
 # Distance between each input and each weight
-x_w_dist = cdist(som_net.w, X, 'euclidean')
+x_w_dist = cdist(som_net.w, np.transpose(X), 'euclidean')
 
 # Find the index of the weight closest to the input
 ind1 = np.argmin(x_w_dist, axis=0)

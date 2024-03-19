@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from numpy.random import default_rng
 from sklearn.datasets import load_iris
-from som import SOM
-from utils import preminmax
+from NNSOM import SOM
+from NNSOM import preminmax
 import matplotlib.pyplot as plt
 
 # Load the Iris dataset
@@ -44,6 +44,8 @@ rng = default_rng(SEED)
 som = SOM(Dimensions)
 som.init_w(df)
 som.train(df, Init_neighborhood, Epochs, Steps)
+
+
 
 
 

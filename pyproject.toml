@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "NNSOM"
-version = "0.0.12"
+version = "1.0"
 description = "A SOM package"
 readme = "README.md"
 requires-python = ">=3.8"
