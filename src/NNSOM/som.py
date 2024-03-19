@@ -3,11 +3,8 @@ import numpy as np
 from tensorflow.keras.utils import to_categorical
 from datetime import datetime
 from scipy.spatial.distance import cdist
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import pickle
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-import utils
+
 class SOM():
     """
     A class to represent a Self-Organizing Map (SOM), a type of artificial neural network
@@ -48,11 +45,6 @@ class SOM():
 
     load_pickle(self, filename, path, data_format='pkl'):
         Loads a SOM object from a file using the pickle format.
-
-    Visualization methods (hit_hist, neuron_dist_plot, cmplx_hit_hist, gray_hist, color_hist,
-    plt_top, plt_top_num, plt_pie, plt_wgts, simple_grid, plt_dist):
-        Generate various plots to visualize aspects of the SOM, such as the distribution of input
-        data across neurons, the distances between neurons, and the weights of the neurons.
     """
     def __init__(self, dimensions):
 
@@ -147,7 +139,7 @@ class SOM():
 
         # Find out which center was closest to the input
         maxRows = np.argmax(n, axis=0)
-        a = to_categorical(maxRows,num_classes=n.shape[0])#made correction-added number of class
+        a = to_categorical(maxRows, num_classes=n.shape[0])#made correction-added number of class
         # a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change
         return np.transpose(a)
 
@@ -263,9 +255,4 @@ class SOM():
             with open(path + filename, 'rb') as f:
                 som = pickle.load(f)
             return som
-
-
-
-
-
 

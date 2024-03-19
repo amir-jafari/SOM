@@ -102,7 +102,6 @@ def spread_positions(position, positionMean, positionBasis):
     position1 = np.repeat(positionMean, numPos, axis=1) + np.matmul(positionBasis, position)
     return position1
 
-
 def distances(pos):
     # Compute the distances between the neurons in the SOM topology
     posT = np.transpose(pos)
@@ -128,5 +127,3 @@ def get_edge_shape():
     edgey = np.array([0, 1, 0, - 1]) * np.sqrt(0.75) / 3
 
     return edgex, edgey
-
-
