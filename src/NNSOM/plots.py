@@ -616,6 +616,7 @@ class SOMPlots(SOM):
             y0 = yavg - (height / 2)
 
             # Create sub-axes
+            from mpl_toolkits.axes_grid1.inset_locator import inset_axes
             h_axes[neuron] = inset_axes(ax, width='100%', height='100%', loc=3,
                                         bbox_to_anchor=(x0, y0, width, height),
                                         bbox_transform=ax.transAxes, borderpad=0)
@@ -851,4 +852,41 @@ class SOMPlots(SOM):
         plt.suptitle(title, fontsize=16)
 
         return fig, ax, h_axes
+
+    def plotsompos(som, inputs=None):
+        # Extract necessary information from the SOM object
+        weights = som.w
+        grid_shape = som.dimensions
+
+        # Plotting the SOM weights
+        plt.figure(figsize=(8, 8))
+        plt.title('SOM Classification')
+        for i in range(grid_shape[0]):
+            for j in range(grid_shape[1]):
+                plt.plot(weights[i * grid_shape[1] + j][0], weights[i * grid_shape[1] + j][1], 'o', color='gray',
+                         markersize=10)
+
+        # Plotting input data if provided
+        if inputs is not None:
+            outputs = som.sim_som(inputs)
+            for i in range(len(inputs)):
+                winner_neuron = np.argmax(outputs[:, i])
+                plt.plot(weights[winner_neuron][0], weights[winner_neuron][1], 'go', markersize=5)
+
+        # Connect neighboring neurons with red lines
+        for i in range(grid_shape[0]):
+            for j in range(grid_shape[1]):
+                if i > 0:
+                    plt.plot([weights[i * grid_shape[1] + j][0], weights[(i - 1) * grid_shape[1] + j][0]],
+                             [weights[i * grid_shape[1] + j][1], weights[(i - 1) * grid_shape[1] + j][1]], '-r')
+                if j > 0:
+                    plt.plot([weights[i * grid_shape[1] + j][0], weights[i * grid_shape[1] + j - 1][0]],
+                             [weights[i * grid_shape[1] + j][1], weights[i * grid_shape[1] + j - 1][1]], '-r')
+
+        plt.xlabel('Dimension 1')
+        plt.ylabel('Dimension 2')
+
+        plt.show()
+
+
 
