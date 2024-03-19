@@ -38,7 +38,7 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     - [X] C.2 Perform a regression between the two variables and plot the regression line in each cluster.
     
 - [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and true class) (Ei by March 24)
-    - [ ] D.1 Grid heatmap. (It works on local environment, not implemented class yet.)
+    - [ ] D.1 Grid heatmap.
           
 - [X] E. Hit Histogram (the hit histogram clud bee made with the original training data, or with a new set of data.
 
