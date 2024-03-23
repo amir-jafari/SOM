@@ -27,11 +27,10 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     - [X] A.4 Make a dispersin fan diagram of the variable in each cluster.
     - [X] A.5 Make a violin plot of the variable in each cluster.
           
-- [ ] B. For cases in which there are one additional discrete variable (finite number of types, e.g. label # ) assosciate with each item: (Lakshmim by March 19)
+- [X] B. For cases in which there are one additional discrete variable (finite number of types, e.g. label # ) assosciate with each item: (Lakshmim by March 19)
     - [X] B.1 Shade the hexagon with a greyscale or colorcode using the average of the variable accross the items iin each cluster or with the standard deviation of the variable across the items in the cluster.
     - [X] B.2 Make a bar chart or stem plot of the numbers of each variable type in each cluster.
     - [X] B.3 Make a pie chart of the percentage of each varriable type in each cluster.
-    - [ ] B.4 Make a fan plot of the variables in each cluster.
 
 - [X] C. For cases in which there are two continuous variables associated with each item: (Ei by March 24)
     - [X] C.1 make a scatter plot of the two variables in each cluster.
@@ -39,14 +38,15 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
     
 - [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and true class) (Ei by March 24)
     - [ ] D.1 Grid heatmap.
+    - [ ] D.2 Confusion Matrix
           
 - [X] E. Hit Histogram (the hit histogram clud bee made with the original training data, or with a new set of data.
 
 - [X] F. Neighbor distance plot (U-matrix)
 
-- [ ] G. Weight planes (Lakshmi by March 24)
+- [X] G. Weight planes (Lakshmi by March 24)
 
-- [ ] H. Weight positions (Lakshmi by March 24)
+- [X] H. Weight positions (Lakshmi by March 24)
 
 - [X] I. SOM Topology
 
@@ -58,8 +58,8 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 
 - [X] N. Plot a grey scale or color code with the hexagon related to the radius of the cluster (e.g., maximum distance of an item from the cluster center) 
 
-- [ ] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 24)
-    - [ ] O.1 Plot the 5 (or any number) closest items to the cluster center.
+- [X] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 24)
+    - [X] O.1 Plot the 5 (or any number) closest items to the cluster center.
     - [ ] O.2 Compute a sub-SOM for the items in the selected cluster
 
 ### 1.2 Save and Load Functions (SOM / Input data)
