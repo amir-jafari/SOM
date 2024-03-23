@@ -70,9 +70,6 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 ### 1.4 Documentation
 - [ ] Add documentation to the functions
 
-### 1.5 Subclustering
-- [ ] Train a subcluster -> Save som and json mapping
-
 ## 2. SOM Packages Testing with example data sets
 
 ### 2.1 Test the SOM packages as clustering method with some example datasets (text, CV, tabular, etc)
