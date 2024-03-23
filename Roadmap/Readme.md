@@ -35,30 +35,26 @@ Regarding the plot methods, we need the functionality for displaying trained SOM
 - [X] C. For cases in which there are two continuous variables associated with each item: (Ei by March 24)
     - [X] C.1 make a scatter plot of the two variables in each cluster.
     - [X] C.2 Perform a regression between the two variables and plot the regression line in each cluster.
-    
-- [ ] D. For cases with two discrete variables in each cluster (e.g., predicted and true class) (Ei by March 24)
-    - [ ] D.1 Grid heatmap.
-    - [ ] D.2 Confusion Matrix
           
-- [X] E. Hit Histogram (the hit histogram clud bee made with the original training data, or with a new set of data.
+- [X] D. Hit Histogram (the hit histogram clud bee made with the original training data, or with a new set of data.
 
-- [X] F. Neighbor distance plot (U-matrix)
+- [X] E. Neighbor distance plot (U-matrix)
 
-- [X] G. Weight planes (Lakshmi by March 24)
+- [X] F. Weight planes (Lakshmi by March 24)
 
-- [X] H. Weight positions (Lakshmi by March 24)
+- [X] G. Weight positions (Lakshmi by March 24)
 
-- [X] I. SOM Topology
+- [X] H. SOM Topology
 
-- [X] J. Neighbor connections. (Ei by March 24)
+- [X] I. Neighbor connections. (Ei by March 24)
 
-- [X] K. Complex Hit histogram: For hit histogram can ake interior of hexagon color coded to some additional variable and edges of hecagons couded to some other variable. Witdth of items in the cluster.
+- [X] J. Complex Hit histogram: For hit histogram can ake interior of hexagon color coded to some additional variable and edges of hecagons couded to some other variable. Witdth of items in the cluster.
       
-- [X] L. For any of plots, could have the size of the plots related to the number of items in the clusters. (Sometimes make the radius of the pie plots proportioanl to the number of items in the cluster.)
+- [X] K. For any of plots, could have the size of the plots related to the number of items in the clusters. (Sometimes make the radius of the pie plots proportioanl to the number of items in the cluster.)
 
-- [X] N. Plot a grey scale or color code with the hexagon related to the radius of the cluster (e.g., maximum distance of an item from the cluster center) 
+- [X] L. Plot a grey scale or color code with the hexagon related to the radius of the cluster (e.g., maximum distance of an item from the cluster center) 
 
-- [X] O. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 24)
+- [X] M. Things to do by right cliking on a cluster and selecting from a pop up menu. (Ei by March 24)
     - [X] O.1 Plot the 5 (or any number) closest items to the cluster center.
     - [ ] O.2 Compute a sub-SOM for the items in the selected cluster
 
