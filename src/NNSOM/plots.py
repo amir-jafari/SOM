@@ -4,6 +4,8 @@ from .utils import *
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from matplotlib.widgets import Button
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 class SOMPlots(SOM):
     """
@@ -616,7 +618,6 @@ class SOMPlots(SOM):
             y0 = yavg - (height / 2)
 
             # Create sub-axes
-            from mpl_toolkits.axes_grid1.inset_locator import inset_axes
             h_axes[neuron] = inset_axes(ax, width='100%', height='100%', loc=3,
                                         bbox_to_anchor=(x0, y0, width, height),
                                         bbox_transform=ax.transAxes, borderpad=0)
@@ -720,7 +721,7 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_histogram(self, som,data):
+    def plt_histogram(self, data):
         # Create histogram.
         # Purpose:
 
@@ -775,7 +776,7 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_violin_plot(self, som, data):
+    def plt_violin_plot(self, data):
         # Create violin plot.
         # Purpose: ...
         numNeurons = self.numNeurons
@@ -853,10 +854,10 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plotsompos(som, inputs=None):
+    def plt_pos(self, inputs=None):
         # Extract necessary information from the SOM object
-        weights = som.w
-        grid_shape = som.dimensions
+        weights = self.w
+        grid_shape = self.dimensions
 
         # Plotting the SOM weights
         plt.figure(figsize=(8, 8))
@@ -868,7 +869,7 @@ class SOMPlots(SOM):
 
         # Plotting input data if provided
         if inputs is not None:
-            outputs = som.sim_som(inputs)
+            outputs = self.sim_som(inputs)
             for i in range(len(inputs)):
                 winner_neuron = np.argmax(outputs[:, i])
                 plt.plot(weights[winner_neuron][0], weights[winner_neuron][1], 'go', markersize=5)
@@ -888,5 +889,144 @@ class SOMPlots(SOM):
 
         plt.show()
 
+    def plt_mouse_click(self, config):
+        """
+        plt_mouse_click is a function designed to create an interactive plot for Self-Organizing Maps (SOM).
+        It allows users to click on a SOM's neurons and visualize data associated with those neurons in various formats
+        (pie chart, histogram, scatter plot).
+        Args:
+            config: example
+            data_config = {"data": ,
+            # "clust"",
+            # "num_var1": ,
+            # "num_var2": ,
+            # "cat_var":,
+            # "top": }
 
+        Returns:
+            None
+        """
+        # Helper functions
+        # Helper function to create charts
+        def plot_pie(ax, data, neuronNum):
+            # Clear the axes
+            ax.clear()
+            # Pie chart plot logic here
+            ax.pie(data)
+            ax.set_title('Pie Chart inside the Cluster ' + str(neuronNum))
+            # Redraw the figure
+            ax.figure.canvas.draw_idle()
 
+        def plot_hist(ax, data, neuronNum):
+            # Clear the axes
+            ax.clear()
+            # Histogram plot logic here
+            data.plot(kind='hist', bins=15, ax=ax)
+            ax.set_xlabel(data.name)
+            ax.set_title('Histogram inside the Cluster ' + str(neuronNum))
+            # Redraw the figure
+            ax.figure.canvas.draw_idle()
+
+        def plot_scatter(ax, data, num1, num2, neuronNum):
+            # Clear the axes
+            ax.clear()
+            # Scatter plot logic here
+            ax.scatter(data.iloc[:, num1], data.iloc[:, num2])
+            ax.set_title('Scatter Plot inside the Cluster ' + str(neuronNum))
+            ax.set_xlabel(data.columns[num1])
+            ax.set_ylabel(data.columns[num2])
+            # Redraw the figure
+            ax.figure.canvas.draw_idle()
+
+        pos = self.pos
+        numNeurons = self.numNeurons
+
+        # Determmine the hexagon shape
+        shapex, shapey = get_hexagon_shape()
+
+        # Create the original figure main axes
+        fig, ax = plt.subplots(figsize=(6, 6), frameon=False)
+        xmin = np.min(pos[0, :]) + np.min(shapex)
+        xmax = np.max(pos[0, :]) + np.max(shapex)
+        ymin = np.min(pos[1, :]) + np.min(shapey)
+        ymax = np.max(pos[1, :]) + np.max(shapey)
+
+        ax.set_title('click on points')
+        ax.set_xlim(xmin, xmax)
+        ax.set_ylim(ymin, ymax)
+        ax.set_aspect('equal')
+        ax.set_axis_off()
+
+        hexagons = []  # Hexagon container to identify each hexagon
+        for neuron in range(numNeurons):
+            hex, = ax.fill(pos[0, neuron] + shapex,
+                           pos[1, neuron] + shapey,
+                           facecolor=(1, 1, 1),
+                           edgecolor=(0.8, 0.8, 0.8),
+                           linewidth=1,
+                           picker=True)
+            hexagons.append(hex)
+
+        # Assign the number of clusters to each hexagon
+        hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(hexagons)}
+
+        def onpick(event):
+            if event.artist not in hexagons:
+                return
+
+            # Detect the clicked hexagon
+            thishex = event.artist
+            neuron_ind = hexagon_to_neuron[thishex]
+
+            # Show up the menu if the cluster has data
+            if len(config['clust'][neuron_ind]) > 0:
+                # Create 2nd Figure
+                fig, ax1 = plt.subplots(figsize=(6, 6))
+                fig.subplots_adjust(right=0.8)
+
+                # Button Configuration
+                button_types = ['pie', 'hist', 'scatter']
+                num_buttons = len(button_types)
+                button_ratio = 16 / 9
+
+                # Button sizing and positioning
+                sidebar_width = 0.2
+                single_button_width = sidebar_width * 0.8
+                single_button_height = single_button_width / button_ratio
+                margin = 0.05
+
+                total_buttons_height = num_buttons * single_button_height + (num_buttons - 1) * margin
+
+                # Create the buttons with dynamic positioning
+                buttons = {}
+                for i, button_type in enumerate(button_types):
+                    # Calculate y position from top to bottom
+                    y_pos = (1 - total_buttons_height) / 2 + (num_buttons - 1 - i) * (single_button_height + margin)
+                    # Calculate x position which is centered in the right side of 0.2 width space in figure
+                    x_centered = 0.8 + (0.2 - single_button_width) / 2
+                    ax_button = fig.add_axes([x_centered, y_pos, single_button_width, single_button_height])
+                    buttons[button_type] = Button(ax_button, button_type.capitalize(), hovercolor='0.975')
+
+                # Create new data frame with the inputs that in the cluster
+                temp_df = config['data'].iloc[config['clust'][neuron_ind]]
+                temp_cat_df = config['cat'][config['clust'][neuron_ind]]
+
+                top5_temp_df = temp_df.head(config['topn'])
+                top5_cat_df = temp_cat_df[:config['topn']]
+
+                # On click event for buttons
+                buttons['pie'].on_clicked(lambda event: plot_pie(ax1, top5_cat_df, neuron_ind))
+                # First Item distribution
+                buttons['hist'].on_clicked(
+                    lambda event: plot_hist(ax1, top5_temp_df.iloc[:, config["num1"]], neuron_ind))
+                # First two items scatter plot
+                buttons['scatter'].on_clicked(
+                    lambda event: plot_scatter(ax1, top5_temp_df, config["num1"], config["num2"], neuron_ind))
+
+                plt.show()
+
+            else:
+                print('No data in this cluster')
+
+        fig.canvas.mpl_connect('pick_event', onpick)
+        plt.show()
