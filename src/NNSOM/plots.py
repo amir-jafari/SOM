@@ -810,7 +810,7 @@ class SOMPlots(SOM):
         if plot_type not in plot_functions:
             raise ValueError("Invalid plot type.")
         else:
-            fig, ax, h_axes = plot_functions[plot_type]
+            fig, ax, h_axes = plot_functions[plot_type](*args)
         return fig, ax, h_axes
 
 
