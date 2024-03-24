@@ -222,6 +222,7 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
+
     def color_hist(self, x, avg):
         # Plot an SOM figure where the size of the hexagons is related to
         # the number of elements in the clusters, and the color of the
@@ -596,7 +597,7 @@ class SOMPlots(SOM):
             maxy = pos[1, neuron] + shmaxy
 
             # Convert the size of the cell to axes units
-            minxyDis = ax.transDatatransform([minx, miny])
+            minxyDis = ax.transData.transform([minx, miny])
             maxxyDis = ax.transData.transform([maxx, maxy])
             minxyAx = ax.transAxes.inverted().transform(minxyDis)
             maxxyAx = ax.transAxes.inverted().transform(maxxyDis)
@@ -809,6 +810,8 @@ class SOMPlots(SOM):
         # Check if the plot_type is valid
         if plot_type not in plot_functions:
             raise ValueError("Invalid plot type.")
+        else:
+            plot_functions[plot_type]
 
     def plt_scatter(self, x, indices, clust, reg_line=True):
         """ Generate Scatter Plot for Each Neuron.

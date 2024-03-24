@@ -40,29 +40,7 @@ df = pd.DataFrame(normalized_data, columns=iris.feature_names)
 X = np.transpose(df)
 
 
-# Missclassification Indices
-Ind_missClasses = []    # indices of misclassified inputs
 
-for i in range(len(y)):
-    if y[i] != result[i]:
-        Ind_missClasses.append(i)
-
-cm = confusion_matrix(y, result)
-# Creating a dataframe for a array-formatted Confusion matrix,so it will be easy for plotting.
-cm_df = pd.DataFrame(cm,
-                     index = ['SETOSA','VERSICOLR','VIRGINICA'],
-                     columns = ['SETOSA','VERSICOLR','VIRGINICA'])
-
-type1_error_index = []  # False Positives for 'SETOSA'
-type2_error_index = []  # False Negatives for 'SETOSA'
-
-for i in range(len(y)):
-    if y[i] == 0 and result[i] != 0:
-        # This is a Type 2 error for 'SETOSA' (False Negative)
-        type2_error_index.append(i)
-    elif y[i] != 0 and result[i] == 0:
-        # This is a Type 1 error for 'SETOSA' (False Positive)
-        type1_error_index.append(i)
 
 X = np.transpose(X)
 
