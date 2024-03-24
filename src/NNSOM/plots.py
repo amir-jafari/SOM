@@ -811,7 +811,9 @@ class SOMPlots(SOM):
         if plot_type not in plot_functions:
             raise ValueError("Invalid plot type.")
         else:
-            plot_functions[plot_type]
+            fig, ax, h_axes = plot_functions[plot_type]
+        return fig, ax, h_axes
+
 
     def plt_scatter(self, x, indices, clust, reg_line=True):
         """ Generate Scatter Plot for Each Neuron.
