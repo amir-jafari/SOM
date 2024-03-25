@@ -3,7 +3,6 @@ from scipy import sparse
 import numpy as np
 import networkx as nx
 
-
 def preminmax(p):
     # Normalize the inputs to be in the range [-1, 1]
     minp = np.amin(p, 1)
