@@ -72,7 +72,6 @@ class SOMPlots(SOM):
 
         fig, ax = plt.subplots(frameon=False)
         plt.axis('equal')
-        plt.axis('off')
         xmin = np.min(pos[0]) + np.min(shapex)
         xmax = np.max(pos[0]) + np.max(shapex)
         ymin = np.min(pos[1]) + np.min(shapey)
