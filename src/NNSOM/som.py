@@ -63,6 +63,15 @@ class SOM():
         # Set simulation flag to True,  needs to do simulation
         self.sim_flag = True
 
+        # Initialize the Cluster Array containing list of indices sorted by distance
+        self.clust = []
+        # Initialize the Cluster Array containing list of distances sorted by distance
+        self.dist = []
+        # Initialize the numpy array with maximum distance to any input in the cluster from the cluster center
+        self.mdist = np.zero(self.numNeurons)
+        # Initialize the list of cluster sizes (Number of times it has been a BMU)
+        self.clustSize = []
+
     def init_w(self, x):
         # Initialize SOM weights using principal components
 
@@ -201,6 +210,34 @@ class SOM():
         self.w = w
         self.outputs = self.sim_som(x)
         self.sim_flag = False
+
+        # Set Clust Properties
+        x_w_dist = cdist(self.w, np.transpose(x), 'euclidean')
+        ind1 = np.argmax(x_w_dist, axis=0)
+        for i in range(S):
+            # Find which inputs are closest to each weight (in cluster i)
+            tempclust = np.where(ind1 == i)[0]
+
+            # Save distance of each input in the cluster to cluster center (weight)
+            tempdist = x_w_dist[i, tempclust]
+            indsort = np.argsort(tempdist)
+            tempclust = tempclust[indsort]  # Sort indices
+            tempdist = tempdist[indsort]
+
+            # Add to distance array sorted distances
+            self.dist.append(tempdist)
+
+            # Add to Cluster array sorted indices
+            self.Clust.append(tempclust)
+
+            # Cluster size
+            num = len(tempclust)
+            self.clustSize.append(num)
+
+            # Save the maximum distance to any input in the cluster from cluster center
+            if num > 0:
+                self.mdist[i] = tempdist[-1]
+
         print('Ending Training')
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
