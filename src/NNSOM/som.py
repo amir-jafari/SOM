@@ -228,7 +228,7 @@ class SOM():
             self.dist.append(tempdist)
 
             # Add to Cluster array sorted indices
-            self.Clust.append(tempclust)
+            self.clust.append(tempclust)
 
             # Cluster size
             num = len(tempclust)
