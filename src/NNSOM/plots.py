@@ -272,7 +272,7 @@ class SOMPlots(SOM):
 
         return fig, patches, text, cbar
 
-    def cmplx_hit_hist(self, x, perc_gb, clust, ind_missClass, ind21, ind12):
+    def cmplx_hit_hist(self, x, perc_gb, ind_missClass, ind21, ind12):
         # This is a modified hit histogram, indicating if a cluster contains a
         # majority of good binders, and indicating how many/type errors occur in
         # each cluster
@@ -288,6 +288,7 @@ class SOMPlots(SOM):
         fig, ax, patches, text = self.hit_hist(x, True)
 
         numNeurons = self.numNeurons
+        clust = self.clust
 
         for neuron in range(numNeurons):
 
@@ -813,7 +814,7 @@ class SOMPlots(SOM):
             raise ValueError("Invalid function type")
 
 
-    def plt_scatter(self, x, indices, clust, reg_line=True):
+    def plt_scatter(self, x, indices, reg_line=True):
         """ Generate Scatter Plot for Each Neuron.
 
         Args:
@@ -827,6 +828,7 @@ class SOMPlots(SOM):
         """
         pos = self.pos
         numNeurons = self.numNeurons
+        clust = self.clust
 
         # Data preprocessing
         # This should be updated!!!!
@@ -901,7 +903,6 @@ class SOMPlots(SOM):
         Args:
             config: example
             data_config = {"data": ,
-            # "clust"",
             # "num_var1": ,
             # "num_var2": ,
             # "cat_var":,
@@ -944,6 +945,7 @@ class SOMPlots(SOM):
 
         pos = self.pos
         numNeurons = self.numNeurons
+        clust = self.clust
 
         # Determmine the hexagon shape
         shapex, shapey = get_hexagon_shape()
@@ -983,7 +985,7 @@ class SOMPlots(SOM):
             neuron_ind = hexagon_to_neuron[thishex]
 
             # Show up the menu if the cluster has data
-            if len(config['clust'][neuron_ind]) > 0:
+            if len(clust[neuron_ind]) > 0:
                 # Create 2nd Figure
                 fig, ax1 = plt.subplots(figsize=(6, 6))
                 fig.subplots_adjust(right=0.8)
@@ -1012,8 +1014,8 @@ class SOMPlots(SOM):
                     buttons[button_type] = Button(ax_button, button_type.capitalize(), hovercolor='0.975')
 
                 # Create new data frame with the inputs that in the cluster
-                temp_df = config['data'].iloc[config['clust'][neuron_ind]]
-                temp_cat_df = config['cat'][config['clust'][neuron_ind]]
+                temp_df = config['data'].iloc[clust[neuron_ind]]
+                temp_cat_df = config['cat'][clust[neuron_ind]]
 
                 top5_temp_df = temp_df.head(config['topn'])
                 top5_cat_df = temp_cat_df[:config['topn']]
