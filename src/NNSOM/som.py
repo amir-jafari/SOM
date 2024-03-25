@@ -68,7 +68,7 @@ class SOM():
         # Initialize the Cluster Array containing list of distances sorted by distance
         self.dist = []
         # Initialize the numpy array with maximum distance to any input in the cluster from the cluster center
-        self.mdist = np.zero(self.numNeurons)
+        self.mdist = np.zeros(self.numNeurons)
         # Initialize the list of cluster sizes (Number of times it has been a BMU)
         self.clustSize = []
 
