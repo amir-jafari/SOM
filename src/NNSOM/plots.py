@@ -807,12 +807,11 @@ class SOMPlots(SOM):
             'violin': self.plt_violin_plot
         }
 
-        # Check if the plot_type is valid
-        if plot_type not in plot_functions:
-            raise ValueError("Invalid plot type.")
+        selected_plot = plot_functions.get(plot_type)
+        if selected_plot:
+            return selected_plot(*args)
         else:
-            fig, ax, h_axes = plot_functions[plot_type](*args)
-        return fig, ax, h_axes
+            raise ValueError("Invalid function type")
 
 
     def plt_scatter(self, x, indices, clust, reg_line=True):
