@@ -147,7 +147,6 @@ class SOM():
         # a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change
         return np.transpose(a)
 
-
     def train(self, x, init_neighborhood=3, epochs=200, steps=100):
         # Train the SOM using the batch SOM algorithm
 
