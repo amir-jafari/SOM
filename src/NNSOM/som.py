@@ -50,19 +50,14 @@ class SOM():
 
         self.dimensions = dimensions
         self.numNeurons = np.prod(dimensions)
-
         # Calculate positions of neurons
         self.pos = calculate_positions(dimensions)
-
         # Calculate distances between neurons
         self.neuron_dist = distances(self.pos)
-
         # Initialize the weight matrix with empty list
         self.w = []
-
         # Set simulation flag to True,  needs to do simulation
         self.sim_flag = True
-
         # Initialize the Cluster Array containing list of indices sorted by distance
         self.clust = []
         # Initialize the Cluster Array containing list of distances sorted by distance
@@ -213,7 +208,13 @@ class SOM():
 
         # Set Clust Properties
         x_w_dist = cdist(self.w, np.transpose(x), 'euclidean')
-        ind1 = np.argmax(x_w_dist, axis=0)
+        ind1 = np.argmin(x_w_dist, axis=0)
+
+        clust = []  # Cluster array sorted by distances
+        dist = []  # Distance array sorted by distances
+        mdist = np.zeros(S)  # Maximum distance to any input in the cluster from cluster center
+        clustSize = []  # Cluster size
+
         for i in range(S):
             # Find which inputs are closest to each weight (in cluster i)
             tempclust = np.where(ind1 == i)[0]
@@ -225,18 +226,23 @@ class SOM():
             tempdist = tempdist[indsort]
 
             # Add to distance array sorted distances
-            self.dist.append(tempdist)
+            dist.append(tempdist)
 
             # Add to Cluster array sorted indices
-            self.clust.append(tempclust)
+            clust.append(tempclust)
 
             # Cluster size
             num = len(tempclust)
-            self.clustSize.append(num)
+            clustSize.append(num)
 
             # Save the maximum distance to any input in the cluster from cluster center
             if num > 0:
-                self.mdist[i] = tempdist[-1]
+                mdist[i] = tempdist[-1]
+
+        self.clust = clust
+        self.dist = dist
+        self.mdist = mdist
+        self.clustSize = clustSize
 
         print('Ending Training')
         current_time = now.strftime("%H:%M:%S")
