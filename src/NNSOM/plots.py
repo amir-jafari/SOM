@@ -221,7 +221,6 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
-
     def color_hist(self, x, avg):
         # Plot an SOM figure where the size of the hexagons is related to
         # the number of elements in the clusters, and the color of the
@@ -366,7 +365,7 @@ class SOMPlots(SOM):
             ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8))
 
         return fig, ax, patches
-
+j
     def neuron_dist_plot(self):
         # Distance map. The gray hexagons represent cluster centers.
         # The colors of the elongated hexagons between the cluster
@@ -800,7 +799,6 @@ class SOMPlots(SOM):
         plot_functions = {
             'pie': self.plt_pie,
             'dist': self.plt_dist,
-            'wgts': self.plt_wgts,
             'hist': self.plt_histogram,
             'boxplot': self.plt_boxplot,
             'fanchart': self.plt_dispersion_fan_plot,
