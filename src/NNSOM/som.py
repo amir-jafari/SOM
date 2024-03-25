@@ -248,6 +248,57 @@ class SOM():
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
 
+    def quantization_error(self):
+        """
+        Calculate quantization error
+        """
+        dist = self.dist
+        quant_err = np.array([0 if len(item) == 0 else np.mean(item) for item in dist]).mean()
+
+        return quant_err
+
+    def topological_error(self, data):
+        """
+        Calculate topological error
+        """
+        w = self.w
+        ndist = self.neuron_dist
+
+        # Calculate the distance between item vs. cluster center
+        x_w_dist = cdist(w, np.transpose(data), 'euclidean')
+
+        sort_dist = np.argsort(x_w_dist, axis=0)
+        top_dist = [ndist[sort_dist[0, ii], sort_dist[1, ii]] for ii in range(sort_dist.shape[1])]
+        neighbors = np.where(np.array(top_dist) > 1.1)
+        top_error_1st = 100 * len(neighbors[0]) / x_w_dist.shape[1]
+        neighbors = np.where(np.array(top_dist) > 2.1)
+        top_error_1st_and_2nd = 100 * len(neighbors[0]) / x_w_dist.shape[1]
+
+        return top_error_1st, top_error_1st_and_2nd
+
+    def distortion_error(self, data):
+        """
+        Calculate distortion
+        """
+        shapx = data.shape
+        Q = shapx[1]  # Number of samples
+
+        ww = self.w
+        ndist = self.neuron_dist
+        x_w_dist = cdist(ww, np.transpose(data), 'euclidean')
+        ind1 = np.argmin(x_w_dist, axis=0)
+
+        dd = [1, 2, 3]  # neighborhood distances
+        wwdist = cdist(ww, ww, 'euclidean')
+        sst = ndist[:, ind1]
+
+        for d in dd:
+            factor1 = 2 * d * d
+            factor2 = Q * d * np.sqrt(2 * np.pi)
+            temp = np.exp(-np.multiply(sst, sst) / factor1)
+            distortion = np.sum(np.multiply(temp, x_w_dist)) / factor2
+            print('Distortion (d=' + str(d) + ') = ' + str(distortion))
+
     def save_pickle(self, filename, path, data_format='pkl'):
         """ Save the SOM object to a file using pickle.
         
