@@ -23,8 +23,6 @@ scaler = MinMaxScaler(feature_range=(-1, 1))
 X = scaler.fit_transform(X)
 X = np.transpose(X)
 
-"""Loading Pre-trained SOM"""
-
 model_path = os.getcwd() + os.sep
 trained_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
@@ -93,6 +91,18 @@ plt.title('Simple grid for sentosa', fontsize=16)
 plt.show()
 
 # Multi Plot - Pie Chart
+# Data Preprocessing for additional Variable
+# Using the target in cluster, create the size list for pie chart for each cluster
+pie_chart_sizes = []
+for cluster in target_in_cluster:
+    if cluster is not None:
+        # Count the occurrences of each target value
+        size = [list(cluster).count(i) for i in range(3)]  # Assuming 3 unique values: 0, 1, 2
+        pie_chart_sizes.append(size)
+    else:
+        pie_chart_sizes.append([0, 0, 0])  # Represent an empty cluster
+
+fig, ax, h_axes = som.multiplot('pie', "Class Distribution", perc_sentosa, pie_chart_sizes)
 
 # Multi Plot - Stem Plot
 dist_1 = []
@@ -147,5 +157,3 @@ plt.show()
 # Scatter Plot
 fig, axes, h_axes = som.plt_scatter(X, (0, 1))
 plt.show()
-
-# Component Planes
