@@ -1,4 +1,6 @@
 # Importing Library
+import os
+
 from NNSOM.plots import SOMPlots
 from sklearn.datasets import load_iris
 import numpy as np
@@ -39,7 +41,7 @@ som.init_w(X)
 som.train(X, Init_neighborhood, Epochs, Steps)
 
 # Save the model
-model_path = "..."  # Must be changed
+model_path = os.getcwd() + os.sep  # Must be changed
 Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED) + '_Size_' + str(SOM_Row_Num) + '.pkl'
 som.save_pickle(Trained_SOM_File, model_path)
 
