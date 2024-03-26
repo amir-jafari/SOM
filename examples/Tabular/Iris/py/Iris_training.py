@@ -44,8 +44,7 @@ som.train(X, Init_neighborhood, Epochs, Steps)
 import os
 
 # Define the directory path for saving the model outside the repository
-model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "Model"))
-
+model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model/"))
 # Create the directory if it doesn't exist
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)

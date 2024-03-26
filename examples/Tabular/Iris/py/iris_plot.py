@@ -24,11 +24,7 @@ X = scaler.fit_transform(X)
 X = np.transpose(X)
 
 # Define the directory path for saving the model outside the repository
-model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "Model"))
-
-# Create the directory if it doesn't exist
-if not os.path.exists(model_dir):
-    os.makedirs(model_dir)
+model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model/"))
 trained_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
 # Define the path for loading the model
