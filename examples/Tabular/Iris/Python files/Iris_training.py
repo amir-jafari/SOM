@@ -40,10 +40,24 @@ som = SOMPlots(Dimensions)
 som.init_w(X)
 som.train(X, Init_neighborhood, Epochs, Steps)
 
-# Save the model
-model_path = os.getcwd() + os.sep  # Must be changed
+
+import os
+
+# Define the directory path for saving the model outside the repository
+model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "Model"))
+
+# Create the directory if it doesn't exist
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
 Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED) + '_Size_' + str(SOM_Row_Num) + '.pkl'
+
+
+# Define the path for saving the model
+model_path = os.path.join(model_dir, Trained_SOM_File)
+
+# Save the model
 som.save_pickle(Trained_SOM_File, model_path)
+
 
 # Visualization
 # SOM Topology

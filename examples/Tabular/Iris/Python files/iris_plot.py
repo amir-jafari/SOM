@@ -23,8 +23,16 @@ scaler = MinMaxScaler(feature_range=(-1, 1))
 X = scaler.fit_transform(X)
 X = np.transpose(X)
 
-model_path = os.getcwd() + os.sep
+# Define the directory path for saving the model outside the repository
+model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "Model"))
+
+# Create the directory if it doesn't exist
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
 trained_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
+
+# Define the path for loading the model
+model_path = os.path.join(model_dir, trained_file_name)
 
 # SOM Parameters
 SOM_Row_Num = 4  # The number of row used for the SOM grid.
