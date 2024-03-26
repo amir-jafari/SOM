@@ -82,17 +82,14 @@ for i in range(som.numNeurons):
 fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
-<<<<<<< HEAD
+
 # Color Hist
-=======
 
 
-
-som.component_planes()
 
 """Color Hist"""
 
->>>>>>> parent of e65b8c9 (Updated SOMPlot)
+
 fig, ax, pathces, text = som.color_hist(X, perc_sentosa)
 plt.show()
 
@@ -103,7 +100,18 @@ plt.title('Simple grid for sentosa', fontsize=16)
 plt.show()
 
 # Multi Plot - Pie Chart
+# Data Preprocessing for additional Variable
+# Using the target in cluster, create the size list for pie chart for each cluster
+pie_chart_sizes = []
+for cluster in target_in_cluster:
+    if cluster is not None:
+        # Count the occurrences of each target value
+        size = [list(cluster).count(i) for i in range(3)]  # Assuming 3 unique values: 0, 1, 2
+        pie_chart_sizes.append(size)
+    else:
+        pie_chart_sizes.append([0, 0, 0])  # Represent an empty cluster
 
+fig, ax, h_axes = som.multiplot('pie', "Class Distribution", perc_sentosa, pie_chart_sizes)
 # Multi Plot - Stem Plot
 dist_1 = []
 dist_2 = []
