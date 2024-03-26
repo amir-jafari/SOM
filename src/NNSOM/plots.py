@@ -796,6 +796,7 @@ class SOMPlots(SOM):
     def multiplot(self, plot_type, *args):
         # Dictionary mapping plot types to corresponding plotting methods
         plot_functions = {
+            'wgts': self.plt_wgts,
             'pie': self.plt_pie,
             'dist': self.plt_dist,
             'hist': self.plt_histogram,
