@@ -736,7 +736,7 @@ class SOMPlots(SOM):
             # Make graph
             h_axes[neuron].hist(data[neuron])
 
-        title = 'Cluster Centers as Lines'
+        title = 'Cluster Centers as Histogram'
         plt.suptitle(title, fontsize=16)
 
         return fig, ax, h_axes
@@ -797,6 +797,7 @@ class SOMPlots(SOM):
     def multiplot(self, plot_type, *args):
         # Dictionary mapping plot types to corresponding plotting methods
         plot_functions = {
+            'wgts': self.plt_wgts,
             'pie': self.plt_pie,
             'stem': self.plt_stem,
             'hist': self.plt_histogram,
@@ -890,6 +891,30 @@ class SOMPlots(SOM):
         plt.xlabel('Dimension 1')
         plt.ylabel('Dimension 2')
 
+        plt.show()
+
+    def component_planes(self):
+        # Check if the SOM is organized in one or two dimensions
+        if len(self.dimensions) not in [1, 2]:
+            print("This plot is only supported for SOMs organized in one or two dimensions.")
+            return
+
+        # Create the plot
+        fig, axes = plt.subplots(*self.dimensions, figsize=(10, 10))
+
+        # Flatten axes if SOM is 1D
+        if len(self.dimensions) == 1:
+            axes = [axes]
+
+        # Plot the SOM planes
+        for i in range(self.dimensions[0]):
+            for j in range(self.dimensions[1]):
+                ax = axes[i][j] if len(self.dimensions) == 2 else axes[j]
+                ax.imshow(self.w[:, :, i, j], cmap='RdYlBu', interpolation='nearest')
+                ax.set_title(f'Weights ({i},{j})')
+                ax.axis('off')
+
+        plt.tight_layout()
         plt.show()
 
     def plt_mouse_click(self, config):
