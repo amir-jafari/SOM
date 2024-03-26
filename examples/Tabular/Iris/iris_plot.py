@@ -127,9 +127,25 @@ fig, ax, h_axes = som.multiplot('boxplot', sepal_length_in_cluster)
 plt.show()
 
 # Multiplot - Violin Plot
+# Input Data Preprocessing
+# Create the matrix for each cluster where the items in the hit cluster
+iris_cluster = []
+for i in range(som.numNeurons):
+    cluster_indices = som.clust[i]
+    if len(cluster_indices) > 0:
+        # Make sure cluster_indices are integers and within the range of iris.data
+        cluster_indices = np.array(cluster_indices, dtype=int)
+        # Index iris.data using cluster_indices
+        cluster_data = iris.data[cluster_indices]
+        iris_cluster.append(cluster_data)
+    else:
+        iris_cluster.append(np.array([]))  # Use an empty array for empty clusters
 
+fig, ax, h_axes = som.multiplot('violin', iris_cluster)
+plt.show()
 
 # Scatter Plot
-
+fig, axes, h_axes = som.plt_scatter(X, (0, 1))
+plt.show()
 
 # Component Planes
