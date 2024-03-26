@@ -82,7 +82,17 @@ for i in range(som.numNeurons):
 fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
+<<<<<<< HEAD
 # Color Hist
+=======
+
+
+
+som.component_planes()
+
+"""Color Hist"""
+
+>>>>>>> parent of e65b8c9 (Updated SOMPlot)
 fig, ax, pathces, text = som.color_hist(X, perc_sentosa)
 plt.show()
 

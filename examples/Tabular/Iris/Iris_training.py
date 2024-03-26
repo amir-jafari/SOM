@@ -70,5 +70,5 @@ plt.show()
 som.plt_pos(inputs=None)
 
 # Weight as Line
-fig6, ax6, h_axes = som.multiplot('wgts')
+fig6, ax6, h_axes = som.plt_wgts()
 plt.show()
