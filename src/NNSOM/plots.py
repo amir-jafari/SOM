@@ -271,28 +271,28 @@ class SOMPlots(SOM):
 
         return fig, patches, text, cbar
 
-    def cmplx_hit_hist(self, x, perc_gb, ind_missClass, ind21, ind12):
+    def cmplx_hit_hist(self, x, perc, ind_missClass, ind21, ind12):
         # This is a modified hit histogram, indicating if a cluster contains a
         # majority of good binders, and indicating how many/type errors occur in
         # each cluster
         #
         # Inputs are
         #  x - data set
-        #  perc_gb - percent of good binders in each cluster
+        #  perc - percent of good binders in each cluster
         #  clust - list of indices of inputs that belong in each cluster
         #  ind_missClass - indices of consistently misclassified inputs
         #  ind21 - indices of false positive cases
         #  ind12 - indices of false negative cases
-        # Make hit histogram
-        fig, ax, patches, text = self.hit_hist(x, True)
-
         numNeurons = self.numNeurons
         clust = self.clust
 
+        # Make hit histogram
+        fig, ax, patches, text = self.hit_hist(x, True)
+
         for neuron in range(numNeurons):
 
-            # Make face color green if majority of cluster are good binders
-            if (perc_gb[neuron] >= 50):
+            # Make face color green if majority of class in cluster are good binders
+            if (perc[neuron] >= 50):
                 patches[neuron][0]._facecolor = (0.0, 1.0, 0.0, 1.0)
 
             if len(np.intersect1d(clust[neuron], ind_missClass)) != 0:
@@ -365,7 +365,7 @@ class SOMPlots(SOM):
             ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8))
 
         return fig, ax, patches
-j
+
     def neuron_dist_plot(self):
         # Distance map. The gray hexagons represent cluster centers.
         # The colors of the elongated hexagons between the cluster
@@ -627,7 +627,7 @@ j
 
         return fig, ax, h_axes
 
-    def plt_dist(self, dist):
+    def plt_stem(self, x, y):
         # Plot distribution
         # Purpose:
 
@@ -639,7 +639,7 @@ j
         # Draw stem plot
         for neuron in range(numNeurons):
             # Make graph
-            h_axes[neuron].stem(dist[neuron])
+            h_axes[neuron].stem(x, y)
 
         title = 'dist plot'
         plt.suptitle(title, fontsize=16)
@@ -810,7 +810,6 @@ j
             return selected_plot(*args)
         else:
             raise ValueError("Invalid function type")
-
 
     def plt_scatter(self, x, indices, reg_line=True):
         """ Generate Scatter Plot for Each Neuron.
