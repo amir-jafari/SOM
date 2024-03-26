@@ -26,9 +26,16 @@ X = np.transpose(X)
 SOM_Row_Num = 4  # The number of row used for the SOM grid.
 Dimensions = (SOM_Row_Num, SOM_Row_Num)     # The dimensions of the SOM grid.
 
-# Load the Model
-model_path = os.getcwd() + os.sep   # Must be changed
+# Define the directory path for saving the model outside the repository
+model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "Model"))
+
+# Create the directory if it doesn't exist
+if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
 trianed_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
+
+# Define the path for loading the model
+model_path = os.path.join(model_dir, trianed_file_name)
 
 som = SOMPlots(Dimensions)
 som = som.load_pickle(trianed_file_name, model_path)
