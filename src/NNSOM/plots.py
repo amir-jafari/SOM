@@ -639,7 +639,7 @@ class SOMPlots(SOM):
         # Draw stem plot
         for neuron in range(numNeurons):
             # Make graph
-            h_axes[neuron].stem(x, y)
+            h_axes[neuron].stem(x[neuron], y[neuron])
 
         title = 'dist plot'
         plt.suptitle(title, fontsize=16)
