@@ -756,7 +756,7 @@ class SOMPlots(SOM):
         fig, ax, h_axes = self.setup_axes()
 
         for neuron in range(numNeurons):
-            if len(clust[neuron]) and len(data[neuron]) > 0:
+            if len(clust[neuron]) > 0 and len(data[neuron]) > 0:
                 # Make graph
                 h_axes[neuron].boxplot(data[neuron])
             else:
