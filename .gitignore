@@ -776,7 +776,7 @@ octave-workspace
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-
+.DS_Store
 # AWS User-specific
 .idea/**/aws.xml
 
