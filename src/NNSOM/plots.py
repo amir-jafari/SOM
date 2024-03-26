@@ -798,7 +798,7 @@ class SOMPlots(SOM):
         # Dictionary mapping plot types to corresponding plotting methods
         plot_functions = {
             'pie': self.plt_pie,
-            'dist': self.plt_dist,
+            'stem': self.plt_stem,
             'hist': self.plt_histogram,
             'boxplot': self.plt_boxplot,
             'fanchart': self.plt_dispersion_fan_plot,
