@@ -770,13 +770,17 @@ class SOMPlots(SOM):
         # Create violin plot.
         # Purpose: ...
         numNeurons = self.numNeurons
+        clust = self.clust
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
 
         for neuron in range(numNeurons):
-            # Make graph
-            h_axes[neuron].violin(data[neuron])
+            if len(clust[neuron]) > 0 and len(data[neuron]) > 0:
+                # Make graph
+                h_axes[neuron].violin(data[neuron])
+            else:
+                h_axes[neuron] = None
 
         title = 'violin plot'
         plt.suptitle(title, fontsize=16)
