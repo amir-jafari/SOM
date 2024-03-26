@@ -110,6 +110,11 @@ plt.show()
 fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
+
+
+
+som.component_planes()
+
 """Color Hist"""
 
 fig, ax, pathces, text = som.color_hist(X, perc_sentosa)

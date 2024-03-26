@@ -892,6 +892,30 @@ class SOMPlots(SOM):
 
         plt.show()
 
+    def component_planes(self):
+        # Check if the SOM is organized in one or two dimensions
+        if len(self.dimensions) not in [1, 2]:
+            print("This plot is only supported for SOMs organized in one or two dimensions.")
+            return
+
+        # Create the plot
+        fig, axes = plt.subplots(*self.dimensions, figsize=(10, 10))
+
+        # Flatten axes if SOM is 1D
+        if len(self.dimensions) == 1:
+            axes = [axes]
+
+        # Plot the SOM planes
+        for i in range(self.dimensions[0]):
+            for j in range(self.dimensions[1]):
+                ax = axes[i][j] if len(self.dimensions) == 2 else axes[j]
+                ax.imshow(self.w[:, :, i, j], cmap='RdYlBu', interpolation='nearest')
+                ax.set_title(f'Weights ({i},{j})')
+                ax.axis('off')
+
+        plt.tight_layout()
+        plt.show()
+
     def plt_mouse_click(self, config):
         """
         plt_mouse_click is a function designed to create an interactive plot for Self-Organizing Maps (SOM).
