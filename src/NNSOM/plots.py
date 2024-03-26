@@ -365,7 +365,6 @@ class SOMPlots(SOM):
             ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8))
 
         return fig, ax, patches
-j
     def neuron_dist_plot(self):
         # Distance map. The gray hexagons represent cluster centers.
         # The colors of the elongated hexagons between the cluster
@@ -736,7 +735,7 @@ j
             # Make graph
             h_axes[neuron].hist(data[neuron])
 
-        title = 'Cluster Centers as Lines'
+        title = 'Cluster Centers as Histogram'
         plt.suptitle(title, fontsize=16)
 
         return fig, ax, h_axes
