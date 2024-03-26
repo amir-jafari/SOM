@@ -733,7 +733,7 @@ class SOMPlots(SOM):
         # Draw histogram
         for neuron in range(numNeurons):
             # Make graph
-            h_axes[neuron].hist(data[neuron])
+            h_axes.hist(data[neuron])
 
         title = 'Cluster Centers as Histogram'
         plt.suptitle(title, fontsize=16)
