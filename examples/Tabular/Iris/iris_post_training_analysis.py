@@ -27,7 +27,7 @@ SOM_Row_Num = 4  # The number of row used for the SOM grid.
 Dimensions = (SOM_Row_Num, SOM_Row_Num)     # The dimensions of the SOM grid.
 
 # Load the Model
-model_path = os.getcwd() + os.sep   # Must be changed
+model_path = os.getcwd() + os.sep + "../../../Model/"
 trianed_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
 som = SOMPlots(Dimensions)
