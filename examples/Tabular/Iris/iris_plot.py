@@ -1,9 +1,6 @@
-# Importing Library
-from NNSOM.plots import SOMPlots
-from sklearn.datasets import load_iris
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-import matplotlib.pyplot as plt
+
+
+#!pip install --upgrade NNSOM
 
 from NNSOM.plots import SOMPlots
 from NNSOM.utils import *
@@ -37,17 +34,15 @@ X = np.transpose(X)
 
 """Loading Pre-trained SOM"""
 
-import os
-
 model_path = "/Users/sravya/Desktop/Capstone/SOM/examples/Tabular/Iris/"
-trianed_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
+trained_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
 # SOM Parameters
 SOM_Row_Num = 4  # The number of row used for the SOM grid.
 Dimensions = (SOM_Row_Num, SOM_Row_Num) # The dimensions of the SOM grid.
 
 som = SOMPlots(Dimensions)
-som = som.load_pickle(trianed_file_name, model_path)
+som = som.load_pickle(trained_file_name, model_path)
 
 # Find quantization error
 quant_err = som.quantization_error()
@@ -93,30 +88,36 @@ for i in range(som.numNeurons):  # S is the total number of neurons
 # Get percentatges for each neuron
 perc_sentosa = np.array(proportion_sentosa) * 100
 
-"""Hit Histogram"""
+all_cluster_indices = []
 
-# Hit Histogram
-fig3, ax3, patches3, text3 = som.hit_hist(X, True)
+for i in range(som.numNeurons):
+    cluster_indices = som.clust[i]
+    all_cluster_indices.append(cluster_indices)
+
+# Now all_cluster_indices contains all cluster indices
+
+# SOM Topology
+fig1, ax1, patches1 = som.plt_top()
 plt.show()
 
-"""Gray Histogram
+# SOM Topology with neruon numbers
+fig2, ax2, pathces2, text2 = som.plt_top_num()
+plt.show()
 
-Darker: Less sentosa
-"""
+"""Darker: Less sentosa"""
 
 # Visualization
-fig, ax, patches, text = som.gray_hist(X, perc_sentosa)
+fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
 """Color Hist"""
 
-fig1, ax1, patches1, text1 = som.color_hist(X, perc_sentosa)
+fig, ax, pathces, text = som.color_hist(X, perc_sentosa)
 plt.show()
 
 """Complex Hist"""
 
-fig2, ax2, patches2, text2 = som.cmplx_hit_hist(X, perc_sentosa, y[0])
-plt.show()
+
 
 """Simple Grid"""
 
@@ -125,27 +126,35 @@ fig51, ax51, patches51, cbar51 = som.simple_grid(perc_sentosa, proportion_sentos
 plt.title('Simple grid for sentosa', fontsize=16)
 plt.show()
 
-
 """Multiplot - pie"""
 
-for i in range(len(proportion_sentosa)):
-    Title = f'Pie Plot {i}'  # Title for the current plot
-    fig66, ax66, handles66 = som.multiplot('pie', Title, proportion_sentosa[i])
+shapw = som.w.shape
+S = shapw[0]
+same_size = 100*np.ones(S)
+
+for i in range(3):
+    # Plot the pie plots showing tp, fn, tn, fp for each cluster, with same size for each hexagon
+    Title  = 'pie plot for Sentosa'
+    # Title = 'TP(g), FN(y), TN(b), FP(r) for '  +  Category[i]
+    fig2, ax2, handles2 = som.multiplot('pie', Title, same_size)
     plt.show()
 
 """Multiplot - dist"""
 
-fig9, ax9, h_axes9 = som.multiplot('dist',proportion_sentosa)
+fig9, ax9, h_axes9 = som.multiplot('dist',som.clust[-13:])
+plt.show()
+
+fig9, ax9, h_axes9 = som.multiplot('dist',som.clust[-16:])
 plt.show()
 
 """Multiplot - hist"""
 
-fig10, ax10, h_axes10 = som.multiplot('hist',proportion_sentosa)
+fig,ax,h_axes = som.multiplot('hist', som.clust[-16:])
 plt.show()
 
 """Multiplot - boxplot"""
 
-fig11, ax11, h_axes11 = som.multiplot('boxplot',proportion_sentosa)
+fig,ax,h_axes = som.multiplot('boxplot',som.clust[-16:])
 plt.show()
 
 """Multiplot - fanchart"""
@@ -154,3 +163,5 @@ plt.show()
 
 """Multiplot - violin"""
 
+fig, ax, h_axes = som.multiplot('violin', som.clust[-16:])
+plt.show()

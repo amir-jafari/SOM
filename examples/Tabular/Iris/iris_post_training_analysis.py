@@ -25,7 +25,7 @@ X = scaler.fit_transform(X)
 X = np.transpose(X)
 
 # Load the Model
-model_path = "/content/drive/MyDrive/Colab Notebooks/NNSOM/Examples/Iris/"
+model_path = "/Users/sravya/Desktop/Capstone/SOM/examples/Tabular/Iris/"
 trianed_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
 # SOM Parameters
