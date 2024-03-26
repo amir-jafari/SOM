@@ -1,21 +1,15 @@
 from NNSOM.plots import SOMPlots
+
 import matplotlib.pyplot as plt
-
-import os
-
-# SOM Parameters
-SOM_Row_Num = 4  # The number of row used for the SOM grid.
-Dimensions = (SOM_Row_Num, SOM_Row_Num) # The dimensions of the SOM grid.
-
-# Random State
 from numpy.random import default_rng
-SEED = 1234567
-rng = default_rng(SEED)
-
 from sklearn.datasets import load_iris
 import numpy as np
-import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
+import os
+
+# Random State
+SEED = 1234567
+rng = default_rng(SEED)
 
 iris = load_iris()
 X = iris.data
@@ -41,28 +35,9 @@ Dimensions = (SOM_Row_Num, SOM_Row_Num) # The dimensions of the SOM grid.
 som = SOMPlots(Dimensions)
 som = som.load_pickle(trained_file_name, model_path)
 
-# Find quantization error
-quant_err = som.quantization_error()
-print('Quantization error: ' + str(quant_err))
-
-# Find topological error
-top_error_1, top_error_1_2 =  som.topological_error(X)
-print('Topological Error (1st neighbor) = ' + str(top_error_1) + '%')
-print('Topological Error (1st and 2nd neighbor) = ' + str(top_error_1_2) + '%')
-
-# Find Distortion Error
-som.distortion_error(X)
-
-"""Visualization
-
-Data Preparation to pass additional variables
-"""
-
+# Visualization
+# Data Preparation
 # persentage of sentosa
-numNeurons = som.numNeurons
-
-perc_sentosa = []
-
 proportion_sentosa = []
 for i in range(som.numNeurons):  # S is the total number of neurons
     cluster_indices = som.clust[i]
@@ -85,74 +60,76 @@ for i in range(som.numNeurons):  # S is the total number of neurons
 # Get percentatges for each neuron
 perc_sentosa = np.array(proportion_sentosa) * 100
 
-all_cluster_indices = []
-
+# Closest Class for each cluster
+closest_class = []
 for i in range(som.numNeurons):
     cluster_indices = som.clust[i]
-    all_cluster_indices.append(cluster_indices)
+    if len(cluster_indices) > 0:
+        closest_class.append(y[cluster_indices[0]])
+    else:
+        closest_class.append(None)
 
-# Now all_cluster_indices contains all cluster indices
+# Target value in each cluster
+target_in_cluster = []
+for i in range(som.numNeurons):
+    cluster_indices = som.clust[i]
+    if len(cluster_indices) > 0:
+        target_in_cluster.append(y[cluster_indices])
+    else:
+        target_in_cluster.append(None)
 
-# SOM Topology
-fig1, ax1, patches1 = som.plt_top()
-plt.show()
-
-# SOM Topology with neruon numbers
-fig2, ax2, pathces2, text2 = som.plt_top_num()
-plt.show()
-
-"""Darker: Less sentosa"""
-
-# Visualization
+# Grey Hist
 fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
-"""Color Hist"""
-
+# Color Hist
 fig, ax, pathces, text = som.color_hist(X, perc_sentosa)
 plt.show()
 
+# Simple Grid
 # Plot color code for sentosa in each cluster
-fig51, ax51, patches51, cbar51 = som.simple_grid(perc_sentosa, proportion_sentosa)
+fig, ax, patches, cbar = som.simple_grid(perc_sentosa, proportion_sentosa)
 plt.title('Simple grid for sentosa', fontsize=16)
 plt.show()
 
-"""Multiplot - pie"""
+# Multi Plot - Pie Chart
 
-shapw = som.w.shape
-S = shapw[0]
-same_size = 100*np.ones(S)
+# Multi Plot - Stem Plot
+dist_1 = []
+dist_2 = []
+for cluster in target_in_cluster:
+    if cluster is not None:
+        # Use numpy to count occurrences of each class
+        counts = [np.sum(cluster == 0), np.sum(cluster == 1), np.sum(cluster == 2)]
+        dist_1.append([0, 1, 2])
+        dist_2.append(counts)
+    else:
+        dist_1.append([0, 1, 2])
+        dist_2.append([0, 0, 0])
 
-for i in range(3):
-    # Plot the pie plots showing tp, fn, tn, fp for each cluster, with same size for each hexagon
-    Title  = 'pie plot for Sentosa'
-    # Title = 'TP(g), FN(y), TN(b), FP(r) for '  +  Category[i]
-    fig2, ax2, handles2 = som.multiplot('pie', Title, same_size)
-    plt.show()
-
-"""Multiplot - dist"""
-
-fig9, ax9, h_axes9 = som.multiplot('dist',som.clust[-13:])
+fig, ax, h_axes = som.multiplot('stem', dist_1, dist_2)
 plt.show()
 
-fig9, ax9, h_axes9 = som.multiplot('dist',som.clust[-16:])
+# Multiplot - Histogram
+sepal_length_in_cluster = []
+for i in range(som.numNeurons):
+    cluster_indices = som.clust[i]
+    if len(cluster_indices) > 0:
+        sepal_length_in_cluster.append(iris.data[cluster_indices, 0])
+    else:
+        sepal_length_in_cluster.append([0])
+
+fig, ax, h_axes = som.multiplot('hist', sepal_length_in_cluster)
 plt.show()
 
-"""Multiplot - hist"""
-
-fig,ax,h_axes = som.multiplot('hist', som.clust[-16:])
+# Multiplot - Boxplot
+fig, ax, h_axes = som.multiplot('boxplot', sepal_length_in_cluster)
 plt.show()
 
-"""Multiplot - boxplot"""
-
-fig,ax,h_axes = som.multiplot('boxplot',som.clust[-16:])
-plt.show()
-
-"""Multiplot - fanchart"""
+# Multiplot - Violin Plot
 
 
+# Scatter Plot
 
-"""Multiplot - violin"""
 
-fig, ax, h_axes = som.multiplot('violin', som.clust[-16:])
-plt.show()
+# Component Planes

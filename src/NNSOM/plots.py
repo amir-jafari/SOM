@@ -756,7 +756,7 @@ class SOMPlots(SOM):
         fig, ax, h_axes = self.setup_axes()
 
         for neuron in range(numNeurons):
-            if len(clust[neuron]) > 0:
+            if len(clust[neuron]) and len(data[neuron]) > 0:
                 # Make graph
                 h_axes[neuron].boxplot(data[neuron])
             else:
@@ -766,25 +766,6 @@ class SOMPlots(SOM):
         plt.suptitle(title, fontsize=16)
 
         return fig, ax, h_axes
-
-    def plt_dispersion_fan_plot(self, data):
-        # Create the dispersion fan plot
-        # Purpose:
-        numNeurons = self.numNeurons
-
-        # Setup figure, main axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
-
-        # Draw histogram in each neuron
-        for neuron in range(numNeurons):
-            # Make graph
-            h_axes[neuron].hist(data[neuron])
-
-        title = 'Dispersion fan plot'
-        plt.suptitle(title, fontsize=16)
-
-        return fig, ax, h_axes
-
     def plt_violin_plot(self, data):
         # Create violin plot.
         # Purpose: ...
@@ -809,7 +790,6 @@ class SOMPlots(SOM):
             'stem': self.plt_stem,
             'hist': self.plt_histogram,
             'boxplot': self.plt_boxplot,
-            'fanchart': self.plt_dispersion_fan_plot,
             'violin': self.plt_violin_plot
         }
 
