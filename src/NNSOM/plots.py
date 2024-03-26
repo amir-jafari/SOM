@@ -735,7 +735,7 @@ class SOMPlots(SOM):
             # Make graph
             h_axes[neuron].hist(data[neuron])
 
-        title = 'Cluster Centers as Lines'
+        title = 'Cluster Centers as Histogram'
         plt.suptitle(title, fontsize=16)
 
         return fig, ax, h_axes
