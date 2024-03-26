@@ -23,8 +23,6 @@ scaler = MinMaxScaler(feature_range=(-1, 1))
 X = scaler.fit_transform(X)
 X = np.transpose(X)
 
-"""Loading Pre-trained SOM"""
-
 model_path = os.getcwd() + os.sep
 trained_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
@@ -82,14 +80,7 @@ for i in range(som.numNeurons):
 fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
-
 # Color Hist
-
-
-
-"""Color Hist"""
-
-
 fig, ax, pathces, text = som.color_hist(X, perc_sentosa)
 plt.show()
 
@@ -112,6 +103,7 @@ for cluster in target_in_cluster:
         pie_chart_sizes.append([0, 0, 0])  # Represent an empty cluster
 
 fig, ax, h_axes = som.multiplot('pie', "Class Distribution", perc_sentosa, pie_chart_sizes)
+
 # Multi Plot - Stem Plot
 dist_1 = []
 dist_2 = []
@@ -145,9 +137,23 @@ fig, ax, h_axes = som.multiplot('boxplot', sepal_length_in_cluster)
 plt.show()
 
 # Multiplot - Violin Plot
+# Input Data Preprocessing
+# Create the matrix for each cluster where the items in the hit cluster
+iris_cluster = []
+for i in range(som.numNeurons):
+    cluster_indices = som.clust[i]
+    if len(cluster_indices) > 0:
+        # Make sure cluster_indices are integers and within the range of iris.data
+        cluster_indices = np.array(cluster_indices, dtype=int)
+        # Index iris.data using cluster_indices
+        cluster_data = iris.data[cluster_indices]
+        iris_cluster.append(cluster_data)
+    else:
+        iris_cluster.append(np.array([]))  # Use an empty array for empty clusters
 
+fig, ax, h_axes = som.multiplot('violin', iris_cluster)
+plt.show()
 
 # Scatter Plot
-
-
-# Component Planes
+fig, axes, h_axes = som.plt_scatter(X, (0, 1))
+plt.show()
