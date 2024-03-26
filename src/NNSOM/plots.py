@@ -760,7 +760,7 @@ class SOMPlots(SOM):
                 # Make graph
                 h_axes[neuron].boxplot(data[neuron])
             else:
-                return
+                h_axes[neuron] = None
 
         title = 'Cluster Centers as BoxPlot'
         plt.suptitle(title, fontsize=16)
