@@ -1,10 +1,7 @@
-
-
-#!pip install --upgrade NNSOM
-
 from NNSOM.plots import SOMPlots
-from NNSOM.utils import *
 import matplotlib.pyplot as plt
+
+import os
 
 # SOM Parameters
 SOM_Row_Num = 4  # The number of row used for the SOM grid.
@@ -34,7 +31,7 @@ X = np.transpose(X)
 
 """Loading Pre-trained SOM"""
 
-model_path = "/Users/sravya/Desktop/Capstone/SOM/examples/Tabular/Iris/"
+model_path = os.getcwd() + os.sep
 trained_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
 # SOM Parameters
@@ -110,21 +107,10 @@ plt.show()
 fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
-
-
-
-som.component_planes()
-
 """Color Hist"""
 
 fig, ax, pathces, text = som.color_hist(X, perc_sentosa)
 plt.show()
-
-"""Complex Hist"""
-
-
-
-"""Simple Grid"""
 
 # Plot color code for sentosa in each cluster
 fig51, ax51, patches51, cbar51 = som.simple_grid(perc_sentosa, proportion_sentosa)

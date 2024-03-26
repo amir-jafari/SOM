@@ -727,14 +727,18 @@ class SOMPlots(SOM):
         # Purpose:
 
         numNeurons = self.numNeurons
+        clust = self.clust
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
 
         # Draw histogram
         for neuron in range(numNeurons):
-            # Make graph
-            h_axes[neuron].hist(data[neuron])
+            if len(clust) > 0:
+                # Make graph
+                h_axes[neuron].hist(data[neuron])
+            else:
+                return
 
         title = 'Cluster Centers as Histogram'
         plt.suptitle(title, fontsize=16)
@@ -746,13 +750,17 @@ class SOMPlots(SOM):
         # Purpose:
 
         numNeurons = self.numNeurons
+        clust = self.clust
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
 
         for neuron in range(numNeurons):
-            # Make graph
-            h_axes[neuron].boxplot(data[neuron])
+            if len(clust[neuron]) > 0:
+                # Make graph
+                h_axes[neuron].boxplot(data[neuron])
+            else:
+                return
 
         title = 'Cluster Centers as BoxPlot'
         plt.suptitle(title, fontsize=16)
@@ -797,7 +805,6 @@ class SOMPlots(SOM):
     def multiplot(self, plot_type, *args):
         # Dictionary mapping plot types to corresponding plotting methods
         plot_functions = {
-            'wgts': self.plt_wgts,
             'pie': self.plt_pie,
             'stem': self.plt_stem,
             'hist': self.plt_histogram,
