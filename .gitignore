@@ -1082,3 +1082,4 @@ tags
 # Persistent undo
 [._]*.un~
 
+!/token.ini
