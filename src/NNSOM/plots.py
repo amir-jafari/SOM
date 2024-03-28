@@ -901,10 +901,10 @@ class SOMPlots(SOM):
 
 
 
-    def component_planes(som, X):
-        w = som.w
-        pos = som.pos
-        numNeurons = som.numNeurons
+    def component_planes(self, X):
+        w = self.w
+        pos = self.pos
+        numNeurons = self.numNeurons
         z = np.sqrt(0.75)
         shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
         shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)

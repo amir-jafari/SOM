@@ -32,8 +32,8 @@ X = X[rng.permutation(len(X))]
 y = y[rng.permutation(len(X))]
 
 scaler = MinMaxScaler(feature_range=(-1, 1))
-X = scaler.fit_transform(X)
-X = np.transpose(X)
+X_scaled = scaler.fit_transform(X)
+X = np.transpose(X_scaled)
 
 # Training
 som = SOMPlots(Dimensions)
@@ -79,9 +79,12 @@ plt.show()
 fig5, ax5, patches5 = som.neuron_dist_plot()
 plt.show()
 
-# Weight Position Plot
-som.plt_pos(inputs=None)
-
 # Weight as Line
-fig6, ax6, h_axes = som.plt_wgts()
+fig6, ax6, h_axes = som.multiplot('wgts')
 plt.show()
+
+# Weight positions
+som.component_positions(X_scaled)
+
+# Weight Planes
+som.component_planes(X)
