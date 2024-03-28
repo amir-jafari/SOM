@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib.widgets import Button
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-
+import matplotlib.colors as mcolors
 class SOMPlots(SOM):
     """
     SOMPlots extends the SOM class by adding visualization capabilities to
@@ -898,28 +898,43 @@ class SOMPlots(SOM):
         plt.grid(False)
         plt.show()
 
-    def component_planes(self):
-        # Check if the SOM is organized in one or two dimensions
-        if len(self.dimensions) not in [1, 2]:
-            print("This plot is only supported for SOMs organized in one or two dimensions.")
-            return
 
-        # Create the plot
-        fig, axes = plt.subplots(*self.dimensions, figsize=(10, 10))
 
-        # Flatten axes if SOM is 1D
-        if len(self.dimensions) == 1:
-            axes = [axes]
+    def component_planes(som, X):
+        w = som.w
+        pos = som.pos
+        numNeurons = som.numNeurons
+        z = np.sqrt(0.75)
+        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
+        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
 
-        # Plot the SOM planes
-        for i in range(self.dimensions[0]):
-            for j in range(self.dimensions[1]):
-                ax = axes[i][j] if len(self.dimensions) == 2 else axes[j]
-                ax.imshow(self.w[:, :, i, j], cmap='RdYlBu', interpolation='nearest')
-                ax.set_title(f'Weights ({i},{j})')
-                ax.axis('off')
+        num_features = X.shape[0]
+        grid_size = int(np.ceil(np.sqrt(num_features)))  # Calculate grid size
 
-        plt.tight_layout()
+        fig, axes = plt.subplots(grid_size, grid_size, figsize=(10, 10))
+
+        for i, ax in enumerate(axes.flatten()):
+            if i < num_features:
+                ax.axis('equal')
+                xmin = np.min(pos[0]) + np.min(shapex)
+                xmax = np.max(pos[0]) + np.max(shapex)
+                ymin = np.min(pos[1]) + np.min(shapey)
+                ymax = np.max(pos[1]) + np.max(shapey)
+                ax.set_xlim([xmin, xmax])
+                ax.set_ylim([ymin, ymax])
+
+                # Get the weights for the current feature
+                feature_weights = w[:, i]
+
+                # Normalize the weights to range between 0 and 1
+                norm = mcolors.Normalize(vmin=np.min(feature_weights), vmax=np.max(feature_weights))
+
+                for j in range(numNeurons):
+                    color = plt.cm.viridis(norm(feature_weights[j]))  # Choose colormap as viridis
+                    inverted_color = tuple(
+                        1 - np.array(color[:3]))  # Invert the color to make darker colors represent larger weights
+                    ax.fill(pos[0, j] + shapex, pos[1, j] + shapey, facecolor=inverted_color, edgecolor=(0.8, 0.8, 0.8))
+
         plt.show()
 
     def plt_mouse_click(self, config):

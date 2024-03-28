@@ -161,3 +161,5 @@ plt.show()
 # Scatter Plot
 fig, axes, h_axes = som.plt_scatter(X, (0, 1))
 plt.show()
+
+
