@@ -852,39 +852,50 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_pos(self, inputs=None):
-        # Extract necessary information from the SOM object
-        weights = self.w
-        grid_shape = self.dimensions
+    def component_positions(self, X_scaled):
+        """
+        Plots the SOM weight vectors, the Iris dataset input vectors, and connects neighboring neurons.
 
-        # Plotting the SOM weights
-        plt.figure(figsize=(8, 8))
-        plt.title('SOM Classification')
-        for i in range(grid_shape[0]):
-            for j in range(grid_shape[1]):
-                plt.plot(weights[i * grid_shape[1] + j][0], weights[i * grid_shape[1] + j][1], 'o', color='gray',
-                         markersize=10)
+        Parameters:
+        - som: A trained SOM instance with attributes 'w' for weight vectors and 'dimensions' for grid dimensions.
+        - X_scaled: The normalized Iris dataset input vectors.
+        """
+        # Extract the trained weight vectors and the SOM grid dimensions
+        weight_vectors = self.w
+        grid_x, grid_y = self.dimensions
 
-        # Plotting input data if provided
-        if inputs is not None:
-            outputs = self.sim_som(inputs)
-            for i in range(len(inputs)):
-                winner_neuron = np.argmax(outputs[:, i])
-                plt.plot(weights[winner_neuron][0], weights[winner_neuron][1], 'go', markersize=5)
+        # Plot the SOM weight vectors as gray dots
+        plt.scatter(weight_vectors[:, 0], weight_vectors[:, 1], color='gray', s=50, label='Weight Vectors')
+        # for i, vec in enumerate(weight_vectors):
+        #     plt.annotate(str(i), (vec[0], vec[1]), textcoords="offset points", xytext=(0,5), ha='center')
 
-        # Connect neighboring neurons with red lines
-        for i in range(grid_shape[0]):
-            for j in range(grid_shape[1]):
-                if i > 0:
-                    plt.plot([weights[i * grid_shape[1] + j][0], weights[(i - 1) * grid_shape[1] + j][0]],
-                             [weights[i * grid_shape[1] + j][1], weights[(i - 1) * grid_shape[1] + j][1]], '-r')
-                if j > 0:
-                    plt.plot([weights[i * grid_shape[1] + j][0], weights[i * grid_shape[1] + j - 1][0]],
-                             [weights[i * grid_shape[1] + j][1], weights[i * grid_shape[1] + j - 1][1]], '-r')
+        # Plot the Iris data points as blue dots
+        plt.scatter(X_scaled[:, 0], X_scaled[:, 1], color='green', s=20, label='Input Vectors', alpha=0.5)
 
-        plt.xlabel('Dimension 1')
-        plt.ylabel('Dimension 2')
+        # Draw red lines to connect neighboring neurons
+        for i in range(grid_x):
+            for j in range(grid_y):
+                index = i * grid_y + j  # Calculate the linear index of the neuron in the SOM
+                neuron = weight_vectors[index]
 
+                # Connect to the right neighbor if it exists
+                if j < grid_y - 1:
+                    right_index = i * grid_y + (j + 1)
+                    right_neighbor = weight_vectors[right_index]
+                    plt.plot([neuron[0], right_neighbor[0]], [neuron[1], right_neighbor[1]], color='red')
+
+                # Connect to the bottom neighbor if it exists
+                if i < grid_x - 1:
+                    bottom_index = (i + 1) * grid_y + j
+                    bottom_neighbor = weight_vectors[bottom_index]
+                    plt.plot([neuron[0], bottom_neighbor[0]], [neuron[1], bottom_neighbor[1]], color='red')
+
+        # Set labels and legend
+        plt.xlabel('Feature 1')
+        plt.ylabel('Feature 2')
+        plt.title('SOM Weight Positions')
+        plt.legend()
+        plt.grid(False)
         plt.show()
 
     def component_planes(self):
