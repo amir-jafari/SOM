@@ -85,7 +85,7 @@ class SOMPlots(SOM):
             patches.append(temp)
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, ax, patches
 
@@ -121,7 +121,7 @@ class SOMPlots(SOM):
             text.append(temp)
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, ax, patches, text
 
@@ -195,7 +195,7 @@ class SOMPlots(SOM):
 
         # Get rid of extra white space on sides
         plt.axis('off')
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, ax, patches, text
 
@@ -217,7 +217,7 @@ class SOMPlots(SOM):
             patches[neuron][0]._facecolor = color
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, ax, patches, text
 
@@ -243,7 +243,7 @@ class SOMPlots(SOM):
             color = cmap(xx[neuron])
             patches[neuron][0]._facecolor = color
 
-        fig.tight_layout()
+        #fig.tight_layout()
 
         # # Add a color bar the the figure to indicate levels
         # # create an axes on the right side of ax. The width of cax will be 5%
@@ -267,7 +267,7 @@ class SOMPlots(SOM):
         cbar.ax.set_yticklabels(ticktext)
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, patches, text, cbar
 
@@ -314,7 +314,7 @@ class SOMPlots(SOM):
             patches[neuron][0]._edgecolor = color
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, ax, patches, text
 
@@ -449,7 +449,7 @@ class SOMPlots(SOM):
                 k = k + 1
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, ax, patches
 
@@ -500,7 +500,7 @@ class SOMPlots(SOM):
             patches[i][0]._path._vertices[:, 1] = pos[1, i] + shapey1 * sizes[i]
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         # Find the maximum value of avg across all clusters
         # dmax = np.amax(np.abs(avg))
@@ -520,7 +520,7 @@ class SOMPlots(SOM):
             color = cmap(xx[neuron])
             patches[neuron][0]._facecolor = color
 
-        fig.tight_layout()
+        #fig.tight_layout()
 
         # # Add a color bar the the figure to indicate levels
         # # create an axes on the right side of ax. The width of cax will be 5%
@@ -548,7 +548,7 @@ class SOMPlots(SOM):
         cbar.ax.set_yticklabels(ticktext)
 
         # Get rid of extra white space on sides
-        fig.tight_layout()
+        #fig.tight_layout()
 
         return fig, ax, patches, cbar
 
@@ -793,6 +793,7 @@ class SOMPlots(SOM):
     def multiplot(self, plot_type, *args):
         # Dictionary mapping plot types to corresponding plotting methods
         plot_functions = {
+            'wgts' : self.plt_wgts,
             'pie': self.plt_pie,
             'stem': self.plt_stem,
             'hist': self.plt_histogram,
@@ -891,8 +892,8 @@ class SOMPlots(SOM):
                     plt.plot([neuron[0], bottom_neighbor[0]], [neuron[1], bottom_neighbor[1]], color='red')
 
         # Set labels and legend
-        plt.xlabel('Feature 1')
-        plt.ylabel('Feature 2')
+        plt.xlabel('Weight 1')
+        plt.ylabel('Weight 2')
         plt.title('SOM Weight Positions')
         plt.legend()
         plt.grid(False)
