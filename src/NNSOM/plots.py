@@ -271,7 +271,7 @@ class SOMPlots(SOM):
 
         return fig, patches, text, cbar
 
-    def cmplx_hit_hist(self, x, perc, ind_missClass, ind21, ind12):
+    def cmplx_hit_hist(self, x, clust, perc, ind_missClass, ind21, ind12):
         # This is a modified hit histogram, indicating if a cluster contains a
         # majority of good binders, and indicating how many/type errors occur in
         # each cluster
@@ -284,7 +284,6 @@ class SOMPlots(SOM):
         #  ind21 - indices of false positive cases
         #  ind12 - indices of false negative cases
         numNeurons = self.numNeurons
-        clust = self.clust
 
         # Make hit histogram
         fig, ax, patches, text = self.hit_hist(x, True)
@@ -726,12 +725,11 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_histogram(self, data):
+    def plt_histogram(self, data, clust):
         # Create histogram.
         # Purpose:
 
         numNeurons = self.numNeurons
-        clust = self.clust
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
@@ -749,12 +747,11 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_boxplot(self, data):
+    def plt_boxplot(self, data, clust):
         # Create the box plot
         # Purpose:
 
         numNeurons = self.numNeurons
-        clust = self.clust
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
@@ -771,9 +768,8 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_violin_plot(self, data):
+    def plt_violin_plot(self, data, clust):
         numNeurons = self.numNeurons
-        clust = self.clust
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
@@ -807,7 +803,7 @@ class SOMPlots(SOM):
         else:
             raise ValueError("Invalid function type")
 
-    def plt_scatter(self, x, indices, reg_line=True):
+    def plt_scatter(self, x, clust, indices, reg_line=True):
         """ Generate Scatter Plot for Each Neuron.
 
         Args:
@@ -821,7 +817,6 @@ class SOMPlots(SOM):
         """
         pos = self.pos
         numNeurons = self.numNeurons
-        clust = self.clust
 
         # Data preprocessing
         # This should be updated!!!!
@@ -988,7 +983,7 @@ class SOMPlots(SOM):
 
         pos = self.pos
         numNeurons = self.numNeurons
-        clust = self.clust
+        clust = config['clust']
 
         # Determmine the hexagon shape
         shapex, shapey = get_hexagon_shape()
