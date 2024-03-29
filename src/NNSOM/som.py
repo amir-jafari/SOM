@@ -40,6 +40,15 @@ class SOM():
     train(self, x, init_neighborhood=3, epochs=200, steps=100):
         Trains the SOM using the batch SOM algorithm on the input data x.
 
+    quantization_error(self, dist)
+        Calculate quantization error
+
+    topological_error(self, data)
+        Calculate 1st and 1st-2nd toplogical error
+
+    distortion_error(self, data)
+        Calculate distortion error
+
     save_pickle(self, filename, path, data_format='pkl'):
         Saves the SOM object to a file using the pickle format.
 
@@ -58,14 +67,6 @@ class SOM():
         self.w = []
         # Set simulation flag to True,  needs to do simulation
         self.sim_flag = True
-        # Initialize the Cluster Array containing list of indices sorted by distance
-        self.clust = []
-        # Initialize the Cluster Array containing list of distances sorted by distance
-        self.dist = []
-        # Initialize the numpy array with maximum distance to any input in the cluster from the cluster center
-        self.mdist = np.zeros(self.numNeurons)
-        # Initialize the list of cluster sizes (Number of times it has been a BMU)
-        self.clustSize = []
 
     def init_w(self, x):
         # Initialize SOM weights using principal components
@@ -143,7 +144,7 @@ class SOM():
 
         # Find out which center was closest to the input
         maxRows = np.argmax(n, axis=0)
-        a = to_categorical(maxRows, num_classes=n.shape[0])#made correction-added number of class
+        a = to_categorical(maxRows, num_classes=n.shape[0]) #made correction-added number of class
         # a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change
         return np.transpose(a)
 
@@ -205,53 +206,14 @@ class SOM():
         self.outputs = self.sim_som(x)
         self.sim_flag = False
 
-        # Set Clust Properties
-        x_w_dist = cdist(self.w, np.transpose(x), 'euclidean')
-        ind1 = np.argmin(x_w_dist, axis=0)
-
-        clust = []  # Cluster array sorted by distances
-        dist = []  # Distance array sorted by distances
-        mdist = np.zeros(S)  # Maximum distance to any input in the cluster from cluster center
-        clustSize = []  # Cluster size
-
-        for i in range(S):
-            # Find which inputs are closest to each weight (in cluster i)
-            tempclust = np.where(ind1 == i)[0]
-
-            # Save distance of each input in the cluster to cluster center (weight)
-            tempdist = x_w_dist[i, tempclust]
-            indsort = np.argsort(tempdist)
-            tempclust = tempclust[indsort]  # Sort indices
-            tempdist = tempdist[indsort]
-
-            # Add to distance array sorted distances
-            dist.append(tempdist)
-
-            # Add to Cluster array sorted indices
-            clust.append(tempclust)
-
-            # Cluster size
-            num = len(tempclust)
-            clustSize.append(num)
-
-            # Save the maximum distance to any input in the cluster from cluster center
-            if num > 0:
-                mdist[i] = tempdist[-1]
-
-        self.clust = clust
-        self.dist = dist
-        self.mdist = mdist
-        self.clustSize = clustSize
-
         print('Ending Training')
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
 
-    def quantization_error(self):
+    def quantization_error(self, dist):
         """
         Calculate quantization error
         """
-        dist = self.dist
         quant_err = np.array([0 if len(item) == 0 else np.mean(item) for item in dist]).mean()
 
         return quant_err

@@ -126,3 +126,72 @@ def get_edge_shape():
     edgey = np.array([0, 1, 0, - 1]) * np.sqrt(0.75) / 3
 
     return edgex, edgey
+
+
+def extract_cluster_details(som, data):
+    """
+    Returns Cluster Index Array, Cluster Distance Array,
+    Maximum Distance Array, and Cluster Size Array.
+
+    Parameters
+    ----------
+    som : SOM object
+        A SOM object trained on the input data.
+    data : numpy array
+        Input data to be clustered.
+
+    Returns
+    -------
+    clust : list
+        A cluster array of indices sorted by distances.
+    dist : list
+        A cluster array of distances sorted by distances.
+    mdist : numpy array
+        A list of maimum distance to any input in the cluster from cluster center.
+    clustSize : list
+        Cluster array sizes.
+    """
+
+    # Assertions (check if the input data and som weights have the same number of features)
+    if data.shape[0] != som.w.shape[1]:
+        raise ValueError('The number of features in the input data and the SOM weights do not match.')
+
+    w = som.w
+    shapw = w.shape
+    S = shapw[0]
+
+    x_w_dist = cdist(som.w, np.transpose(data), 'euclidean')
+    ind1 = np.argmin(x_w_dist, axis=0)
+
+    clust = []  # a cluster array of indices sorted by distances
+    dist = []  # a cluster array of distances sorted by distances
+    mdist = np.zeros(S)  # a list of maimum distance to any input in the cluster from cluster center
+    clustSize = []  # cluster array sizes
+
+    for i in range(S):
+        # Find which inputs are closest to each weight (in cluster i)
+        tempclust = np.where(ind1 == i)[0]
+
+        # Save distance of each input in the cluster to cluster center (weight)
+        tempdist = x_w_dist[i, tempclust]
+        indsort = np.argsort(tempdist)
+        tempclust = tempclust[indsort]  # Sort indices
+        tempdist = tempdist[indsort]
+
+        # Add to distance array sorted distances
+        dist.append(tempdist)
+
+        # Add to Cluster array sorted indices
+        clust.append(tempclust)
+
+        # Cluster size
+        num = len(tempclust)
+        clustSize.append(num)
+
+        # Save the maximum distance to any input in the cluster from cluster center
+        if num > 0:
+            mdist[i] = tempdist[-1]
+
+    return clust, dist, mdist, clustSize
+
+
