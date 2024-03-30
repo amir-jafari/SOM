@@ -2,6 +2,7 @@ from scipy.spatial.distance import cdist
 from scipy import sparse
 import numpy as np
 import networkx as nx
+from matplotlib.widgets import Button
 
 def preminmax(p):
     # Normalize the inputs to be in the range [-1, 1]
@@ -23,7 +24,6 @@ def preminmax(p):
     maxp0 = np.expand_dims(maxp0, axis=1)
     pn = 2*(p-minp0)/(maxp0-minp0) - 1
     return pn, minp, maxp
-
 
 def calculate_positions(dim):
     # Calculate the positions of the neurons in the SOM
@@ -127,7 +127,7 @@ def get_edge_shape():
 
     return edgex, edgey
 
-
+# Helper function to extract cluster details obtained from the SOM and input data
 def extract_cluster_details(som, data):
     """
     Returns Cluster Index Array, Cluster Distance Array,
@@ -193,5 +193,298 @@ def extract_cluster_details(som, data):
             mdist[i] = tempdist[-1]
 
     return clust, dist, mdist, clustSize
+
+
+# Helper Functions to extract information from the input data for passing to the plot
+def get_cluster_array(feature, clust):
+    """
+    Returns a NumPy array of objects, each containing the feature values for each cluster.
+
+    Parameters
+    ----------
+    feature : array-like
+        Feature array.
+    clust : list
+        A list of cluster arrays, each containing indices sorted by distances.
+
+    Returns
+    -------
+    cluster_array : numpy.ndarray
+        A NumPy array where each element is an array of feature values for that cluster.
+    """
+    cluster_array = np.empty(len(clust), dtype=object)
+
+    for i, cluster_indices in enumerate(clust):
+        if len(cluster_indices) > 0:
+            cluster_array[i] = feature[cluster_indices]
+        else:
+            cluster_array[i] = np.array([])  # Store an empty array if the cluster is empty
+
+    return cluster_array
+
+
+def closest_class_cluster(cat_feature, clust):
+    """
+    Returns the cluster array with the closest class for each cluster.
+
+    Paramters
+    ----------
+    cat_feature : array-like
+        Categorical feature array.
+    clust : list
+        A cluster array of indices sorted by distances.
+
+    Returns
+    -------
+    closest_class : numpy array
+        A cluster array with the closest class for each cluster.
+    """
+    closest_class = np.zeros(len(clust))
+    for i in range(len(clust)):
+        cluster_indices = clust[i]
+        if len(cluster_indices) > 0:
+            closest_class[i] = cat_feature[cluster_indices[0]]
+        else:
+            closest_class[i] = None  # Avoid division by zero if the cluster is empty
+
+    return closest_class
+
+
+def majority_class_cluster(cat_feature, clust):
+    """
+    Returns the cluster array with the majority class for each cluster.
+
+    Paramters
+    ----------
+    cat_feature : array-like
+        Categorical feature array.
+    clust : list
+        A cluster array of indices sorted by distances.
+
+    Returns
+    -------
+    majority_class : numpy array
+        A cluster array with the majority class
+    """
+    majority_class = np.zeros(len(clust))
+    for i in range(len(clust)):
+        cluster_indices = clust[i]
+        if len(cluster_indices) > 0:
+            majority_class[i] = np.argmax(np.bincount(cat_feature[cluster_indices]))
+        else:
+            majority_class[i] = None  # Avoid division by zero if the cluster is empty
+
+    return majority_class
+
+
+def get_perc_cluster(cat_feature, target, clust):
+    """
+    Return cluster array with the percentage of a specific target class in each cluster.
+
+    Parameters
+    ----------
+    cat_feature : array-like
+        Categorical feature array.
+    target : int or str
+        Target class to calculate the percentage.
+    clust : list
+        A cluster array of indices sorted by distances.
+
+    Returns
+    -------
+    cluster_array : numpy array
+        A cluster array with the percentage of target class.
+    """
+    # Create Cluster Array with the percentage of target class
+    cluster_array = np.zeros(len(clust))
+    for i in range(len(clust)):
+        cluster_indices = clust[i]
+        if len(cluster_indices) > 0:
+            cluster_array[i] = np.sum(cat_feature[cluster_indices] == target) / len(cluster_indices)
+        else:
+            cluster_array[i] = 0  # Avoid division by zero if the cluster is empty
+
+    return cluster_array * 100
+
+
+def count_classes_in_cluster(cat_feature, clust):
+    """
+    Count the occurrences of each class in each cluster using vectorized operations
+    for efficiency.
+
+    Parameters
+    ----------
+    cat_feature : array-like
+        Categorical feature array.
+    clust : list
+        A list of arrays, each containing the indices of elements in a cluster.
+
+    Returns
+    -------
+    cluster_counts : numpy array
+        A 2D array with counts of each class in each cluster.
+    """
+    unique_classes, _ = np.unique(cat_feature, return_counts=True)
+    num_classes = len(unique_classes)
+
+    # Initialize the array to hold class counts for each cluster
+    cluster_counts = np.zeros((len(clust), num_classes), dtype=int)
+
+    # Loop over clusters to count class occurrences
+    for i, indices in enumerate(clust):
+        if len(indices) > 0:
+            # Count occurrences of each class in the cluster
+            cluster_counts[i] = [np.sum(cat_feature[indices] == cls) for cls in unique_classes]
+        else:
+            cluster_counts[i] = np.zeros(num_classes, dtype=int)
+
+    return cluster_counts
+
+
+def get_align_cluster(cat_feature, clust):
+    """
+    Create an array of alignments for each cluster based on class indices.
+
+    Parameters
+    ----------
+    cat_feature : array-like
+        Categorical feature array.
+    clust : list
+        A list of arrays, each containing the indices of elements in a cluster.
+
+    Returns
+    -------
+    alignment_cluster : numpy array
+        A 2D array with alignments for each cluster.
+    """
+    unique_classes = np.unique(cat_feature)
+    num_classes = len(unique_classes)
+
+    # Initialize the array to hold alignments for each cluster
+    alignment_cluster = np.zeros((len(clust), num_classes), dtype=int)
+
+    # Populate the alignment array
+    # Since the alignment seems to be the index of the class, we can directly use the unique_classes for alignment
+    for i in range(len(clust)):
+        alignment_cluster[i] = unique_classes
+
+    return alignment_cluster
+
+
+# Helper function  to extract information from the post-training model for passing to the plot
+def get_ind_misclassified(target, prediction):
+    """
+    Get the indices of misclassified items.
+
+    Parameters
+    ----------
+    target : array-like
+        The true target values.
+    prediction : array-like
+        The predicted values.
+
+    Returns
+    -------
+    misclassified_indices : list
+        List of indices of misclassified items.
+    """
+    misclassified_indices = np.where(target != prediction)[0]
+
+    return misclassified_indices
+
+
+def get_perc_missclassified(target, prediction, clust):
+    """
+    Calculate the percentage of misclassified items in each cluster and return as a numpy array.
+
+    Parameters
+    ----------
+    target : array-like
+        The true target values.
+    prediction : array-like
+        The predicted values.
+    clust : array-like
+        List of arrays, each containing the indices of elements in a cluster.
+
+    Returns
+    -------
+    proportion_misclassified : numpy array
+        Percentage of misclassified items in each cluster.
+    """
+    # Get the indices of misclassified items.
+    misclassified_indices = get_ind_misclassified(target, prediction)
+
+    # Initialize array to store proportion of misclassified items
+    proportion_misclassified = np.zeros(len(clust))
+
+    for i, cluster_indices in enumerate(clust):
+        if len(cluster_indices) > 0:
+            # Compute intersection of cluster indices and misclassified indices
+            misclassified_count = np.intersect1d(cluster_indices, misclassified_indices).size
+            proportion_misclassified[i] = (misclassified_count / len(cluster_indices)) * 100
+
+    return proportion_misclassified
+
+
+def get_conf_indeices(target, results, target_class):
+    """
+    Get the indices of True Positive, True Negative, False Positive, and False Negative for a specific target class.
+
+    Parameters
+    ----------
+    target : array-like
+        The true target values.
+    results : array-like
+        The predicted values.
+    target_class : int
+        The target class for which to get the confusion indices.
+
+    Returns
+    -------
+    tp_index : numpy array
+        Indices of True Positives.
+    tn_index : numpy array
+        Indices of True Negatives.
+    fp_index : numpy array
+        Indices of False Positives.
+    fn_index : numpy array
+        Indices of False Negatives.
+    """
+    tp_index = np.where((y == target_class) & (results == target_class))[0]
+    tn_index = np.where((y != target_class) & (results != target_class))[0]
+    fp_index = np.where((y != target_class) & (results == target_class))[0]
+    fn_index = np.where((y == target_class) & (results != target_class))[0]
+
+    return tp_index, tn_index, fp_index, fn_index
+
+
+# Helper functions to create button objects in the interactive plot
+def create_buttons(fig, button_types):
+    sidebar_width = 0.2
+    button_config = calculate_button_positions(len(button_types), sidebar_width)
+
+    buttons = {}
+    for i, button_type in enumerate(button_types):
+        button_ax = fig.add_axes(button_config[i])
+        buttons[button_type] = Button(button_ax, button_type.capitalize(), hovercolor='0.975')
+
+    return buttons
+
+
+def calculate_button_positions(num_buttons, sidebar_width):
+    # Calculate button positions and sizes
+    button_ratio = 16 / 9
+    single_button_width = sidebar_width * 0.8
+    single_button_height = single_button_width / button_ratio
+    margin = 0.05
+    total_buttons_height = num_buttons * single_button_height + (num_buttons - 1) * margin
+
+    button_config = []
+    for i in range(num_buttons):
+        y_pos = (1 - total_buttons_height) / 2 + (num_buttons - 1 - i) * (single_button_height + margin)
+        x_centered = 0.8 + (0.2 - single_button_width) / 2
+        button_config.append([x_centered, y_pos, single_button_width, single_button_height])
+
+    return button_config
 
 
