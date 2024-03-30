@@ -196,6 +196,35 @@ def extract_cluster_details(som, data):
 
 
 # Helper Functions to extract information from the input data for passing to the plot
+def get_cluster_data(data, clusters):
+    """
+    For each cluster, extract the corresponding data points and return them in a list.
+
+    Parameters
+    ----------
+    data : numpy array
+        The dataset from which to extract the clusters' data.
+    clusters : list of arrays
+        A list where each element is an array of indices for data points in the corresponding cluster.
+
+    Returns
+    -------
+    cluster_data_list : list of numpy arrays
+        A list where each element is a numpy array containing the data points of a cluster.
+    """
+    cluster_data_list = []
+    for cluster_indices in clusters:
+        if len(cluster_indices) > 0:
+            # Ensure cluster_indices are integers and within the range of data
+            cluster_indices = np.array(cluster_indices, dtype=int)
+            cluster_data = data[cluster_indices]
+            cluster_data_list.append(cluster_data)
+        else:
+            cluster_data_list.append(np.array([]))  # Use an empty array for empty clusters
+
+    return cluster_data_list
+
+
 def get_cluster_array(feature, clust):
     """
     Returns a NumPy array of objects, each containing the feature values for each cluster.
@@ -426,7 +455,7 @@ def get_perc_missclassified(target, prediction, clust):
     return proportion_misclassified
 
 
-def get_conf_indeices(target, results, target_class):
+def get_conf_indices(target, results, target_class):
     """
     Get the indices of True Positive, True Negative, False Positive, and False Negative for a specific target class.
 
@@ -450,13 +479,12 @@ def get_conf_indeices(target, results, target_class):
     fn_index : numpy array
         Indices of False Negatives.
     """
-    tp_index = np.where((y == target_class) & (results == target_class))[0]
-    tn_index = np.where((y != target_class) & (results != target_class))[0]
-    fp_index = np.where((y != target_class) & (results == target_class))[0]
-    fn_index = np.where((y == target_class) & (results != target_class))[0]
+    tp_index = np.where((target == target_class) & (results == target_class))[0]
+    tn_index = np.where((target != target_class) & (results != target_class))[0]
+    fp_index = np.where((target != target_class) & (results == target_class))[0]
+    fn_index = np.where((target == target_class) & (results != target_class))[0]
 
     return tp_index, tn_index, fp_index, fn_index
-
 
 # Helper functions to create button objects in the interactive plot
 def create_buttons(fig, button_types):
@@ -469,7 +497,6 @@ def create_buttons(fig, button_types):
         buttons[button_type] = Button(button_ax, button_type.capitalize(), hovercolor='0.975')
 
     return buttons
-
 
 def calculate_button_positions(num_buttons, sidebar_width):
     # Calculate button positions and sizes
