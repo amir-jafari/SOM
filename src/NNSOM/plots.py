@@ -152,12 +152,6 @@ class SOMPlots(SOM):
         pos = self.pos
         numNeurons = self.numNeurons
 
-        # Set hexagons are clickable or not
-        if mouse_click:
-            picker = True
-        else:
-            picker = False
-
         # Determine the shape of the hexagon to represent each cluster
         shapex, shapey = get_hexagon_shape()
 
@@ -178,7 +172,7 @@ class SOMPlots(SOM):
         for i in range(numNeurons):
             hex, = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey,
                              facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8),
-                             picker=picker)
+                             picker=True)
             hexagons.append(hex)
 
         # Assign cluster number for each hexagon
