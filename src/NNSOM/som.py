@@ -68,6 +68,10 @@ class SOM():
         # Set simulation flag to True,  needs to do simulation
         self.sim_flag = True
 
+        # Initialize the dictionary of sub-cluster. {neuron_number(int): sub-clustering SOM obj}
+        self.sub_som = {}
+
+
     def init_w(self, x):
         # Initialize SOM weights using principal components
 

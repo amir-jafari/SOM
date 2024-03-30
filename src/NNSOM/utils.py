@@ -196,7 +196,7 @@ def extract_cluster_details(som, data):
 
 
 # Helper Functions to extract information from the input data for passing to the plot
-def get_cluster_data(data, clusters):
+def get_cluster_data(data, clust):
     """
     For each cluster, extract the corresponding data points and return them in a list.
 
@@ -204,7 +204,7 @@ def get_cluster_data(data, clusters):
     ----------
     data : numpy array
         The dataset from which to extract the clusters' data.
-    clusters : list of arrays
+    clust : list of arrays
         A list where each element is an array of indices for data points in the corresponding cluster.
 
     Returns
@@ -213,7 +213,7 @@ def get_cluster_data(data, clusters):
         A list where each element is a numpy array containing the data points of a cluster.
     """
     cluster_data_list = []
-    for cluster_indices in clusters:
+    for cluster_indices in clust:
         if len(cluster_indices) > 0:
             # Ensure cluster_indices are integers and within the range of data
             cluster_indices = np.array(cluster_indices, dtype=int)
@@ -486,6 +486,7 @@ def get_conf_indices(target, results, target_class):
 
     return tp_index, tn_index, fp_index, fn_index
 
+
 # Helper functions to create button objects in the interactive plot
 def create_buttons(fig, button_types):
     sidebar_width = 0.2
@@ -497,6 +498,7 @@ def create_buttons(fig, button_types):
         buttons[button_type] = Button(button_ax, button_type.capitalize(), hovercolor='0.975')
 
     return buttons
+
 
 def calculate_button_positions(num_buttons, sidebar_width):
     # Calculate button positions and sizes
