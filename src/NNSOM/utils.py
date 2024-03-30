@@ -400,6 +400,51 @@ def get_align_cluster(cat_feature, clust):
     return alignment_cluster
 
 
+def cal_class_cluster_intersect(clust, *args):
+    """
+    Calculate the intersection sizes of each class with each neuron cluster.
+
+    This function computes the size of the intersection between each given class
+    (represented by arrays of indices) and each neuron cluster (represented by
+    a list of lists of indices). The result is a 2D array where each row corresponds
+    to a neuron cluster, and each column corresponds to one of the classes.
+
+    Parameters
+    ----------
+    clust : list of lists
+        A collection of neuron clusters, where each neuron cluster is a list of indices.
+    *args : sequence of array-like
+        A variable number of arrays, each representing a class with indices.
+
+    Returns
+    -------
+    numpy.ndarray
+        A 2D array where the entry at position (i, j) represents the number of indices
+        in the j-th class that are also in the i-th neuron cluster.
+
+    Examples
+    --------
+    >>> clust = [[4, 5, 9], [1, 7], [2, 10, 11], [3, 6, 8]]
+    >>> ind1 = np.array([1, 2, 3])
+    >>> ind2 = np.array([4, 5, 6])
+    >>> ind3 = np.array([7, 8, 9])
+    >>> ind4 = np.array([10, 11, 12])
+    >>> get_sizes_clust(clust, ind1, ind2, ind3, ind4)
+    array([[0, 2, 1, 0],
+           [1, 0, 1, 0],
+           [1, 0, 0, 2],
+           [1, 1, 1, 0]])
+    """
+    numst = list(args)
+
+    cluster_sizes_matrix = np.zeros((len(numst), len(clust)))
+
+    for i, ind in enumerate(numst):
+        for j, cluster in enumerate(clust):
+            cluster_sizes_matrix[i][j] = np.sum(np.isin(cluster, ind))
+
+    return cluster_sizes_matrix.T
+
 # Helper function  to extract information from the post-training model for passing to the plot
 def get_ind_misclassified(target, prediction):
     """
