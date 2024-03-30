@@ -125,7 +125,7 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
-    def hit_hist(self, x, textFlag, mouse_click=False, connect_pick_event=False, **kwargs):
+    def hit_hist(self, x, textFlag, mouse_click=False, connect_pick_event=True, **kwargs):
         """ Generate Hit Histogram
 
         Parameters
