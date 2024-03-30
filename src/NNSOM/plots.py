@@ -1143,7 +1143,7 @@ class SOMPlots(SOM):
         # Redraw the figure
         ax.figure.canvas.draw_idle()
 
-    def plot_scatter(self, ax, data, num1, num2, neuronNum):
+    def plot_scatter(self, ax, num1, num2, neuronNum):
         """
         Helper function to display scatter plot in the interactive plots
         Args:
@@ -1159,12 +1159,12 @@ class SOMPlots(SOM):
         # Clear the axes
         ax.clear()
         # Scatter plot logic here
-        ax.scatter(data[:, num1], data[:, num2])
+        ax.scatter(num1, num2)
         ax.set_title('Scatter Plot inside the Cluster ' + str(neuronNum))
         # Redraw the figure
         ax.figure.canvas.draw_idle()
 
-    def sub_clustering(self, data, clust, neuron_ind):
+    def sub_clustering(self, data, neuron_ind):
         """
         Helper function for interactive function which create the sub-cluster
         Args:
@@ -1174,11 +1174,7 @@ class SOMPlots(SOM):
         Returns:
 
         """
-        # Data Preparation
-        sub_x = np.transpose(data)[clust[neuron_ind]]
-        sub_x = np.transpose(sub_x)
-
-        if len(sub_x) <= 1:
+        if len(data) <= 1:
             print("There is no enough data to create sub-cluster")
             return
 
@@ -1187,12 +1183,14 @@ class SOMPlots(SOM):
             sub_clust = self.sub_som[neuron_ind]
         else:
             # Training Sub Cluster
+            sub_X = np.transpose(data)
             sub_clust = SOMPlots((2, 2))
-            sub_clust.init_w(sub_x)
-            sub_clust.train(sub_x, 3, 500, 100)
+            sub_clust.init_w(sub_X)
+            sub_clust.train(sub_X, 3, 500, 100)
 
             self.sub_som[neuron_ind] = sub_clust
 
         # Plot the sub cluster <- Can we h
-        fig, ax, patches, text = sub_clust.hit_hist(sub_x, True, connect_pick_event=False)
+        fig, ax, patches, text = sub_clust.hit_hist(sub_X, True, connect_pick_event=False)
+
         plt.show()
