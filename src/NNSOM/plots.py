@@ -656,7 +656,7 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_stem(self, x, y):
+    def plt_stem(self, title, align, height):
         # Plot distribution
         # Purpose:
 
@@ -668,9 +668,8 @@ class SOMPlots(SOM):
         # Draw stem plot
         for neuron in range(numNeurons):
             # Make graph
-            h_axes[neuron].stem(x[neuron], y[neuron])
+            h_axes[neuron].stem(align[neuron], height[neuron])
 
-        title = 'dist plot'
         plt.suptitle(title, fontsize=16)
 
         return fig, ax, h_axes
@@ -695,7 +694,7 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_pie(self, title, perc, sizes): #*argv):
+    def plt_pie(self, title, perc, sizes_cluster): #*argv):
         # Generate pie plot in the hexagon.
         # Purpose:
 
@@ -746,8 +745,8 @@ class SOMPlots(SOM):
             # Make pie chart
             # if np.sum(sizes[neuron]) == 0:
             #     nums = [0.0, 1.0, 0.0, 0.0]
-            if np.sum(sizes[neuron]) != 0:
-                h_axes[neuron].pie(sizes[neuron]) #, colors=clrs)
+            if np.sum(sizes_cluster[neuron]) != 0:
+                h_axes[neuron].pie(sizes_cluster[neuron]) #, colors=clrs)
             else:
                 h_axes[neuron] = None
 
