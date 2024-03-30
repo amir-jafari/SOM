@@ -176,7 +176,7 @@ class SOMPlots(SOM):
         # Create the cluster hexagons
         hexagons = []
         for i in range(numNeurons):
-            hex, _ = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey,
+            hex, = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey,
                              facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8),
                              picker=picker)
             hexagons.append(hex)
