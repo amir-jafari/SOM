@@ -694,11 +694,12 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_pie(self, title, perc, sizes_cluster): #*argv):
+    def plt_pie(self, title, perc, sizes_cluster, scaleFlag=True): #*argv):
         # Generate pie plot in the hexagon.
         # Purpose:
 
         pos = self.pos
+        numNeurons = self.numNeurons
 
         # Pull out the statistics (tp, fn, tn, fp) from the arguments
         # numst = []
@@ -710,15 +711,23 @@ class SOMPlots(SOM):
         # if len(numst) == 4:
         #     pdb = True
 
-        # Find the locations and size for each neuron in the SOM
-        numNeurons = self.numNeurons
-
         # Assign the colors for the pie chart (tp, fn, tn, fp)
         # if pdb:
         #     clrs = ['lawngreen', 'yellow', 'blue', 'red']
         # else:
         #     # Only two colors for well docked bad binders (tn, fp)
         #     clrs = ['blue', 'red']
+
+        # Set default scale
+        scale = 1
+
+        # Determine the number of colors needed
+        shapclust = sizes_cluster.shape
+        num_colors = shapclust[1]
+
+        # Generate a color list using a colormap
+        cmap = cm.get_cmap('plasma', num_colors)  # Use any suitable
+        clrs = [cmap(i) for i in range(num_colors)]
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes = self.setup_axes()
@@ -731,11 +740,12 @@ class SOMPlots(SOM):
             #     scale = np.sqrt(perc[neuron] / 100)
             # else:
             #     scale = np.sqrt((100 - perc[neuron]) / 100)
+            if scaleFlag:
+                scale = np.sqrt(perc[neuron] / 100)
+                scale = max(scale, 0.01)  # Ensure minimum scale
 
-            scale = np.sqrt(perc[neuron] / 100)
-
-            if scale == 0:
-                scale = 0.01
+            # if scale == 0:
+            #     scale = 0.01
                 # Set numbers (tp, fn, tn, fp) for pie chart
                 # if pdb:
                 #     nums = [numst[0][neuron], numst[1][neuron], numst[2][neuron], numst[3][neuron]]
@@ -743,10 +753,8 @@ class SOMPlots(SOM):
                 #     nums = [numst[0][neuron], numst[1][neuron]]
 
             # Make pie chart
-            # if np.sum(sizes[neuron]) == 0:
-            #     nums = [0.0, 1.0, 0.0, 0.0]
             if np.sum(sizes_cluster[neuron]) != 0:
-                h_axes[neuron].pie(sizes_cluster[neuron]) #, colors=clrs)
+                h_axes[neuron].pie(sizes_cluster[neuron], colors=clrs, radius=scale)
             else:
                 h_axes[neuron] = None
 

@@ -445,6 +445,7 @@ def cal_class_cluster_intersect(clust, *args):
 
     return cluster_sizes_matrix.T
 
+
 # Helper function  to extract information from the post-training model for passing to the plot
 def get_ind_misclassified(target, prediction):
     """
