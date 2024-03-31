@@ -3,13 +3,9 @@ from NNSOM.utils import *
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-from matplotlib.widgets import Button
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import MinMaxScaler
-import pandas as pd
 from numpy.random import default_rng
 import os
 
@@ -56,6 +52,10 @@ num2 = get_cluster_array(X[1], clust)
 cat = count_classes_in_cluster(y, clust)
 height = count_classes_in_cluster(y, clust)  # height for stem
 align = get_align_cluster(y, clust)  # align for stem
+# Data Prep for pie
+perc_sentosa = get_perc_cluster(y, 0, clust)
+iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
+
 
 kwargs = {
     'data': X,
@@ -71,18 +71,14 @@ kwargs = {
 }
 
 # Interactive hit hist
-fig, ax, patches, text = som.hit_hist(X, textFlag=True, mouse_click=True, **kwarg)
+fig, ax, patches, text = som.hit_hist(X, textFlag=True, mouse_click=True, **kwargs)
 plt.show()
 
 # Interactive neuron dist
-fig, ax, patches, text = som.neuron_dist_plot(mouse_click=True, **kwarg)
+fig, ax, patches = som.neuron_dist_plot(True, **kwargs)
 plt.show()
 
 # Interactive pie plot
-# Data Prep for pie
-perc_sentosa = get_perc_cluster(y, 0, clust)
-iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
-
 fig, ax, h_axes = som.plt_pie('Pie Chart', perc_sentosa, iris_class_counts_cluster_array, mouse_click=True, **kwargs)
 plt.show()
 
