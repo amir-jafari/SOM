@@ -171,7 +171,6 @@ class SOMPlots(SOM):
         plt.tight_layout()
 
         return fig, ax, patches, text
-
     def hit_hist(self, x, textFlag, mouse_click=False, connect_pick_event=True, **kwargs):
         """ Generate Hit Histogram
 
@@ -276,14 +275,14 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
-    def gray_hist(self, x, perc):
+    def gray_hist(self, x, perc, mouse_click=False, connect_pick_event=True, **kwargs):
         # Make another hit histogram figure, and change the colors of the hexagons
         # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
         # means more PDB ligands, darker color means more well-docked bad binders.
 
         numNeurons = self.numNeurons
 
-        fig, ax, patches, text = self.hit_hist(x, False)
+        fig, ax, patches, text = self.hit_hist(x, False, mouse_click, **kwargs)
 
         # Scale the gray scale to the perc value
         for neuron in range(numNeurons):
@@ -294,11 +293,11 @@ class SOMPlots(SOM):
             patches[neuron][0]._facecolor = color
 
         # Get rid of extra white space on sides
-        #fig.tight_layout()
+        plt.tight_layout()
 
         return fig, ax, patches, text
 
-    def color_hist(self, x, avg):
+    def color_hist(self, x, avg, mouse_click=False, connect_pick_event=True, **kwargs):
         # Plot an SOM figure where the size of the hexagons is related to
         # the number of elements in the clusters, and the color of the
         # inner hexagon is coded to the variable avg, which could be the
@@ -308,7 +307,7 @@ class SOMPlots(SOM):
         dmax = np.amax(np.abs(avg))
         numNeurons = self.numNeurons
 
-        fig, ax, patches, text = self.hit_hist(x, False)
+        fig, ax, patches, text = self.hit_hist(x, False, mouse_click, **kwargs)
 
         # Use the jet color map
         cmap = plt.get_cmap('jet')
@@ -320,7 +319,7 @@ class SOMPlots(SOM):
             color = cmap(xx[neuron])
             patches[neuron][0]._facecolor = color
 
-        #fig.tight_layout()
+        plt.tight_layout()
 
         # # Add a color bar the the figure to indicate levels
         # # create an axes on the right side of ax. The width of cax will be 5%
@@ -344,7 +343,7 @@ class SOMPlots(SOM):
         cbar.ax.set_yticklabels(ticktext)
 
         # Get rid of extra white space on sides
-        #fig.tight_layout()
+        fig.tight_layout()
 
         return fig, patches, text, cbar
 

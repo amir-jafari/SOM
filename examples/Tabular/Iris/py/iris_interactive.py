@@ -82,3 +82,10 @@ plt.show()
 fig, ax, h_axes = som.plt_pie('Pie Chart', perc_sentosa, iris_class_counts_cluster_array, mouse_click=True, **kwargs)
 plt.show()
 
+# Interactive plt_top
+fig, ax, patches = som.plt_top(True, **kwargs)
+plt.show()
+
+# Interactive plt_top_num
+fig, ax, patches, text = som.plt_top_num(True, **kwargs)
+plt.show()
