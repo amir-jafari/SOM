@@ -48,9 +48,23 @@ sepal_length_in_cluster = get_cluster_array(np.transpose(X)[:, 0], clust)
 sepal_width_in_cluster = get_cluster_array(np.transpose(X)[:, 1], clust)
 iris_cluster = get_cluster_data(iris.data, clust)
 
+clust, dist, mdist, clustSize = extract_cluster_details(som, X)
+
+# Data Preparation to pass additional variables
+# Extract Information from input to pass plot functions
+perc_sentosa = get_perc_cluster(y, 0, clust)
+closest_class_array = closest_class_cluster(y, clust)
+majority_class_array = majority_class_cluster(y, clust)
+target_in_cluster = get_cluster_array(y, clust)
+iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
+iris_class_align = np.tile([0, 1, 2], (len(clust), 1))
+sepal_length_in_cluster = get_cluster_array(np.transpose(X)[:, 0], clust)
+sepal_width_in_cluster = get_cluster_array(np.transpose(X)[:, 1], clust)
+iris_cluster = get_cluster_data(iris.data, clust)
+
 # Visualization
-# Gray Hist
-fig1, ax1, pathces1, text1 = som.gray_hist(X, perc_sentosa)
+# Grey Hist
+fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
 plt.show()
 
 # Color Hist

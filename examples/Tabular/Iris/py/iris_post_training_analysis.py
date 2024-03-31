@@ -5,6 +5,7 @@ from NNSOM.utils import extract_cluster_details, get_ind_misclassified, \
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from numpy.random import default_rng
+
 from sklearn.datasets import load_iris
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
@@ -73,7 +74,7 @@ plt.show()
 fig, ax, h_axes = som.multiplot("pie", 'Pie Chart - tp, tn, fp, fn', perc_misclassified, sentosa_conf)
 plt.show()
 
-# Step Plot
+# Stem Plot
 fig, ax, h_axes = som.multiplot("stem", sentosa_conf_align, sentosa_conf)
 plt.show()
 

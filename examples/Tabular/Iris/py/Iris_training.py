@@ -2,6 +2,7 @@
 from NNSOM.plots import SOMPlots
 from NNSOM.utils import extract_cluster_details
 
+
 from sklearn.datasets import load_iris
 
 import numpy as np
@@ -52,7 +53,8 @@ Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED)
 # Save the model
 som.save_pickle(Trained_SOM_File, model_dir + os.sep)
 
-# Data post-processing
+
+# Extract Cluster details
 clust, dist, mdist, clustSize = extract_cluster_details(som, X)
 
 # Error Analysis
