@@ -61,14 +61,27 @@ class SOMPlots(SOM):
     def __init__(self, dimensions):
         super().__init__(dimensions)
 
-    def plt_top(self):
-        # Plot the topology of the SOM
+    def plt_top(self, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Plots the topology of the SOM using hexagonal units.
+
+        Args:
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, pathces
+        """
         w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
-        z = np.sqrt(0.75)
-        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
-        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
+
+        shapex, shapey = get_hexagon_shape()
 
         fig, ax = plt.subplots(frameon=False)
         plt.axis('equal')
@@ -81,22 +94,45 @@ class SOMPlots(SOM):
 
         patches = []
         for i in range(numNeurons):
-            temp = plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
+            temp, = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8),
+                            picker=True)
             patches.append(temp)
 
+        # Assign the cluster number for each hexagon
+        hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(patches)}
+
+        # Mouse Click Functionality
+        if mouse_click and connect_pick_event:
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, patches, hexagon_to_neuron, **kwargs)
+            )
+
         # Get rid of extra white space on sides
-        #fig.tight_layout()
+        plt.tight_layout()
 
         return fig, ax, patches
 
-    def plt_top_num(self):
-        # Plot the topology of the SOM with numbers for neurons
+    def plt_top_num(self, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Plots the topology of the SOM with numbered neurons.
+
+        Args:
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, pathces, text
+        """
         w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
-        z = np.sqrt(0.75)
-        shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
-        shapey = np.array([1, 2, 1, -1, -2, -1]) * (z / 3)
+
+        shapex, shapey = get_hexagon_shape()
 
         fig, ax = plt.subplots(frameon=False)
         ax.axis('off')
@@ -110,18 +146,29 @@ class SOMPlots(SOM):
 
         patches = []
         for i in range(numNeurons):
-            temp = plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
+            temp, = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8),
+                            picker=True)
             patches.append(temp)
+
+        # Assign the cluster number for each hexagon
+        hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(patches)}
 
         text = []
         for i in range(numNeurons):
-            temp = plt.text(pos[0, i], pos[1, i], str(i), horizontalalignment='center', verticalalignment='center', color='b')
+            temp = plt.text(pos[0, i], pos[1, i], str(i), horizontalalignment='center', verticalalignment='center',
+                            color='b')
             temp._fontproperties._weight = 'bold'
             temp._fontproperties._size = 12.0
             text.append(temp)
 
+        # Mouse Click Functionality
+        if mouse_click and connect_pick_event:
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, patches, hexagon_to_neuron, **kwargs)
+            )
+
         # Get rid of extra white space on sides
-        #fig.tight_layout()
+        plt.tight_layout()
 
         return fig, ax, patches, text
 
