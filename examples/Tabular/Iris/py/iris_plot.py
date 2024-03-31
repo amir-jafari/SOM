@@ -47,8 +47,9 @@ closest_class_array = closest_class_cluster(y, clust)
 majority_class_array = majority_class_cluster(y, clust)
 target_in_cluster = get_cluster_array(y, clust)
 iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
-alignment = get_align_cluster(y, clust)
+iris_class_align = np.tile([0, 1, 2], (len(clust), 1))
 sepal_length_in_cluster = get_cluster_array(np.transpose(X)[:, 0], clust)
+sepal_width_in_cluster = get_cluster_array(np.transpose(X)[:, 1], clust)
 iris_cluster = get_cluster_data(iris.data, clust)
 
 
@@ -70,7 +71,7 @@ plt.show()
 # Distribution of Categories
 # x: Categories (0: sentosa, 1: versicolor, 2: virginica)
 # y: count for each class
-fig, ax, h_axes = som.multiplot('stem', "Stem Plot - class distribution", alignment, iris_class_counts_cluster_array)
+fig, ax, h_axes = som.multiplot('stem', iris_class_align, iris_class_counts_cluster_array)
 plt.show()
 
 # Multiplot - Histogram
@@ -88,7 +89,10 @@ fig, ax, h_axes = som.multiplot('violin', iris_cluster, clust)
 plt.show()
 
 # Scatter Plot
-fig, axes, h_axes = som.plt_scatter(X, (0, 1))
+fig, axes, h_axes = som.plt_scatter(sepal_length_in_cluster, sepal_width_in_cluster)
 plt.show()
+
+# Component planes
+som.component_planes(X)
 
 
