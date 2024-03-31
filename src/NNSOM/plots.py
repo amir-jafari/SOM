@@ -171,6 +171,7 @@ class SOMPlots(SOM):
         plt.tight_layout()
 
         return fig, ax, patches, text
+
     def hit_hist(self, x, textFlag, mouse_click=False, connect_pick_event=True, **kwargs):
         """ Generate Hit Histogram
 
@@ -347,22 +348,34 @@ class SOMPlots(SOM):
 
         return fig, patches, text, cbar
 
-    def cmplx_hit_hist(self, x, clust, perc, ind_missClass, ind21, ind12):
-        # This is a modified hit histogram, indicating if a cluster contains a
-        # majority of good binders, and indicating how many/type errors occur in
-        # each cluster
-        #
-        # Inputs are
-        #  x - data set
-        #  perc - percent of good binders in each cluster
-        #  clust - list of indices of inputs that belong in each cluster
-        #  ind_missClass - indices of consistently misclassified inputs
-        #  ind21 - indices of false positive cases
-        #  ind12 - indices of false negative cases
+    # Need to be generalized
+    def cmplx_hit_hist(self, x, clust, perc, ind_missClass, ind21, ind12, mouse_click=False, connect_pick_event=True,
+                       **kwargs):
+        """ Generates a complex hit histogram.
+        It indicates what the majority class in each cluster is, and how many specific class occur in each cluster.
+
+        Args:
+            x: array-like
+                The input data to be clustered
+            clust: list
+                List of indices of inputs that belong in each cluster
+            perc: array-like
+                Percent of the specific class in each cluster
+            ind_missClass: array-like
+                Indices of consistently misclassified inputs
+            ind21: array-like
+                Indices of false positive cases
+            ind12: array-like
+                Indices of false negative cases
+        """
+
         numNeurons = self.numNeurons
 
+        if mouse_click:
+            kwargs['clust'] = clust
+
         # Make hit histogram
-        fig, ax, patches, text = self.hit_hist(x, True)
+        fig, ax, patches, text = self.hit_hist(x, True, mouse_click, **kwargs)
 
         for neuron in range(numNeurons):
 
@@ -389,11 +402,27 @@ class SOMPlots(SOM):
             patches[neuron][0]._edgecolor = color
 
         # Get rid of extra white space on sides
-        #fig.tight_layout()
+        plt.tight_layout()
 
         return fig, ax, patches, text
 
-    def plt_nc(self):
+    def plt_nc(self, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generates neighborhood connection map.
+        The gray hexagons represent cluster centers.
+
+        Args:
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, pathces
+        """
         # Neighborhood Connection Map. The gray hexagons represent cluster centers.
         pos = self.pos
         numNeurons = self.numNeurons
@@ -436,8 +465,19 @@ class SOMPlots(SOM):
                 ax.plot([p1[0], p2[0]], [p1[1], p2[1]], '-', color=[1, 0, 0])
 
         # Setup neurons. Place gray hexagon at neuron locations.
+        hexagons = []
         for i in range(numNeurons):
-            ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8))
+            hex, = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8),
+                           picker=True)
+            hexagons.append(hex)
+
+        # Assign the cluster number for each hexagon
+        hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(hexagons)}
+
+        if mouse_click and connect_pick_event:
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         return fig, ax, patches
 
