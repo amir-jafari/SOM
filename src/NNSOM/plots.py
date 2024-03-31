@@ -970,9 +970,24 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_histogram(self, data, clust):
-        # Create histogram.
-        # Purpose:
+    def plt_histogram(self, x, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generate histogram for each neuron.
+
+        Args:
+            x: array-like
+                The input data to be plotted in histogram
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, h_axes
+        """
 
         numNeurons = self.numNeurons
 
@@ -981,20 +996,41 @@ class SOMPlots(SOM):
 
         # Draw histogram
         for neuron in range(numNeurons):
-            if len(clust) > 0:
+            if len(x[neuron]) > 0:
                 # Make graph
-                h_axes[neuron].hist(data[neuron])
+                h_axes[neuron].hist(x[neuron])
             else:
-                return
+                h_axes[neuron] = None
 
         title = 'Cluster Centers as Histogram'
         plt.suptitle(title, fontsize=16)
 
+        if mouse_click and connect_pick_event:
+            kwargs['num1'] = x
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
+
         return fig, ax, h_axes
 
-    def plt_boxplot(self, data, clust):
-        # Create the box plot
-        # Purpose:
+    def plt_boxplot(self, x, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generate box plot for each neuron.
+
+        Args:
+            x: array-like
+                The input data to be plotted in box plot
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, h_axes
+        """
 
         numNeurons = self.numNeurons
 
@@ -1002,32 +1038,62 @@ class SOMPlots(SOM):
         fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         for neuron in range(numNeurons):
-            if len(clust[neuron]) > 0 and len(data[neuron]) > 0:
+            if len(x[neuron]) > 0:
                 # Make graph
-                h_axes[neuron].boxplot(data[neuron])
+                h_axes[neuron].boxplot(x[neuron])
             else:
                 h_axes[neuron] = None
 
         title = 'Cluster Centers as BoxPlot'
         plt.suptitle(title, fontsize=16)
 
+        if mouse_click and connect_pick_event:
+            kwargs['num1'] = x
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
+
         return fig, ax, h_axes
 
-    def plt_violin_plot(self, data, clust):
+    def plt_violin_plot(self, x, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generate violin plot for each neuron.
+
+        Args:
+            x: array-like
+                The input data to be plotted in violin plot
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, h_axes
+        """
+
         numNeurons = self.numNeurons
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         for neuron in range(numNeurons):
-            if len(clust[neuron]) > 0 and len(data[neuron]) > 0:
+            if len(x[neuron]) > 0:
                 # Make graph on the appropriate sub-axes
-                h_axes[neuron].violinplot(data[neuron])
+                h_axes[neuron].violinplot(x[neuron])
             else:
                 h_axes[neuron] = None
 
         title = 'Violin plot'
         plt.suptitle(title, fontsize=16)
+
+        if mouse_click and connect_pick_event:
+            kwargs['num1'] = x
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         return fig, ax, h_axes
 
@@ -1048,7 +1114,7 @@ class SOMPlots(SOM):
         else:
             raise ValueError("Invalid function type")
 
-    def plt_scatter(self, x, clust, indices, reg_line=True):
+    def plt_scatter(self, x, y, reg_line=True, mouse_click=False, connect_pick_event=True, **kwargs):
         """ Generate Scatter Plot for Each Neuron.
 
         Args:
@@ -1063,26 +1129,18 @@ class SOMPlots(SOM):
         pos = self.pos
         numNeurons = self.numNeurons
 
-        # Data preprocessing
-        # This should be updated!!!!
-        x1 = x[indices[0], :]
-        x2 = x[indices[1], :]
-
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         # Loop over each neuron for hexagons and scatter plots
         for neuron in range(numNeurons):
             # Make Scatter Plot for each neuron
-            if len(clust[neuron]) > 0:
-                # Pick specific rows based on the Clust
-                x1_temp = x1[clust[neuron]]
-                x2_temp = x2[clust[neuron]]
-                h_axes[neuron].scatter(x1_temp, x2_temp, s=1, c='k')
+            if len(x[neuron]) > 0 and len(y[neuron]) > 0:
+                h_axes[neuron].scatter(x[neuron], y[neuron], s=1, c='k')
 
                 if reg_line:
-                    m, p = np.polyfit(x1_temp, x2_temp, 1)
-                    h_axes[neuron].plot(x1_temp, m * x1_temp + p, c='r', linewidth=1)
+                    m, p = np.polyfit(x[neuron], y[neuron], 1)
+                    h_axes[neuron].plot(x[neuron], m * x[neuron] + p, c='r', linewidth=1)
                     title = "Scatter Plot for each neuron with regression lines"
                 else:
                     title = "Scatter Plot for each neuron without regression lines"
@@ -1090,6 +1148,13 @@ class SOMPlots(SOM):
                 h_axes[neuron] = None
 
         plt.suptitle(title, fontsize=16)
+
+        if mouse_click and connect_pick_event:
+            kwargs['num1'] = x
+            kwargs['num2'] = y
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         return fig, ax, h_axes
 
