@@ -313,5 +313,6 @@ class SOM():
         if data_format == 'pkl':
             with open(path + filename, 'rb') as f:
                 som = pickle.load(f)
-            return som
+
+        return som
 

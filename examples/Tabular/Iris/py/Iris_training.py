@@ -6,6 +6,7 @@ from sklearn.datasets import load_iris
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
+from numpy.random import default_rng
 
 # Set the parameters
 # SOM Parameters
@@ -18,7 +19,6 @@ Steps = 100
 Init_neighborhood = 3
 
 # Random State
-from numpy.random import default_rng
 SEED = 1234567
 rng = default_rng(SEED)
 
@@ -40,22 +40,15 @@ som = SOMPlots(Dimensions)
 som.init_w(X)
 som.train(X, Init_neighborhood, Epochs, Steps)
 
-
-import os
-
 # Define the directory path for saving the model outside the repository
-model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model/"))
+model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
 # Create the directory if it doesn't exist
 if not os.path.exists(model_dir):
     os.makedirs(model_dir)
 Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED) + '_Size_' + str(SOM_Row_Num) + '.pkl'
 
-
-# Define the path for saving the model
-model_path = os.path.join(model_dir, Trained_SOM_File)
-
 # Save the model
-som.save_pickle(Trained_SOM_File, model_path)
+som.save_pickle(Trained_SOM_File, model_dir + os.sep)
 
 
 # Visualization
