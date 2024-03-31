@@ -2,11 +2,12 @@ from NNSOM.plots import SOMPlots
 from NNSOM.utils import *
 
 import numpy as np
+from numpy.random import default_rng
 import matplotlib.pyplot as plt
 
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import MinMaxScaler
-from numpy.random import default_rng
+from sklearn.linear_model import LogisticRegression
 import os
 
 # SOM Parameters
@@ -89,3 +90,26 @@ plt.show()
 # Interactive plt_top_num
 fig, ax, patches, text = som.plt_top_num(True, **kwargs)
 plt.show()
+
+# Interactive plt_nc
+fig, ax, patches = som.plt_nc(True, **kwargs)
+plt.show()
+
+# Train Logistic Regression on Iris
+print('start training')
+logit = LogisticRegression(random_state=SEED)
+logit.fit(np.transpose(X), y)
+results = logit.predict(np.transpose(X))
+print('end training')
+
+ind_missClass = get_ind_misclassified(y, results)
+tp, ind21, fp, ind12 = get_conf_indices(y, results, 0)
+
+if 'clust' in kwargs:
+    del kwargs['clust']
+
+fig, ax, patches, text = som.cmplx_hit_hist(X, clust, perc_sentosa, ind_missClass, ind21, ind12, mouse_click=True,
+                                            **kwargs)
+plt.show()
+
+
