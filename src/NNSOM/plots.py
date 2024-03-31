@@ -395,11 +395,24 @@ class SOMPlots(SOM):
 
         return fig, ax, patches
 
-    def neuron_dist_plot(self):
-        # Distance map. The gray hexagons represent cluster centers.
-        # The colors of the elongated hexagons between the cluster
-        # centers represent the distance between the centers. The
-        # darker the color the larger the distance.
+    def neuron_dist_plot(self, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generates distance map.
+        The gray hexagons represent cluster centers.
+        The colors of the elongated hexagons between the cluster centers represent the distance between the centers.
+        The darker the color the larget the distance.
+
+        Args:
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+        Returns:
+            fig, ax, pathces, text
+        """
 
         pos = self.pos
         numNeurons = self.numNeurons
@@ -422,8 +435,8 @@ class SOMPlots(SOM):
         # Get the figure, remove the frame, and find the limits
         # of the axis that will fit hexagons
         fig, ax = plt.subplots(figsize=(8, 8))
-        plt.axis('equal')
-        plt.axis('off')
+        ax.set_aspect('equal')
+        ax.set_axis_off()
         xmin = np.min(pos[0]) + np.min(shapex)
         xmax = np.max(pos[0]) + np.max(shapex)
         ymin = np.min(pos[1]) + np.min(shapey)
@@ -445,9 +458,16 @@ class SOMPlots(SOM):
                 temp = plt.fill(edgePos[0]+ex, edgePos[1]+ey, facecolor=np.random.rand(1,3), edgecolor='none')
                 patches.append(temp)
                 plt.plot([p1[0], p2[0]], [p1[1], p2[1]], '-', color=[1, 0, 0])
+
         # Setup neurons. Place gray hexagon at neuron locations.
+        hexagons = []
         for i in range(numNeurons):
-            plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8))
+            hex, = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6),
+                           edgecolor=(0.8, 0.8, 0.8), picker=True)
+            hexagons.append(hex)
+
+        # Assign the cluster number for each hexagon
+        hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(hexagons)}
 
         # Find the distance between neighboring weights.
         weights = self.w
@@ -477,8 +497,11 @@ class SOMPlots(SOM):
                 patches[k][0]._facecolor = c
                 k = k + 1
 
-        # Get rid of extra white space on sides
-        #fig.tight_layout()
+        # Mouse Click Functionality
+        if mouse_click and connect_pick_event:
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         return fig, ax, patches
 
@@ -610,9 +633,14 @@ class SOMPlots(SOM):
         ax.set_aspect('equal')
 
         # Draw hexagon
+        hexagons = []
         for neuron in range(numNeurons):
-            ax.fill(pos[0, neuron] + shapex, pos[1, neuron] + shapey,
-                    facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
+            hex, = ax.fill(pos[0, neuron] + shapex, pos[1, neuron] + shapey,
+                           facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8), picker=True)
+            hexagons.append(hex)
+
+        # Assign the cluster number for each hexagon
+        hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(hexagons)}
 
         # Loop over to create sub-axe in each cluster
         h_axes = [0] * numNeurons   # A container for sub-axes
@@ -654,7 +682,7 @@ class SOMPlots(SOM):
             h_axes[neuron].set(xticks=[], yticks=[])
             h_axes[neuron].set_frame_on(False)
 
-        return fig, ax, h_axes
+        return fig, ax, h_axes, hexagons, hexagon_to_neuron
 
     def plt_stem(self, title, align, height):
         # Plot distribution
@@ -694,9 +722,31 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def plt_pie(self, title, perc, sizes_cluster, scaleFlag=True): #*argv):
-        # Generate pie plot in the hexagon.
-        # Purpose:
+    def plt_pie(self, title, perc, sizes_cluster, scaleFlag=False, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generate pie plot for each neuron.
+
+        Args:
+            title: str
+                The title of the plot
+            perc: array-like
+                The percentage of a specific class in each cluster. It handle the scale of the pie plot.
+            sizes_cluster: 2D array-like
+                The size of classes in each cluster.
+                It should be a 2D array with the shape of (numNeurons, numClasses)
+            scaleFlag: bool
+                If true, the size of the pie plot is scaled based on the perc value.
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, h_axes
+        """
 
         pos = self.pos
         numNeurons = self.numNeurons
@@ -730,7 +780,7 @@ class SOMPlots(SOM):
         clrs = [cmap(i) for i in range(num_colors)]
 
         # Setup figure, main axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
+        fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         # Draw pie plot in each neuron
         for neuron in range(numNeurons):
@@ -757,6 +807,12 @@ class SOMPlots(SOM):
                 h_axes[neuron].pie(sizes_cluster[neuron], colors=clrs, radius=scale)
             else:
                 h_axes[neuron] = None
+
+        if mouse_click and connect_pick_event:
+            kwargs['cat'] = sizes_cluster
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         plt.suptitle(title, fontsize=16)
 
@@ -1015,7 +1071,7 @@ class SOMPlots(SOM):
         # Handle button click event by calling the appropriate plot function
         if button_type == 'pie':
             # Pre-process categorical variables
-            sizes = get_cluster_array(kwargs['cat'], kwargs['clust'])
+            sizes = kwargs['cat']
             sizes = sizes[neuron_ind][:kwargs['topn']]
             self.plot_pie(ax, sizes, neuron_ind)
         elif button_type == 'stem':
@@ -1099,7 +1155,11 @@ class SOMPlots(SOM):
         # Clear the axes
         ax.clear()
         # Pie chart plot logic here
-        ax.pie(data)
+        # Determine the number of colors needed
+        num_colors = len(data)
+        cmap = cm.get_cmap('plasma', num_colors)
+        clrs = [cmap(i) for i in range(num_colors)]
+        ax.pie(data, colors=clrs, autopct='%1.1f%%')
         ax.set_title('Pie Chart inside the Cluster ' + str(neuronNum))
         # Redraw the figure
         ax.figure.canvas.draw_idle()

@@ -4,6 +4,7 @@ import numpy as np
 import networkx as nx
 from matplotlib.widgets import Button
 
+
 def preminmax(p):
     # Normalize the inputs to be in the range [-1, 1]
     minp = np.amin(p, 1)
@@ -24,6 +25,7 @@ def preminmax(p):
     maxp0 = np.expand_dims(maxp0, axis=1)
     pn = 2*(p-minp0)/(maxp0-minp0) - 1
     return pn, minp, maxp
+
 
 def calculate_positions(dim):
     # Calculate the positions of the neurons in the SOM
@@ -101,6 +103,7 @@ def spread_positions(position, positionMean, positionBasis):
     position1 = np.repeat(positionMean, numPos, axis=1) + np.matmul(positionBasis, position)
     return position1
 
+
 def distances(pos):
     # Compute the distances between the neurons in the SOM topology
     posT = np.transpose(pos)
@@ -114,11 +117,13 @@ def distances(pos):
 
     return dist
 
+
 def get_hexagon_shape():
     # Determine the shape of the hexagon to represent each cluster
     shapex = np.array([-1, 0, 1, 1, 0, -1]) * 0.5
     shapey = np.array([1, 2, 1, -1, -2, -1]) * np.sqrt(0.75) / 3
     return shapex, shapey
+
 
 def get_edge_shape():
     # Determine the shape of the elongated hexagon to represent edge between each cluster
@@ -126,6 +131,7 @@ def get_edge_shape():
     edgey = np.array([0, 1, 0, - 1]) * np.sqrt(0.75) / 3
 
     return edgex, edgey
+
 
 # Helper function to extract cluster details obtained from the SOM and input data
 def extract_cluster_details(som, data):
@@ -468,7 +474,7 @@ def get_ind_misclassified(target, prediction):
     return misclassified_indices
 
 
-def get_perc_missclassified(target, prediction, clust):
+def get_perc_misclassified(target, prediction, clust):
     """
     Calculate the percentage of misclassified items in each cluster and return as a numpy array.
 
