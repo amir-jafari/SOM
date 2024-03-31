@@ -591,10 +591,29 @@ class SOMPlots(SOM):
 
         return fig, ax, patches
 
-    def simple_grid(self, avg, sizes):
-        # Basic hexagon grid plot
-        # Colors are selected from avg array.
-        # Sizes of inner hexagons are selected from sizes array.
+    def simple_grid(self, avg, sizes, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Basic hexagon grid plot
+        Colors are selected from avg array.
+        Sizes of inner hexagons are selected rom sizes array.
+
+        Args:
+            avg: array-like
+                Average values for each neuron
+            sizes: array-like
+                Sizes of inner hexagons
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, pathces, cbar
+        """
+
         w = self.w
         pos = self.pos
         numNeurons = self.numNeurons
@@ -616,9 +635,15 @@ class SOMPlots(SOM):
         ax.set_xlim([xmin, xmax])
         ax.set_ylim([ymin, ymax])
 
-        # Plot the outer hexgons
+        # Draw the outer hexagons
+        hexagons = []
         for i in range(numNeurons):
-            plt.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(1, 1, 1), edgecolor=(0.8, 0.8, 0.8))
+            hex, = ax.fill(pos[0, i] + shapex, pos[1, i] + shapey, facecolor=(0.4, 0.4, 0.6), edgecolor=(0.8, 0.8, 0.8),
+                           picker=True)
+            hexagons.append(hex)
+
+        # Assign the cluster number for each hexagon
+        hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(hexagons)}
 
         # Plot the inner hexagon
         patches = []
@@ -637,15 +662,11 @@ class SOMPlots(SOM):
             patches[i][0]._path._vertices[:, 0] = pos[0, i] + shapex1 * sizes[i]
             patches[i][0]._path._vertices[:, 1] = pos[1, i] + shapey1 * sizes[i]
 
-        # Get rid of extra white space on sides
-        #fig.tight_layout()
-
         # Find the maximum value of avg across all clusters
         # dmax = np.amax(np.abs(avg))
         dmax = np.amax(avg)
         dmin = np.amin(avg)
         drange = dmax - dmin
-
 
         # Use the jet color map
         cmap = plt.get_cmap('jet')
@@ -654,11 +675,11 @@ class SOMPlots(SOM):
         # Adjust the color of the hexagon according to the avg value
         for neuron in range(numNeurons):
             #        xx[neuron] = avg[neuron] / dmax
-            xx[neuron] = (avg[neuron]-dmin) / drange
+            xx[neuron] = (avg[neuron] - dmin) / drange
             color = cmap(xx[neuron])
             patches[neuron][0]._facecolor = color
 
-        #fig.tight_layout()
+        plt.tight_layout()
 
         # # Add a color bar the the figure to indicate levels
         # # create an axes on the right side of ax. The width of cax will be 5%
@@ -666,7 +687,7 @@ class SOMPlots(SOM):
 
         cax = cm.ScalarMappable(cmap=cmap)
         cax.set_array(xx)
-        #cbar = fig.colorbar(cax)
+        # cbar = fig.colorbar(cax)
         cbar = fig.colorbar(cax, fraction=0.046, pad=0.04)
 
         # plt.colorbar(im, fraction=0.046, pad=0.04)
@@ -685,8 +706,10 @@ class SOMPlots(SOM):
 
         cbar.ax.set_yticklabels(ticktext)
 
-        # Get rid of extra white space on sides
-        #fig.tight_layout()
+        if mouse_click and connect_pick_event:
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         return fig, ax, patches, cbar
 
@@ -770,9 +793,26 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes, hexagons, hexagon_to_neuron
 
-    def plt_stem(self, title, align, height):
-        # Plot distribution
-        # Purpose:
+    def plt_stem(self, x, y, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generate stem plot for each neuron.
+
+        Args:
+            x: array-like
+                The x-axis values
+            y: array-like
+                The y-axis values
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, h_axes
+        """
 
         numNeurons = self.numNeurons
 
@@ -782,18 +822,39 @@ class SOMPlots(SOM):
         # Draw stem plot
         for neuron in range(numNeurons):
             # Make graph
-            h_axes[neuron].stem(align[neuron], height[neuron])
+            h_axes[neuron].stem(x[neuron], y[neuron])
 
+        title = 'dist plot'
         plt.suptitle(title, fontsize=16)
+
+        if mouse_click and connect_pick_event:
+            kwargs['align'] = x
+            kwargs['height'] = y
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         return fig, ax, h_axes
 
-    def plt_wgts(self):
-        # Plot neuron weight as line
-        # Purpose:
+    def plt_wgts(self, mouse_click=False, connect_pick_event=True, **kwargs):
+        """ Generate line plot for each neuron.
+
+        Args:
+            mouse_click: bool
+                If true, the interactive plot and sub-clustering functionalities to be activated
+            connect_pick_event: bool
+                If true, the pick event is connected to the plot
+            kwarg: dict
+                Additional arguments to be passed to the onpick function
+                Possible keys include:
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, h_axes
+        """
 
         numNeurons = self.numNeurons
-        w =self.w
+        w = self.w
 
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
@@ -805,6 +866,11 @@ class SOMPlots(SOM):
 
         title = 'Cluster Centers as Lines'
         plt.suptitle(title, fontsize=16)
+
+        if mouse_click and connect_pick_event:
+            fig.canvas.mpl_connect(
+                'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
+            )
 
         return fig, ax, h_axes
 
