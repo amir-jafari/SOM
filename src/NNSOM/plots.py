@@ -691,7 +691,7 @@ class SOMPlots(SOM):
         numNeurons = self.numNeurons
 
         # Setup figure, axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
+        fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         # Draw stem plot
         for neuron in range(numNeurons):
@@ -710,7 +710,7 @@ class SOMPlots(SOM):
         w =self.w
 
         # Setup figure, main axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
+        fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         # Draw line plots
         for neuron in range(numNeurons):
@@ -825,7 +825,7 @@ class SOMPlots(SOM):
         numNeurons = self.numNeurons
 
         # Setup figure, main axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
+        fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         # Draw histogram
         for neuron in range(numNeurons):
@@ -847,7 +847,7 @@ class SOMPlots(SOM):
         numNeurons = self.numNeurons
 
         # Setup figure, main axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
+        fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         for neuron in range(numNeurons):
             if len(clust[neuron]) > 0 and len(data[neuron]) > 0:
@@ -865,7 +865,7 @@ class SOMPlots(SOM):
         numNeurons = self.numNeurons
 
         # Setup figure, main axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
+        fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         for neuron in range(numNeurons):
             if len(clust[neuron]) > 0 and len(data[neuron]) > 0:
@@ -917,7 +917,7 @@ class SOMPlots(SOM):
         x2 = x[indices[1], :]
 
         # Setup figure, main axes, and sub-axes
-        fig, ax, h_axes = self.setup_axes()
+        fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
         # Loop over each neuron for hexagons and scatter plots
         for neuron in range(numNeurons):
