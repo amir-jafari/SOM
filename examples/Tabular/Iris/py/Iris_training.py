@@ -1,6 +1,5 @@
 # Importing Library
 import os
-
 from NNSOM.plots import SOMPlots
 from sklearn.datasets import load_iris
 import numpy as np
@@ -50,6 +49,19 @@ Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED)
 # Save the model
 som.save_pickle(Trained_SOM_File, model_dir + os.sep)
 
+# Error Analysis
+
+# Find quantization error
+quant_err = som.quantization_error()
+print('Quantization error: ' + str(quant_err))
+
+# Find topological error
+top_error_1, top_error_1_2 =  som.topological_error(X)
+print('Topological Error (1st neighbor) = ' + str(top_error_1) + '%')
+print('Topological Error (1st and 2nd neighbor) = ' + str(top_error_1_2) + '%')
+
+# Find Distortion Error
+som.distortion_error(X)
 
 # Visualization
 # SOM Topology
