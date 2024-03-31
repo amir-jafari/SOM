@@ -2,13 +2,13 @@ from NNSOM.plots import SOMPlots
 from NNSOM.utils import *
 
 import numpy as np
-from numpy.random import default_rng
 import matplotlib.pyplot as plt
 
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.linear_model import LogisticRegression
+from numpy.random import default_rng
 import os
+from sklearn.linear_model import LogisticRegression
 
 # SOM Parameters
 SOM_Row_Num = 4  # The number of row used for the SOM grid.
@@ -36,15 +36,12 @@ X = scaler.fit_transform(X)
 X = np.transpose(X)
 
 # Determine model dir and file name
-# model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
-# Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED) + '_Size_' + str(SOM_Row_Num) + '.pkl'
+model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
+Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED) + '_Size_' + str(SOM_Row_Num) + '.pkl'
 
 # Load som instance
 som = SOMPlots(Dimensions)
-# Train som instance
-som.init_w(X)
-som.train(X, Init_neighborhood, Epochs, Steps)
-# som = som.load_pickle(Trained_SOM_File, model_dir + os.sep)
+som = som.load_pickle(Trained_SOM_File, model_dir + os.sep)
 
 # Data Processing
 clust, dist, mdist, clustSize = extract_cluster_details(som, X)
@@ -91,22 +88,45 @@ plt.show()
 fig, ax, patches, text = som.plt_top_num(True, **kwargs)
 plt.show()
 
+# Interactive gray plot
+fig, ax, patches, text = som.gray_hist(X, perc_sentosa, True, **kwargs)
+plt.show()
+
+# Interactive color plot
+fig, ax, patches, cbar = som.color_hist(X, perc_sentosa, True, **kwargs)
+plt.show()
+
 # Interactive plt_nc
 fig, ax, patches = som.plt_nc(True, **kwargs)
 plt.show()
 
-# Interactive simple grid
+# interactive simple grid
 fig, ax, patches, cbar = som.simple_grid(perc_sentosa, num_sentosa, True, **kwargs)
 plt.show()
 
-# Interactive stem plot
+# interactive stem plot
 fig, ax, h_axes = som.plt_stem(align, height, True, **kwargs)
 plt.show()
 
-# Interactive line plot
+# interactive line plot
 fig, ax, h_axes = som.plt_wgts(True, **kwargs)
 plt.show()
 
+# Interactive Histogram
+fig, ax, h_axes = som.plt_histogram(num1, True, **kwargs)
+plt.show()
+
+# Interactive Boxplot
+fig, ax, h_axes = som.plt_boxplot(num1, True, **kwargs)
+plt.show()
+
+# Interactive Violin Plot
+fig, ax, h_axes = som.plt_violin_plot(num1, True, **kwargs)
+plt.show()
+
+# Interactive Scatter plot
+fig, ax, h_axes = som.plt_scatter(num1, num2, True, True, **kwargs)
+plt.show()
 
 # Train Logistic Regression on Iris
 print('start training')
@@ -124,5 +144,3 @@ if 'clust' in kwargs:
 fig, ax, patches, text = som.cmplx_hit_hist(X, clust, perc_sentosa, ind_missClass, ind21, ind12, mouse_click=True,
                                             **kwargs)
 plt.show()
-
-

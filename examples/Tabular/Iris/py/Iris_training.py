@@ -1,14 +1,16 @@
 # Importing Library
-import os
-
 from NNSOM.plots import SOMPlots
+from NNSOM.utils import extract_cluster_details
+
 from sklearn.datasets import load_iris
+
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 from numpy.random import default_rng
 
-# Set the parameters
+import os
+
 # SOM Parameters
 SOM_Row_Num = 4  # The number of row used for the SOM grid.
 Dimensions = (SOM_Row_Num, SOM_Row_Num) # The dimensions of the SOM grid.
@@ -32,8 +34,8 @@ X = X[rng.permutation(len(X))]
 y = y[rng.permutation(len(X))]
 
 scaler = MinMaxScaler(feature_range=(-1, 1))
-X_scaled = scaler.fit_transform(X)
-X = np.transpose(X_scaled)
+X = scaler.fit_transform(X)
+X = np.transpose(X)
 
 # Training
 som = SOMPlots(Dimensions)
@@ -50,6 +52,21 @@ Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED)
 # Save the model
 som.save_pickle(Trained_SOM_File, model_dir + os.sep)
 
+# Data post-processing
+clust, dist, mdist, clustSize = extract_cluster_details(som, X)
+
+# Error Analysis
+# Find quantization error
+quant_err = som.quantization_error(dist)
+print('Quantization error: ' + str(quant_err))
+
+# Find topological error
+top_error_1, top_error_1_2 =  som.topological_error(X)
+print('Topological Error (1st neighbor) = ' + str(top_error_1) + '%')
+print('Topological Error (1st and 2nd neighbor) = ' + str(top_error_1_2) + '%')
+
+# Find Distortion Error
+som.distortion_error(X)
 
 # Visualization
 # SOM Topology
@@ -72,12 +89,9 @@ plt.show()
 fig5, ax5, patches5 = som.neuron_dist_plot()
 plt.show()
 
+# Weight Position Plot
+som.component_positions(np.transpose(X))
+
 # Weight as Line
-fig6, ax6, h_axes = som.multiplot('wgts')
+fig6, ax6, h_axes6 = som.plt_wgts()
 plt.show()
-
-# Weight positions
-som.component_positions(X_scaled)
-
-# Weight Planes
-som.component_planes(X)
