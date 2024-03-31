@@ -53,10 +53,10 @@ num2 = get_cluster_array(X[1], clust)
 cat = count_classes_in_cluster(y, clust)
 height = count_classes_in_cluster(y, clust)  # height for stem
 align = get_align_cluster(y, clust)  # align for stem
-# Data Prep for pie
 perc_sentosa = get_perc_cluster(y, 0, clust)
 iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
-
+num_classes = count_classes_in_cluster(y, clust)
+num_sentosa = num_classes[:, 0]
 
 kwargs = {
     'data': X,
@@ -94,6 +94,19 @@ plt.show()
 # Interactive plt_nc
 fig, ax, patches = som.plt_nc(True, **kwargs)
 plt.show()
+
+# Interactive simple grid
+fig, ax, patches, cbar = som.simple_grid(perc_sentosa, num_sentosa, True, **kwargs)
+plt.show()
+
+# Interactive stem plot
+fig, ax, h_axes = som.plt_stem(align, height, True, **kwargs)
+plt.show()
+
+# Interactive line plot
+fig, ax, h_axes = som.plt_wgts(True, **kwargs)
+plt.show()
+
 
 # Train Logistic Regression on Iris
 print('start training')
