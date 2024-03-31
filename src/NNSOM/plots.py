@@ -1245,19 +1245,21 @@ class SOMPlots(SOM):
             print("There is no enough data to create sub-cluster")
             return
 
+        # Data Prep
+        sub_x = np.transpose(data)
+
         if neuron_ind in self.sub_som:
             print('Sub clustering already done')
             sub_clust = self.sub_som[neuron_ind]
         else:
             # Training Sub Cluster
-            sub_X = np.transpose(data)
             sub_clust = SOMPlots((2, 2))
-            sub_clust.init_w(sub_X)
-            sub_clust.train(sub_X, 3, 500, 100)
+            sub_clust.init_w(sub_x)
+            sub_clust.train(sub_x, 3, 500, 100)
 
             self.sub_som[neuron_ind] = sub_clust
 
         # Plot the sub cluster <- Can we h
-        fig, ax, patches, text = sub_clust.hit_hist(sub_X, True, connect_pick_event=False)
+        fig, ax, patches, text = sub_clust.hit_hist(sub_x, True, connect_pick_event=False)
 
         plt.show()
