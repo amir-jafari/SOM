@@ -1037,10 +1037,17 @@ class SOMPlots(SOM):
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
+        # Find global min and max across all neuron's data
+        global_min, global_max = get_global_min_max(x)
+
         for neuron in range(numNeurons):
             if len(x[neuron]) > 0:
                 # Make graph
                 h_axes[neuron].boxplot(x[neuron])
+
+                # Set the same y axis limits for all subplots
+                h_axes[neuron].set_ylim(global_min, global_max)
+                # h_axes[neuron].set_yticks(np.linspace(global_min, global_max, 5))
             else:
                 h_axes[neuron] = None
 
@@ -1079,10 +1086,17 @@ class SOMPlots(SOM):
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
+        # Find global min and max across all neuron's data
+        global_min, global_max = get_global_min_max(x)
+
         for neuron in range(numNeurons):
             if len(x[neuron]) > 0:
                 # Make graph on the appropriate sub-axes
                 h_axes[neuron].violinplot(x[neuron])
+
+                # Set the same y axis limits for all subplots
+                h_axes[neuron].set_ylim(global_min, global_max)
+                # h_axes[neuron].set_yticks(np.linspace(global_min, global_max, 5))
             else:
                 h_axes[neuron] = None
 
@@ -1104,7 +1118,7 @@ class SOMPlots(SOM):
             'pie': self.plt_pie,
             'stem': self.plt_stem,
             'hist': self.plt_histogram,
-            'boxplot': self.plt_boxplot,
+            'box': self.plt_boxplot,
             'violin': self.plt_violin_plot
         }
 

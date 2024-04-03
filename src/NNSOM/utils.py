@@ -538,6 +538,44 @@ def get_conf_indices(target, results, target_class):
 
     return tp_index, tn_index, fp_index, fn_index
 
+def flatten(data):
+    """
+    Recursively flattens a nested list structure of numbers into a single list.
+
+    Args:
+        data: A number (int or float) or a nested list of numbers. The data to be flattened.
+
+    Returns:
+        A list of numbers, where all nested structures in the input have been
+        flattened into a single list.
+    """
+    if isinstance(data, (int, float, np.float64)):  # base case for numbers
+        return [data]
+    else:
+        flat_list = []
+        for item in data:
+            flat_list.extend(flatten(item))  # recursive call to flatten
+        return flat_list
+
+
+def get_global_min_max(data):
+    """
+    Finds the global minimum and maximum values in a nested list structure.
+
+    This function flattens the input data into a single list and then
+    determines the minimum and maximum values.
+
+    Args:
+        data: A nested list of integers. The structure can be of any depth.
+
+    Returns:
+        A tuple (min_value, max_value) where min_value is the minimum value
+        in the data, and max_value is the maximum value.
+    """
+    flat_list = flatten(data)
+    return min(flat_list), max(flat_list)
+
+
 
 # Helper functions to create button objects in the interactive plot
 def create_buttons(fig, button_types):
