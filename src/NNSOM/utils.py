@@ -576,6 +576,63 @@ def get_global_min_max(data):
     return min(flat_list), max(flat_list)
 
 
+def get_edge_width(indices, clust):
+    """ Calculate edge width for each cluster based on the number of indices in the cluster.
+
+    Args:
+        indices: 1-d array
+            Array of indices for the specific class.
+        clust: sequence of vectors
+            A sequence of vectors, each containing the indices of elements in a cluster.
+
+    Returns:
+        lwidth: 1-d array
+            Array of edge widths for each cluster.
+    """
+
+    lwidth = np.zeros(len(clust))
+
+    for i in range(len(clust)):
+        if len(clust[i]) != 0:
+            if len(np.intersect1d(clust[i], indices)) > 0:
+                lwidth[i] = 20. * len(np.intersect1d(clust[i], indices)) / len(clust[i])
+            else:
+                lwidth[i] = None
+        else:
+            lwidth[i] = None
+
+    return lwidth
+
+
+def get_edge_color(clust, *args):
+    """ Calculate edge color for each cluster based on the number of indices in the cluster.
+
+    Args:
+        clust: sequence of vectors
+            A sequence of vectors, each containing the indices of elements in a cluster.
+
+        *args: 1-d array
+            A list of indices where the specific class is present.
+    """
+
+    # unpack the args
+    numst = list(args)
+
+    # Initialize the edge color array
+    edge_color = np.zeros(len(clust))
+
+    # Detect the intersection of the cluster and each list of indices (class),
+    # and get the majority class in the cluster.
+    # Append the majority class to the edge color array.
+    for i in range(len(clust)):
+        if len(clust[i]) != 0:
+            intersection = [len(np.intersect1d(clust[i], numst[j])) for j in range(len(numst))]
+            edge_color[i] = np.argmax(intersection)
+        else:
+            edge_color[i] = None
+
+    return edge_color
+
 
 # Helper functions to create button objects in the interactive plot
 def create_buttons(fig, button_types):

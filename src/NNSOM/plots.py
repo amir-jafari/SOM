@@ -276,7 +276,7 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
-    def gray_hist(self, x, perc, mouse_click=False, connect_pick_event=True, **kwargs):
+    def gray_hist(self, x, perc, mouse_click=False, **kwargs):
         # Make another hit histogram figure, and change the colors of the hexagons
         # to indicate the perc of pdb (or gb) ligands in each cluster. Lighter color
         # means more PDB ligands, darker color means more well-docked bad binders.
@@ -298,7 +298,7 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
-    def color_hist(self, x, avg, mouse_click=False, connect_pick_event=True, **kwargs):
+    def color_hist(self, x, avg, mouse_click=False, **kwargs):
         # Plot an SOM figure where the size of the hexagons is related to
         # the number of elements in the clusters, and the color of the
         # inner hexagon is coded to the variable avg, which could be the
@@ -348,9 +348,7 @@ class SOMPlots(SOM):
 
         return fig, patches, text, cbar
 
-    # Need to be generalized
-    def cmplx_hit_hist(self, x, clust, perc, ind_missClass, ind21, ind12, mouse_click=False, connect_pick_event=True,
-                       **kwargs):
+    def cmplx_hit_hist(self, x, clust, perc, ind_missClass, ind21, ind12, mouse_click=False, **kwargs):
         """ Generates a complex hit histogram.
         It indicates what the majority class in each cluster is, and how many specific class occur in each cluster.
 
@@ -403,6 +401,85 @@ class SOMPlots(SOM):
 
         # Get rid of extra white space on sides
         plt.tight_layout()
+
+        return fig, ax, patches, text
+
+    def custom_cmplx_hit_hist(self, x, face_labels, edge_labels, edge_width, mouse_click=False, **kwargs):
+        """ Generate cmplex hit hist
+        Users can specify the face color, edge width and edge color for each neuron.
+
+        x: array-like or sequence of vectors
+            The input data to be clustered
+        face_labels: array-like
+            class labels to determine the face color of the hexagons
+        edge_labels: array-like
+            class labels to determine the edge color of the hexagons
+        edge_width: array-like
+            A list of edge_width standerdised between (1 - 20).
+            You can call get_edge_width to get the standardised edge width in the utils function.
+            len(edge_width) must be equal to the number of neurons
+        mouse_click: bool
+            If true, the interactive plot and sub-clustering functionalities to be activated
+        kwargs: dict
+            Additional arguments to be passed to the onpick function
+            Possible keys include:
+            'data', 'clust', 'target', 'num1', 'num2',
+            'cat', 'align', 'height' and 'topn'
+
+        Returns:
+            fig, ax, patches, text
+        """
+        numNeurons = self.numNeurons
+
+        x = np.asarray(x, np.float32)
+        face_labels = np.asarray(face_labels, np.float32)
+        edge_labels = np.asarray(edge_labels, np.float32)
+        edge_width = np.asarray(edge_width, np.float32)
+
+        # Check if the input data is a sequence of vectors
+        if x.ndim != 2:
+            raise ValueError("x must be a 2D array")
+
+        # Check if the input data can be cdist with self.w
+        # the input data must be transposed
+        if x.shape[0] != self.w.shape[1]:
+            raise ValueError("The input data must have the same number of features as the SOM")
+
+        # Check if the face color, line width and edge color are 1D arrays
+        if face_labels.ndim != 1 or edge_width.ndim != 1 or edge_labels.ndim != 1:
+            raise ValueError("fcolor, lwidth and ecolor must be 1D arrays")
+
+        # Check if the length of fcolor, lwidth and ecolor are equal to the number of neurons
+        if len(face_labels) != numNeurons or len(edge_width) != numNeurons or len(edge_labels) != numNeurons:
+            raise ValueError("The length of x, fcolor, lwidth and ecolor must be equal to the number of neurons")
+
+        # Make hit histogram
+        fig, ax, patches, text = self.hit_hist(x, True, mouse_click, **kwargs)
+
+        # Exclude nan values for the unique color count
+        unique_fcolor = np.unique(face_labels[~np.isnan(face_labels)])
+        unique_ecolor = np.unique(edge_labels[~np.isnan(edge_labels)])
+
+        # Create the colormaps
+        cmap1 = plt.get_cmap('jet', len(unique_fcolor))
+        cmap2 = plt.get_cmap('cool', len(unique_ecolor))
+
+        for neuron in range(numNeurons):
+            if not np.isnan(face_labels[neuron]):
+                # Normalize the class label to the colormap index
+                color1_idx = np.argwhere(unique_fcolor == face_labels[neuron])[0][0] / (len(unique_fcolor) - 1)
+                color2_idx = np.argwhere(unique_ecolor == edge_labels[neuron])[0][0] / (len(unique_ecolor) - 1)
+
+                # Get the corresponding color from the colormap
+                patches[neuron][0]._facecolor = cmap1(color1_idx)
+                patches[neuron][0]._linewidth = edge_width[neuron]
+                patches[neuron][0]._edgecolor = cmap2(color2_idx)
+
+        # Get rid of extra white space on sides
+        plt.tight_layout()
+
+        print(cmap1)
+        print(cmap2)
 
         return fig, ax, patches, text
 
