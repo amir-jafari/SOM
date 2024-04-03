@@ -1090,7 +1090,8 @@ class SOMPlots(SOM):
             'stem': self.plt_stem,
             'hist': self.plt_histogram,
             'box': self.plt_boxplot,
-            'violin': self.plt_violin_plot
+            'violin': self.plt_violin_plot,
+            'scatter': self.plt_scatter
         }
 
         selected_plot = plot_functions.get(plot_type)
