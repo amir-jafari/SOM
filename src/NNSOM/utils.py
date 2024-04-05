@@ -258,6 +258,31 @@ def get_cluster_array(feature, clust):
     return cluster_array
 
 
+def get_cluster_avg(feature, clust):
+    """
+    Returns the average value of a feature for each cluster.
+
+    Parameters
+    ----------
+    feature : array-like
+        Feature array.
+    clust : list
+        A list of cluster arrays, each containing indices sorted by distances.
+
+    Returns
+    -------
+    cluster_avg : numpy array
+        A cluster array with the average value of the feature for each cluster.
+    """
+    cluster_array = get_cluster_array(feature, clust)
+    cluster_avg = np.zeros(len(cluster_array))
+    for i in range(len(cluster_array)):
+        if len(cluster_array[i]) > 0:
+            cluster_avg[i] = np.mean(cluster_array[i])
+
+    return cluster_avg
+
+
 def closest_class_cluster(cat_feature, clust):
     """
     Returns the cluster array with the closest class for each cluster.
@@ -576,7 +601,7 @@ def get_global_min_max(data):
     return min(flat_list), max(flat_list)
 
 
-def get_edge_width(indices, clust):
+def get_edge_widths(indices, clust):
     """ Calculate edge width for each cluster based on the number of indices in the cluster.
 
     Args:
@@ -604,8 +629,8 @@ def get_edge_width(indices, clust):
     return lwidth
 
 
-def get_edge_color(clust, *args):
-    """ Calculate edge color for each cluster based on the number of indices in the cluster.
+def get_color_labels(clust, *listOfIndices):
+    """ Generates color label for each cluster based on indices of classes.
 
     Args:
         clust: sequence of vectors
@@ -614,24 +639,48 @@ def get_edge_color(clust, *args):
         *args: 1-d array
             A list of indices where the specific class is present.
     """
+    # Validate if the user have provided at least one class indices
+    if len(listOfIndices) == 0:
+        raise ValueError('At least one class indices must be provided.')
 
-    # unpack the args
-    numst = list(args)
-
-    # Initialize the edge color array
-    edge_color = np.zeros(len(clust))
-
-    # Detect the intersection of the cluster and each list of indices (class),
-    # and get the majority class in the cluster.
-    # Append the majority class to the edge color array.
-    for i in range(len(clust)):
-        if len(clust[i]) != 0:
-            intersection = [len(np.intersect1d(clust[i], numst[j])) for j in range(len(numst))]
-            edge_color[i] = np.argmax(intersection)
+    # Validate if the arg is a list or numpy array and unpack them
+    numst = []
+    for arg in listOfIndices:
+        if not isinstance(arg, (list, np.ndarray)):
+            raise ValueError('The arguments must be a list or numpy array.')
         else:
-            edge_color[i] = None
+            numst.append(arg)
 
-    return edge_color
+            # Initialize the color label array
+    color_labels = np.zeros(len(clust))
+
+    # When there is only one list provides,
+    # check if the cluster contains the indices of the class.
+    # If that class is majority in the cluster, assign 1, otherwise 0.
+    if len(numst) == 1:
+        indices = numst[0]
+        for i in range(len(clust)):
+            if len(clust[i]) != 0:
+                num_class = len(np.intersect1d(clust[i], indices))
+                if num_class > len(clust[i]) / 2:
+                    color_labels[i] = 1
+                else:
+                    color_labels[i] = 0
+            else:
+                color_labels[i] = None
+
+    else:
+        # Detect the intersection of the cluster and each list of indices (class),
+        # and get the majority class in the cluster.
+        # Append the majority class to the edge color array.
+        for i in range(len(clust)):
+            if len(clust[i]) != 0:
+                intersection = [len(np.intersect1d(clust[i], numst[j])) for j in range(len(numst))]
+                color_labels[i] = np.argmax(intersection)
+            else:
+                color_labels[i] = None
+
+    return color_labels
 
 
 # Helper functions to create button objects in the interactive plot
