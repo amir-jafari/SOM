@@ -332,7 +332,7 @@ class SOMPlots(SOM):
 
         cax = cm.ScalarMappable(cmap=cmap)
         cax.set_array(xx)
-        cbar = fig.colorbar(cax)
+        cbar = fig.colorbar(ax=ax, cax=cax)
 
         # Adjust the tick labels to the correct scale
         ticklab = cbar.ax.get_yticks()
