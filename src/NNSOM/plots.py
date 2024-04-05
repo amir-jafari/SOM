@@ -3,6 +3,7 @@ from .utils import *
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.cm as cm
 from matplotlib.widgets import Button
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
@@ -298,7 +299,9 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
-    def color_hist(self, x, avg, mouse_click=False, **kwargs):
+
+
+    def color_hist(som, x, avg, mouse_click=False, connect_pick_event=True, **kwargs):
         # Plot an SOM figure where the size of the hexagons is related to
         # the number of elements in the clusters, and the color of the
         # inner hexagon is coded to the variable avg, which could be the
@@ -306,9 +309,9 @@ class SOMPlots(SOM):
 
         # Find the maximum value of avg across all clusters
         dmax = np.amax(np.abs(avg))
-        numNeurons = self.numNeurons
+        numNeurons = som.numNeurons
 
-        fig, ax, patches, text = self.hit_hist(x, False, mouse_click, **kwargs)
+        fig, ax, patches, text = som.hit_hist(x, False, mouse_click, **kwargs)
 
         # Use the jet color map
         cmap = plt.get_cmap('jet')
@@ -316,36 +319,24 @@ class SOMPlots(SOM):
 
         # Adjust the color of the hexagon according to the avg value
         for neuron in range(numNeurons):
-            xx[neuron] = avg[neuron] / dmax
-            color = cmap(xx[neuron])
+            xx[neuron] = avg[neuron] / dmax  # Normalize avg values for mapping
+            color = cmap((xx[neuron] + 1) / 2)  # Adjust to cmap's scale (0 to 1)
             patches[neuron][0]._facecolor = color
 
+        # Correct way to use ScalarMappable for the colorbar
+        norm = plt.Normalize(vmin=-dmax, vmax=dmax)
+        sm = cm.ScalarMappable(cmap=cmap, norm=norm)
+        sm.set_array([])  # You can safely set it to an empty list.
+
+        # Add the colorbar to the figure
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="5%", pad=0.05)
+        cbar = fig.colorbar(sm, cax=cax)
+
+        # Adjust the tick labels if necessary (e.g., to represent avg values)
+        # This part might need adjustment based on your specific requirements.
+
         plt.tight_layout()
-
-        # # Add a color bar the the figure to indicate levels
-        # # create an axes on the right side of ax. The width of cax will be 5%
-        # # of ax and the padding between cax and ax will be fixed at 0.05 inch.
-        # divider = make_axes_locatable(ax)
-        # cax = divider.append_axes("right", size="5%", pad=0.05)
-        #
-        # cbar = plt.colorbar(ax, cax=cax, cmap=cmap)
-
-        cax = cm.ScalarMappable(cmap=cmap)
-        cax.set_array(xx)
-        cbar = fig.colorbar(ax=ax, cax=cax)
-
-        # Adjust the tick labels to the correct scale
-        ticklab = cbar.ax.get_yticks()
-        numticks = len(ticklab)
-        ticktext = []
-        for i in range(numticks):
-            ticktext.append('%.2f' % (dmax * ticklab[i]))
-
-        cbar.ax.set_yticklabels(ticktext)
-
-        # Get rid of extra white space on sides
-        fig.tight_layout()
-
         return fig, patches, text, cbar
 
     def cmplx_hit_hist(self, x, clust, perc, ind_missClass, ind21, ind12, mouse_click=False, **kwargs):
