@@ -301,7 +301,7 @@ class SOMPlots(SOM):
 
 
 
-    def color_hist(som, x, avg, mouse_click=False, connect_pick_event=True, **kwargs):
+    def color_hist(self , x, avg, mouse_click=False, connect_pick_event=True, **kwargs):
         # Plot an SOM figure where the size of the hexagons is related to
         # the number of elements in the clusters, and the color of the
         # inner hexagon is coded to the variable avg, which could be the
@@ -309,9 +309,9 @@ class SOMPlots(SOM):
 
         # Find the maximum value of avg across all clusters
         dmax = np.amax(np.abs(avg))
-        numNeurons = som.numNeurons
+        numNeurons = self.numNeurons
 
-        fig, ax, patches, text = som.hit_hist(x, False, mouse_click, **kwargs)
+        fig, ax, patches, text = self.hit_hist(x, False, mouse_click, **kwargs)
 
         # Use the jet color map
         cmap = plt.get_cmap('jet')
