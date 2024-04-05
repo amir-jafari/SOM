@@ -172,7 +172,7 @@ class SOMPlots(SOM):
 
         return fig, ax, patches, text
 
-    def hit_hist(self, x, textFlag, mouse_click=False, connect_pick_event=True, **kwargs):
+    def hit_hist(self, x, textFlag=True, mouse_click=False, connect_pick_event=True, **kwargs):
         """ Generate Hit Histogram
 
         Parameters
@@ -346,7 +346,7 @@ class SOMPlots(SOM):
         # Get rid of extra white space on sides
         fig.tight_layout()
 
-        return fig, patches, text, cbar
+        return fig, ax, patches, text, cbar
 
     def cmplx_hit_hist(self, x, clust, perc, ind_missClass, ind21, ind12, mouse_click=False, **kwargs):
         """ Generates a complex hit histogram.
@@ -477,9 +477,6 @@ class SOMPlots(SOM):
 
         # Get rid of extra white space on sides
         plt.tight_layout()
-
-        print(cmap1)
-        print(cmap2)
 
         return fig, ax, patches, text
 
@@ -787,6 +784,8 @@ class SOMPlots(SOM):
             fig.canvas.mpl_connect(
                 'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
             )
+
+        plt.tight_layout()
 
         return fig, ax, patches, cbar
 
@@ -1299,6 +1298,407 @@ class SOMPlots(SOM):
                     ax.fill(pos[0, j] + shapex, pos[1, j] + shapey, facecolor=inverted_color, edgecolor=(0.8, 0.8, 0.8))
 
         plt.show()
+
+    # Generic Plot Function
+    def plot(self, plot_type, data_dict=None, ind=None, target_class=None, use_add_1darray=False,
+             use_add_2darray=False, **kwargs):
+        """ Generic Plot Function.
+        It generates a plot based on the plot type and data provides.
+
+        Parameters
+        ----------
+        plot_type : str
+            The type of plot to be generated:
+            ["top", "top_num", "hit_hist", "gray_hist",
+            "color_hist", "complex_hist", "nc", "neuron_dist",
+            "simple_grid", "stem", "pie", "wgts", "pie", "hist",
+            "box", "violin", "scatter", "component_positions",
+            "component_planes"]
+
+        data_dict: dict (optional)
+            A dictionary containing the data to be plotted.
+            The key is prefixed with the data type and the value is the data itself.
+            {"original_data", "input_data", "target", "clust","cat_1darray", "cat_2darray",
+            "num_1darray"}
+
+        ind : int, str or array-like (optional)
+            The indices of the data to be plotted.
+
+        target_class: int (optional)
+            The target class to be plotted.
+
+        use_add_1darray: bool (optional)
+            If true, the additional array to be used.
+
+        use_add_2darray: bool (optional)
+            If true, the additional 2D array to be used.
+
+        **kwargs : dict
+            Additional arguments to be passed to the interactive plot function.
+        """
+        # Plot Types allowed
+        plot_types = ["top", "top_num",
+                      "hit_hist", "gray_hist", "color_hist", "complex_hist",
+                      "neuron_connection", "neuron_dist",
+                      "simple_grid",
+                      "stem", "pie", "wgts", "hist", "box", "violin", "scatter",
+                      "component_positions", "component_planes"]
+
+        # Validate the plot type
+        if plot_type not in plot_types:
+            raise ValueError(f"Invalid plot type: {plot_type}")
+
+        # Validate the data_dict
+        if data_dict is None and plot_type not in ["top", "top_num",
+                                                   "neuron_connection",
+                                                   "neuron_dist", "wgts"]:
+            raise ValueError("data_dict is required for this plot type.")
+
+        # Validate the plot function
+        plot_functions = {
+            "top": self.plt_top,
+            "top_num": self.plt_top_num,
+            "hit_hist": self.hit_hist,
+            "gray_hist": self.gray_hist,
+            "color_hist": self.color_hist,
+            "complex_hist": self.custom_cmplx_hit_hist,
+            "neuron_connection": self.plt_nc,
+            "neuron_dist": self.neuron_dist_plot,
+            "simple_grid": self.simple_grid,
+            "stem": self.plt_stem,
+            "pie": self.plt_pie,
+            "wgts": self.plt_wgts,
+            "hist": self.plt_histogram,
+            "box": self.plt_boxplot,
+            "violin": self.plt_violin_plot,
+            "scatter": self.plt_scatter,
+            "component_positions": self.component_positions,
+            "component_planes": self.component_planes
+        }
+
+        # Assign the plot function
+        selected_plot = plot_functions.get(plot_type)
+
+        # Error Handling if the plot function recieve the appropriate arguments
+        def validate_data_dict(keys):
+            for key in keys:
+                if key not in data_dict:
+                    raise ValueError(f"{key} is required for this plot type.")
+
+        # ======== Topology, Neuron Connection, Neuron Distance, and Weight Plot ==========
+        if plot_type in ["top", "top_num", "neuron_connection", "neuron_dist", "wgts"]:
+            # Call the plot function
+            return selected_plot(**kwargs)
+
+        # ======== Components Plane Family ==========
+        # Need to be modified
+        elif plot_type in ['component_positions', 'component_planes']:
+            # Error Handling if the data_dict have the scaled input data X
+            validate_data_dict(["input_data"])
+            # Data Preparation
+            x_scaled = data_dict['input_data']
+            # Invoke Function
+            return selected_plot(x_scaled)
+
+        # =====================  Hit Histogram Family =====================
+        elif plot_type in ['hit_hist', 'gray_hist', 'color_hist', 'complex_hist']:
+            # Validate the data_dict have the scaled input data
+            validate_data_dict(["input_data"])
+
+            # Extract input data
+            x = data_dict['input_data']
+
+            if plot_type in ['hit_hist']:
+                # Invoke the function
+                return selected_plot(x, True, **kwargs)
+
+            elif plot_type in ['gray_hist']:
+                if use_add_1darray:  # Check if user want to use additional 1D array
+
+                    # Validate the data_dict have the additional 1D array and original data
+                    validate_data_dict(["cat_1darray", "original_data"])
+
+                    # Validate the length of additional 1D array is equal to number of neuron or length of original data.
+                    if len(data_dict['cat_1darray']) != self.numNeurons and len(data_dict['cat_1darray']) != len(
+                            data_dict['original_data']):
+                        raise ValueError(
+                            "The additional 1D array must have the same length as the clust data or original data.")
+
+                    # If the length of additional 1D array is equal to the length of clust data just extract data
+                    elif len(data_dict['cat_1darray']) == self.numNeurons:
+                        perc = data_dict['cat_1darray']
+
+                    # If the length of additional 1D array is equal to the length of original data then preprocess the data
+                    elif len(data_dict['cat_1darray']) == len(data_dict['original_data']):
+
+                        # Validate the data_dict have the clust data
+                        validate_data_dict(["clust"])
+
+                        if target_class is None:
+                            raise ValueError("The target class is required. Eg. target_class = 1")
+
+                        # Preprocess and extract the data
+                        perc = get_perc_cluster(data_dict['cat_1darray'], target_class, data_dict['clust'])
+
+                else:
+                    # Error Handling if the target data not provided
+                    validate_data_dict(["target", "clust"])
+
+                    # Validate the data_dict have the clust data
+                    if target_class is None:
+                        raise ValueError("The target class is required. Eg. target_class = 1")
+
+                    perc = get_perc_cluster(data_dict['target'], target_class, data_dict['clust'])
+
+                # Invoke the gray hist function
+                return selected_plot(x, perc, **kwargs)
+
+            elif plot_type in ['color_hist']:
+                # Check if user want to use additional 1D array
+                if use_add_1darray:
+                    # Check if the additional 1D array and original data are provided
+                    validate_data_dict(["num_1darray", "original_data"])
+
+                    num_feature = data_dict['num_1darray']
+                    original_data_size = len(data_dict['original_data'])
+
+                    if len(num_feature) != original_data_size and len(num_feature) != self.numNeurons:
+                        raise ValueError(
+                            "The additional 1D array must have the same length as the clust data or original data.")
+
+                    elif len(num_feature) == original_data_size:
+                        # Check if the clust data is provided
+                        validate_data_dict(["clust"])
+
+                        clust = data_dict['clust']
+                        avg = get_cluster_avg(num_feature, clust)
+
+                    elif len(num_feature) == self.numNeurons:
+
+                        avg = num_feature
+
+                else:
+                    # Error Handling if the original data and clust are provided
+                    validate_data_dict(["original_data", "clust"])
+
+                    if ind is None:
+                        raise ValueError(
+                            "The indices is required for this plot type. Which numerical feature in the original data you want to plot? Eg. ind = 0")
+
+                    feature = data_dict['original_data'][:, ind]
+
+                    avg = get_cluster_avg(feature, data_dict['clust'])
+
+                return selected_plot(x, avg, **kwargs)
+
+            elif plot_type in ['complex_hist']:
+                if use_add_2darray:
+                    # Validate the data_dict have the additional 2D array
+                    validate_data_dict(["cat_2darray"])
+
+                    cat_2darray = data_dict['cat_2darray']
+
+                    if cat_2darray.shape[0] != self.numNeurons:
+                        raise ValueError(
+                            "The additional 2D array must have the same length as the number of neurons.")
+
+                    # Validate the additional 2D array have 3 features
+                    if cat_2darray.shape[1] != 3:
+                        raise ValueError(
+                            "The additional 2D array must have 3 features. E.g. [numNeurons, [face_labels, edge_labels, edge_widths]]")
+
+                    # Extract Data
+                    face_labels = cat_2darray[:, 0]
+                    edge_labels = cat_2darray[:, 1]
+                    edge_widths = cat_2darray[:, 2]
+
+                else:
+                    # Error Handling if the target and clust data not provided
+                    validate_data_dict(["target", "clust"])
+                    # Error Handling if the target class not provided
+                    if target_class is None:
+                        raise ValueError("The target class is required")
+
+                    # Generate Data
+                    target = data_dict['target']
+                    clust = data_dict['clust']
+
+                    face_labels = majority_class_cluster(target, clust)
+                    edge_labels = closest_class_cluster(target, clust)
+                    target_ind = np.where(target == target_class)[0]
+                    edge_widths = get_edge_widths(target_ind, clust)
+
+                return selected_plot(x, face_labels, edge_labels, edge_widths, **kwargs)
+
+        # ===================== Simple Grid =====================
+        elif plot_type in ['simple_grid']:
+            # Validate the data_dict have the original data
+            validate_data_dict(["original_data"])
+
+            original_data = data_dict['original_data']
+
+            # Check if there're additional variables
+            if use_add_1darray:
+                # Error Handling if the additional 1D arrays and clust not provided
+                validate_data_dict(["cat_1darray", "num_1darray", "clust"])
+
+                cat_feature = data_dict['cat_1darray']
+                num_feature = data_dict['num_1darray']
+                clust = data_dict['clust']
+
+                # ================================
+                # Extract avg from num_1darray
+                # potential input of num_1darray
+                # 1. the specific column of the original data
+                # 2. the pre-processes 1-d array with average value for each cluster
+                # ================================
+                # Validate the length of additional 1D array is equal to the number of neuron or length of original data.
+                if len(num_feature) != self.numNeurons and len(num_feature) != len(original_data):
+                    raise ValueError(
+                        "The additional 1D array must have the same length as the clust data or original data.")
+                elif len(num_feature) == self.numNeurons:
+                    avg = num_feature
+                elif len(num_feature) == len(original_data):
+                    avg = get_cluster_avg(num_feature, clust)
+
+                # ===============================
+                # Extract sizes from cat_1darray
+                # potential input of cat_1darray
+                # 1. The specific feature of the original data (e.g. the specific column) <- it'requres target class
+                # 2. The specific feature of the pre-processes 1-d array with magnitude for each cluster (e.g. percentage)
+                # ===============================
+                if len(cat_feature) != self.numNeurons and len(cat_feature) != len(original_data):
+                    raise ValueError(
+                        "The additional 1D array must have the same length as the clust data or original data.")
+
+                elif len(cat_feature) == self.numNeurons:
+                    sizes = cat_feature
+
+                elif len(cat_feature) == len(original_data):
+                    if target_class is None:
+                        raise ValueError("The target class is required")
+                    sizes = get_perc_cluster(cat_feature, target_class, clust)
+
+            else:
+                # Error Handling if the target and clust data not provided
+                validate_data_dict(["clust", "target"])
+
+                if ind is None:
+                    raise ValueError("The indices is required for this plot type.")
+
+                if target_class is None:
+                    raise ValueError("The target class is required")
+
+                clust = data_dict['clust']
+
+                # Extract avg from the original data
+                num_feature = original_data[:, ind]
+                avg = get_cluster_avg(num_feature, clust)
+
+                # Extract size from the target
+                target = data_dict['target']
+                sizes = get_perc_cluster(target, target_class, clust)
+
+            return selected_plot(avg, sizes, **kwargs)
+
+        # ===================== Basic Plot Family =====================
+        elif plot_type in ['stem', 'pie']:
+            # Error Handling if the clust data not provided
+            validate_data_dict(["target", "clust"])
+
+            # Extract Information
+            clust = data_dict['clust']
+
+            # If the user wanna plot input data
+            if use_add_2darray:
+                # Error Handling if the additional 2D array not provided
+                validate_data_dict(["cat_2darray"])
+
+                # Error Handling if additional vategorical variable has correct length
+                if len(data_dict["cat_2darray"]) != len(clust):
+                    raise ValueError("The additional categorical data must have the same length as the clust data.")
+
+                #  Get Additional Data
+                sizes = data_dict['cat_2darray']
+
+            else:
+                target = data_dict['target']
+                sizes = count_classes_in_cluster(target, clust)
+
+            if plot_type == 'pie':
+
+                # =============================================
+                # It needs to handle scale (need to implement)
+                # =============================================
+
+                # Call the pie plot
+                return selected_plot(sizes, **kwargs)
+
+            elif plot_type == 'stem':
+                # Extract Align
+                if use_add_1darray:
+                    align = [i for i in range(sizes.shape[1])]
+                else:
+                    align = [i for i in range(len(np.unique(target)))]
+                # Call the stem plot
+                return selected_plot(align, sizes, **kwargs)
+
+        elif plot_type in ['hist']:
+            # Error Handling if the index not provided
+            if ind is None:
+                raise ValueError("The indices is required for this plot type.")
+
+            # Error Handling if the original data not provided
+            validate_data_dict(["original_data", "clust"])
+
+            # Extract the feature from the original data
+            clust = data_dict['clust']
+            feature = data_dict['original_data'][:, ind]
+
+            x = get_cluster_array(feature, clust)
+
+            return selected_plot(x, **kwargs)
+
+        elif plot_type in ['scatter']:
+            # Error Handling if the index not provided
+            if ind is None:
+                raise ValueError("The indices is required for this plot type.")
+
+            if len(ind) != 2:
+                raise ValueError("The indices must contain exactly two elements. Eg. [0, 1]")
+
+            # Error Handling if the original data and clust not provided
+            validate_data_dict(["original_data", "clust"])
+
+            # Extract the feature from the original data
+            x = data_dict['original_data'][:, ind[0]]
+            y = data_dict['original_data'][:, ind[1]]
+            clust = data_dict['clust']
+            x = get_cluster_array(x, clust)
+            y = get_cluster_array(y, clust)
+
+            # Call the scatter plot function
+            return selected_plot(x, y, **kwargs)
+
+        elif plot_type in ['box', 'violin']:
+            # Error Handling if the original data not provided
+            validate_data_dict(["original_data", "clust"])
+
+            # Extract the feature from the original data
+            clust = data_dict['clust']
+
+            if ind is None:  # Extract All data
+                data = data_dict['original_data']
+                x = get_cluster_data(data, clust)
+            elif isinstance(ind, int):  # index just have 1 index
+                data = data_dict['original_data'][:, ind]
+                x = get_cluster_array(data, clust)
+            elif isinstance(ind, (list, np.ndarray)):  # index have multiple indices
+                data = data_dict['original_data'][:, ind]
+                x = get_cluster_data(data, clust)
+
+            # Call the box plot and violin function
+            return selected_plot(x, **kwargs)
 
     # Interactive Functionality
     def onpick(self, event, hexagons, hexagon_to_neuron, **kwargs):
