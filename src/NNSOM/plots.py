@@ -1636,7 +1636,7 @@ class SOMPlots(SOM):
 
             elif plot_type == 'stem':
                 # Extract Align
-                if use_add_1darray:
+                if use_add_2darray:
                     align = [i for i in range(sizes.shape[1])]
                 else:
                     align = [i for i in range(len(np.unique(target)))]
