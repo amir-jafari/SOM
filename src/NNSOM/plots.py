@@ -1730,6 +1730,7 @@ class SOMPlots(SOM):
         # Create a new window
         fig, ax1 = plt.subplots(figsize=(6, 6))
         fig.subplots_adjust(right=0.8)
+        ax1.set_aspect('equal')
 
         # Button Configuration
         button_types = self.determine_button_types(**kwargs)
@@ -1782,7 +1783,7 @@ class SOMPlots(SOM):
             self.plot_scatter(ax, nums[0], nums[1], neuron_ind)
 
         elif button_type == 'sub_cluster':
-            cluster_data = get_cluster_data(np.transpose(kwargs['data']), kwargs['clust'])
+            cluster_data = get_cluster_data(np.transpose(kwargs['input_data']), kwargs['clust'])
             sub_clust_data = cluster_data[neuron_ind]  # Get the data for the
             self.sub_clustering(sub_clust_data, neuron_ind)
 
@@ -1812,7 +1813,8 @@ class SOMPlots(SOM):
                 button_types.append('scatter')
 
         # Assuming sub-clustering is always an option
-        button_types.append('sub_cluster')
+        if 'input_data' in kwargs:
+            button_types.append('sub_cluster')
 
         return button_types
 
@@ -1844,7 +1846,7 @@ class SOMPlots(SOM):
         # Clear the axes
         ax.clear()
         # Stem plot
-        ax.stem(align[neuronNum], height[neuronNum])  # x: cat, y: data
+        ax.stem(align, height[neuronNum])  # x: cat, y: data
         ax.set_title('Stem Plot inside the Clluster ' + str(neuronNum))
         # Redraw the figure
         ax.figure.canvas.draw_idle()
