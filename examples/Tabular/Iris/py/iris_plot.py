@@ -71,6 +71,7 @@ plt.show()
 fig2, ax2, pathces2, text2 = som.color_hist(X, perc_sentosa)
 plt.show()
 
+
 # Pie Chart
 fig3, ax3, h_axes3 = som.multiplot('pie', "Class Distribution", perc_sentosa, iris_class_counts_cluster_array, False)
 plt.show()
