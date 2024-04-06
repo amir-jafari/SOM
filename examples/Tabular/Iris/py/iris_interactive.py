@@ -32,8 +32,8 @@ y = iris.target
 X = X[rng.permutation(len(X))]
 y = y[rng.permutation(len(X))]
 scaler = MinMaxScaler(feature_range=(-1, 1))
-X = scaler.fit_transform(X)
-X = np.transpose(X)
+X_scaled = scaler.fit_transform(X)
+X_scaled = np.transpose(X_scaled)
 
 # Determine model dir and file name
 model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
@@ -44,103 +44,103 @@ som = SOMPlots(Dimensions)
 som = som.load_pickle(Trained_SOM_File, model_dir + os.sep)
 
 # Data Processing
-clust, dist, mdist, clustSize = extract_cluster_details(som, X)
-num1 = get_cluster_array(X[0], clust)
-num2 = get_cluster_array(X[1], clust)
+clust, dist, mdist, clustSize = extract_cluster_details(som, X_scaled)
+num1 = get_cluster_array(X[:, 0], clust)
+num2 = get_cluster_array(X[:, 1], clust)
 cat = count_classes_in_cluster(y, clust)
 height = count_classes_in_cluster(y, clust)  # height for stem
-align = get_align_cluster(y, clust)  # align for stem
+align = [0, 1, 2]
 perc_sentosa = get_perc_cluster(y, 0, clust)
 iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
 num_classes = count_classes_in_cluster(y, clust)
 num_sentosa = num_classes[:, 0]
 
-kwargs = {
-    'data': X,
-    "labels": "",  # For labels on the plot
-    'clust': clust,
-    'target': y,
-    'num1': num1,  # For hist, box, violin and scatter
-    'num2': num2,  # For box, violin and scatter
-    'cat': cat,  # For pie chart (sizes)
-    'align': align,  # For stem plot
-    'height': height,  # For stem plot
-    'topn': 5,
-}
+interactive_dict = {
+        'original_data': X,
+        'input_data': X_scaled,
+        'target': y,
+        'clust': clust,
+        'num1': num1,
+        'num2': num2,
+        'cat': cat,
+        'align': align,
+        'height': height,
+        'topn': 5,
+    }
 
 # Interactive hit hist
-fig, ax, patches, text = som.hit_hist(X, textFlag=True, mouse_click=True, **kwargs)
+fig, ax, patches, text = som.hit_hist(X, textFlag=True, mouse_click=True, **interactive_dict)
 plt.show()
 
 # Interactive neuron dist
-fig, ax, patches = som.neuron_dist_plot(True, **kwargs)
+fig, ax, patches = som.neuron_dist_plot(True, **interactive_dict)
 plt.show()
 
 # Interactive pie plot
-fig, ax, h_axes = som.plt_pie('Pie Chart', perc_sentosa, iris_class_counts_cluster_array, mouse_click=True, **kwargs)
+fig, ax, h_axes = som.plt_pie(iris_class_counts_cluster_array, perc_sentosa, mouse_click=True, **interactive_dict)
 plt.show()
 
 # Interactive plt_top
-fig, ax, patches = som.plt_top(True, **kwargs)
+fig, ax, patches = som.plt_top(True, **interactive_dict)
 plt.show()
 
 # Interactive plt_top_num
-fig, ax, patches, text = som.plt_top_num(True, **kwargs)
+fig, ax, patches, text = som.plt_top_num(True, **interactive_dict)
 plt.show()
 
 # Interactive gray plot
-fig, ax, patches, text = som.gray_hist(X, perc_sentosa, True, **kwargs)
+fig, ax, patches, text = som.gray_hist(X, perc_sentosa, True, **interactive_dict)
 plt.show()
 
 # Interactive color plot
-fig, ax, patches, cbar = som.color_hist(X, perc_sentosa, True, **kwargs)
+fig, ax, patches, text, cbar = som.color_hist(X, perc_sentosa, True, **interactive_dict)
 plt.show()
 
 # Interactive plt_nc
-fig, ax, patches = som.plt_nc(True, **kwargs)
+fig, ax, patches = som.plt_nc(True, **interactive_dict)
 plt.show()
 
 # interactive simple grid
-fig, ax, patches, cbar = som.simple_grid(perc_sentosa, num_sentosa, True, **kwargs)
+fig, ax, patches, cbar = som.simple_grid(perc_sentosa, num_sentosa, True, **interactive_dict)
 plt.show()
 
 # interactive stem plot
-fig, ax, h_axes = som.plt_stem(align, height, True, **kwargs)
+fig, ax, h_axes = som.plt_stem(align, height, True, **interactive_dict)
 plt.show()
 
 # interactive line plot
-fig, ax, h_axes = som.plt_wgts(True, **kwargs)
+fig, ax, h_axes = som.plt_wgts(True, **interactive_dict)
 plt.show()
 
 # Interactive Histogram
-fig, ax, h_axes = som.plt_histogram(num1, True, **kwargs)
+fig, ax, h_axes = som.plt_histogram(num1, True, **interactive_dict)
 plt.show()
 
 # Interactive Boxplot
-fig, ax, h_axes = som.plt_boxplot(num1, True, **kwargs)
+fig, ax, h_axes = som.plt_boxplot(num1, True, **interactive_dict)
 plt.show()
 
 # Interactive Violin Plot
-fig, ax, h_axes = som.plt_violin_plot(num1, True, **kwargs)
+fig, ax, h_axes = som.plt_violin_plot(num1, True, **interactive_dict)
 plt.show()
 
 # Interactive Scatter plot
-fig, ax, h_axes = som.plt_scatter(num1, num2, True, True, **kwargs)
+fig, ax, h_axes = som.plt_scatter(num1, num2, True, True, **interactive_dict)
 plt.show()
 
 # Train Logistic Regression on Iris
 print('start training')
 logit = LogisticRegression(random_state=SEED)
-logit.fit(np.transpose(X), y)
-results = logit.predict(np.transpose(X))
+logit.fit(np.transpose(X_scaled), y)
+results = logit.predict(np.transpose(X_scaled))
 print('end training')
 
 ind_missClass = get_ind_misclassified(y, results)
 tp, ind21, fp, ind12 = get_conf_indices(y, results, 0)
 
-if 'clust' in kwargs:
-    del kwargs['clust']
+if 'clust' in interactive_dict:
+    del interactive_dict['clust']
 
 fig, ax, patches, text = som.cmplx_hit_hist(X, clust, perc_sentosa, ind_missClass, ind21, ind12, mouse_click=True,
-                                            **kwargs)
+                                            **interactive_dict)
 plt.show()
