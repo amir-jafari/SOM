@@ -145,7 +145,6 @@ Export/
 **/nbproject/Package-*.bash
 build/
 nbbuild/
-dist/
 nbdist/
 .nb-gradle/
 
@@ -293,7 +292,6 @@ tramp
 
 # cask packages
 .cask/
-dist/
 
 # Flycheck
 flycheck_*.el
@@ -435,7 +433,6 @@ abstract.record*
 *.jar
 *.rar
 *.zip
-*.gz
 *.gzip
 *.tgz
 *.bzip
@@ -448,7 +445,6 @@ abstract.record*
 
 # Packing-only formats
 *.iso
-*.tar
 
 # Package management formats
 *.dmg
@@ -1021,7 +1017,6 @@ GitHub.sublime-settings
 # Simple Build Tool
 # http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
 
-dist/*
 target/
 lib_managed/
 src_managed/
