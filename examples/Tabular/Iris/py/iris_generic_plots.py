@@ -47,18 +47,7 @@ Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED)
 som = SOMPlots(Dimensions)
 som = som.load_pickle(Trained_SOM_File, model_dir + os.sep)
 
-"""## Extract SOM Cluster Details
-
-After training the SOM, information on which clusters the training data were classified into can be obtained. This can be used to visualize various additional variables on the topology of the SOM.
-
-**clust**: sequence of vectors with indices of input data that are in each cluster sorted by distance from cluster center.
-
-dist: sequence of vectors with distance of input data that are in each cluster sorted by distance fro cluster center.
-
-mdist: 1d array with maximum distance in each cluster
-
-clustSize: 1d array with number of items in each cluster
-"""
+# Extract SOM Cluster Details
 
 clust, dist, mdist, clustSize = extract_cluster_details(som, X_scaled)
 
