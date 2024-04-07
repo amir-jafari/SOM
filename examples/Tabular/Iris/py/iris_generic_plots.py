@@ -7,6 +7,8 @@ from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import os
 
+from sklearn.linear_model import LogisticRegression
+
 """## Set Up the parameters used for NNSOM"""
 
 # SOM Parameters
@@ -75,29 +77,31 @@ Generic Plot Function:
 
 """
 
-# 1. Plots that do not require an Argument
+# 1. Plots that do not require an Argument (Information about SOM itself)
 
 #Topology
-
 fig, ax, pathces = som.plot("top")
 plt.show()
 
+# Toplology with neuron numbers
 fig, ax, patches, text = som.plot('top_num')
 plt.show()
 
+# neuron connection
 fig, ax, patches = som.plot('neuron_connection')
 plt.show()
 
+# neuron dist
 fig, ax, patches = som.plot('neuron_dist')
 plt.show()
 
+# weight as line
 fig, ax, h_axes = som.plot('wgts')
 plt.show()
 
-# 2. Plots requiring Additional Variable
+# 2. Plots that requires input data
 
 # Data Preparation
-
 data_dict ={
     "original_data": X, # iris.data shuffled with the specific random state
     'input_data': X_scaled, # iris.data scaled from -1 to 1
@@ -112,101 +116,47 @@ data_dict ={
 fig, ax, patches, text = som.plot('hit_hist', data_dict)
 plt.show()
 
-# Gray Hist without using additional categorical 1-d array.
+# Gray Hist
 fig, ax, patches, text = som.plot('gray_hist', data_dict, target_class=0)
-plt.suptitle("Gray Histogram without an additional variable - Sentosa", fontsize=16)
+plt.suptitle("Gray Histogram - The percentage of Sentosa", fontsize=16)
 plt.show()
 
 fig, ax, patches, text = som.plot('gray_hist', data_dict, target_class=1)
-plt.suptitle("Gray Histogram without an additional variable - Verginica", fontsize=16)
+plt.suptitle("Gray Histogram - The percentage of Versicolor", fontsize=16)
 plt.show()
 
-# If the len(cat_1darray) == len(original_data), the class percentage is calculated in the function.
-# In this case, the user requied to provide target_class where the user want to check.
-data_dict['cat_1darray'] = y
-fig, ax, patches, text = som.plot('gray_hist', data_dict, target_class=0, use_add_1darray=True)
-plt.suptitle("Gray Histogram with non-pre processed additional variable - Sentosa", fontsize=16)
-plt.show()
-
-# If the len(cat_1darray) == numNeurons,
-# the 1-d array is passes the plot directory without specifying target_class
-sent_perc = get_perc_cluster(y, 0, clust)
-data_dict['cat_1darray'] = sent_perc
-fig, ax, patches, text = som.plot('gray_hist', data_dict, use_add_1darray=True)
-plt.suptitle("Gray Histogram with the pre-processed additional array - Sentosa", fontsize=16)
-plt.show()
-
+# Color Histogram
 fig, ax, patches, text, cbar = som.plot('color_hist', data_dict, ind=0)
-plt.suptitle("Color Histogram without an additional variable - Sentosa", fontsize=16)
+plt.suptitle("Color Histogram  - Sepal Length", fontsize=16)
 plt.show()
 
-fig, ax, patches, text, cbar = som.plot('color_hist', data_dict, ind=2)
-plt.suptitle("Color Histogram without an additional variable - Virginica", fontsize=16)
+fig, ax, patches, text, cbar = som.plot('color_hist', data_dict, ind=1)
+plt.suptitle("Color Histogram - Sepal Width", fontsize=16)
 plt.show()
 
-
-data_dict['num_1darray'] = X[:, 0]
-fig, ax, patches, text, cbar = som.plot('color_hist', data_dict, use_add_1darray=True)
-plt.suptitle("Color Histogram with non-preprocessed additional variable - Sentosa", fontsize=16)
-plt.show()
-
-data_dict['num_1darray'] = get_cluster_avg(X[:, 0], clust)
-fig, ax, patches, text, cbar = som.plot('color_hist', data_dict, use_add_1darray=True)
-plt.suptitle("Color Histogram with a preprocessed additional variable - Sentosa", fontsize=16)
-plt.show()
-
+# Complex Hit Histogram
+# sentosa: blue, vesicolor: blue, virginica: red
 fig, ax, patches, text = som.plot("complex_hist", data_dict, target_class=0)
-plt.suptitle("Complex Hit Histogram without additional variables", fontsize=16)
+plt.suptitle("Complex Hit Histogram", fontsize=16)
 plt.show()
 
-face_labels = majority_class_cluster(y, clust)
-edge_labels = closest_class_cluster(y, clust)
-edge_width = get_edge_widths(np.where(y == 0)[0], clust)
-data_dict['cat_2darray'] = np.transpose(np.array([face_labels, edge_labels, edge_width]))
-
-fig, ax, patches, text = som.plot("complex_hist", data_dict, use_add_2darray=True)
-plt.suptitle("Complex Hit Histogram with additional variables", fontsize=16)
-plt.show()
-
+# Simple Grid
 fig, ax, patches, cbar = som.plot('simple_grid', data_dict, ind=0, target_class=0)
-plt.suptitle("Simple Grid without Additional Variable")
+plt.suptitle("Simple Grid - color shade: sepal length, size: perc sentosa")
 plt.show()
 
-# num_feature: len(num_1darray) == numNeurons
-data_dict['cat_1darray'] = sent_perc
-# cut_feature: len(cat_1darray) == numNeurons
-data_dict['num_1darray'] = get_cluster_avg(X[:, 0], clust)
-
-fig, ax, patches, cbar = som.plot('simple_grid', data_dict, ind=0, target_class=0, use_add_1darray=True)
-plt.suptitle("Simple Grid with Additional Variable - numNeuron")
-plt.show()
-
-# num_feature: len(num_1darray) == len(original_data)
-data_dict['num_1darray'] = X[:, 0]
-# cut_feature: len(cat_1darray) == len(original_data)
-data_dict['cat_1darray'] = y
-fig, ax, patches, cbar = som.plot('simple_grid', data_dict,target_class=0, use_add_1darray=True)
-plt.suptitle("Simple Grid with Additional Variable - len(original_data)")
-plt.show()
-
+# Basic Plot Family
 # Pie Chart
 fig, ax, h_axes = som.plot('pie', data_dict)
 plt.suptitle("Pie Chart with target distribution")
 plt.show()
 
-data_dict['cat_2darray'] = count_classes_in_cluster(y, clust)
-fig, ax, h_axes = som.plot('pie', data_dict, use_add_2darray=True)
-plt.suptitle("Pie Chart with additional variable distribution")
-plt.show()
-
+# Stem
 fig, ax, h_axes = som.plot('stem', data_dict)
 plt.suptitle("Stem Plot with target distribution")
 plt.show()
 
-fig, ax, h_axes = som.plot('stem', data_dict, use_add_2darray=True)
-plt.suptitle("Stem Plot with additional variable distribution")
-plt.show()
-
+# Histogram
 fig, ax, h_axes = som.plot('hist', data_dict, ind=0)
 plt.suptitle("Histogram - Sepal Length")
 plt.show()
@@ -215,6 +165,7 @@ fig, ax, h_axes = som.plot('hist', data_dict, ind=1)
 plt.suptitle("Histogram - Sepal Width")
 plt.show()
 
+# Box Plot
 fig, ax, h_axes = som.plot('box', data_dict, ind=0)
 plt.suptitle("Box Plot - Sepal Length")
 plt.show()
@@ -227,6 +178,7 @@ fig, ax, h_axes = som.plot('box', data_dict)
 plt.suptitle("Box Plot without additional variable - Iris Features")
 plt.show()
 
+# Violin Plot
 fig, ax, h_axes = som.plot('violin', data_dict, ind=0)
 plt.suptitle("Violin Plot - Sepal Length")
 plt.show()
@@ -239,6 +191,7 @@ fig, ax, h_axes = som.plot('violin', data_dict)
 plt.suptitle("Violin Plot - Iris Features")
 plt.show()
 
+# Scatter Plot
 fig, ax, h_axes = som.plot('scatter', data_dict, ind=[0, 1])
 plt.suptitle("Scatter Plot - Sepal Length vs Sepal Width")
 plt.show()
@@ -247,6 +200,65 @@ fig, ax, h_axes = som.plot('scatter', data_dict, ind=[2, 3])
 plt.suptitle("Scatter Plot - Petal Length vs. Petal Width")
 plt.show()
 
+# Component Plane
 som.plot('component_planes', data_dict)
 
+# Component Positioins
 som.plot('component_positions', data_dict)
+
+# 3. Plot that required Additional Variable (Post Training Analysis)
+# Training Logistic Regression
+logit = LogisticRegression(solver='lbfgs', multi_class='multinomial')
+logit.fit(np.transpose(X_scaled), y)
+results = logit.predict(np.transpose(X_scaled))
+
+# Data Preparation
+perc_misclassified = get_perc_misclassified(y, results, clust)
+sent_tp, sent_tn, sent_fp, sent_fn = get_conf_indices(y, results, 0)
+sentosa_conf = cal_class_cluster_intersect(clust, sent_tp, sent_tn, sent_fp, sent_fn)
+
+data_dict = {
+    "original_data": X,
+    "input_data": X_scaled,
+    "target": y,
+    "clust": clust,
+    'cat_1darray': perc_misclassified,
+    # percentage of the misclassified items in each clust, len(cat_1d_array) == numNeuron, gray_hist , simple grid (perc)
+    'cat_2darray': sentosa_conf,
+    # the number of each conf metrix of sentosa in each cluster, len(cat_2d_array) == numNeuron, pie, stem, complex hit hist
+    'num_1darray': perc_misclassified,
+    # percentage of the specifi categorical variable, len(num_1d_array) == numNeuron, color_hist, simple grid (avg)
+}
+
+# Gray Hist
+fig, ax, patches, text = som.plot('gray_hist', data_dict, use_add_1darray=True)
+plt.suptitle("Gray Hist - Percentage of misclassified")
+plt.show()
+
+# Color Hist
+fig, ax, patches, text, cbar = som.plot('color_hist', data_dict, use_add_1darray=True)
+plt.suptitle("Gray Hist - Percentage of misclassified")
+plt.show()
+
+# Pie Chart
+fig, ax, h_axes = som.plot('pie', data_dict, use_add_2darray=True)  # Additional 2d array has numbers of each conf matrix value.
+plt.suptitle("Pie Chart - the number of tp, tn, fp, fn in sentosa")
+plt.show()
+
+# Stem Plot
+fig, ax, h_axes = som.plot('stem', data_dict, use_add_2darray=True)  # Additional 2d array has numbers of each conf matrix value.
+plt.suptitle("Stem Plot - the number of tp, tn, fp, fn in sentosa")
+plt.show()
+
+# For complex hit histogram, it requires sort of preprocesssing.
+ind_misclassified = get_ind_misclassified(y, results) # find the index misclassified
+face_color = get_color_labels(clust, ind_misclassified) # based on the misclassified index, create list with 0 or 1. If misclassified index is majority 1, else 0.
+edge_color = get_color_labels(clust, sent_tn, sent_fn)  # based on the index of tn and fn of sentosa, if tn is majority assign 1, else 0
+edge_width = get_edge_widths(ind_misclassified, clust)  # based on the misclassified index, define the edge widths.
+cat_2darray = np.transpose(np.array([face_color, edge_color, edge_width]))
+data_dict['cat_2darray'] = cat_2darray
+
+# Complex Hit Histogram
+fig, ax, patche, text = som.plot('complex_hist', data_dict, use_add_2darray=True)
+plt.suptitle('Complex Hit Hist for Error Analysis')
+plt.show()
