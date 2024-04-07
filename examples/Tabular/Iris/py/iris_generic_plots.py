@@ -36,7 +36,7 @@ scaler = MinMaxScaler(feature_range=(-1, 1))
 X_scaled = scaler.fit_transform(X)
 X_scaled = np.transpose(X_scaled)
 
-# Training SOM
+"""Training SOM"""
 
 # Determine model dir and file name
 model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
@@ -46,7 +46,7 @@ Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED)
 som = SOMPlots(Dimensions)
 som = som.load_pickle(Trained_SOM_File, model_dir + os.sep)
 
-# Extract SOM Cluster Details
+"""Extract SOM Cluster Details"""
 
 clust, dist, mdist, clustSize = extract_cluster_details(som, X_scaled)
 
