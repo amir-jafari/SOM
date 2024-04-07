@@ -332,7 +332,7 @@ class SOMPlots(SOM):
 
         cax = cm.ScalarMappable(cmap=cmap)
         cax.set_array(xx)
-        cbar = fig.colorbar(cax)
+        cbar = fig.colorbar(cax, ax=ax)
 
         # Adjust the tick labels to the correct scale
         ticklab = cbar.ax.get_yticks()
@@ -340,6 +340,9 @@ class SOMPlots(SOM):
         ticktext = []
         for i in range(numticks):
             ticktext.append('%.2f' % (dmax * ticklab[i]))
+
+        # Set the ticks first
+        cbar.ax.set_yticks(ticklab)
 
         cbar.ax.set_yticklabels(ticktext)
 
@@ -762,7 +765,7 @@ class SOMPlots(SOM):
         cax = cm.ScalarMappable(cmap=cmap)
         cax.set_array(xx)
         # cbar = fig.colorbar(cax)
-        cbar = fig.colorbar(cax, fraction=0.046, pad=0.04)
+        cbar = fig.colorbar(cax, ax = ax, fraction=0.046, pad=0.04)
 
         # plt.colorbar(im, fraction=0.046, pad=0.04)
         #
@@ -777,6 +780,8 @@ class SOMPlots(SOM):
         ticktext = []
         for i in range(numticks):
             ticktext.append('%.2f' % (drange * ticklab[i] + dmin))
+
+        cbar.ax.set_yticks(ticklab)
 
         cbar.ax.set_yticklabels(ticktext)
 

@@ -1,11 +1,10 @@
-import matplotlib.pyplot as plt
-
 from NNSOM.plots import SOMPlots
 from NNSOM.utils import *
 
 from sklearn.datasets import load_iris
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
 import os
 
 """## Set Up the parameters used for NNSOM"""
