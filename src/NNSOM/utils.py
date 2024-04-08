@@ -133,74 +133,6 @@ def get_edge_shape():
     return edgex, edgey
 
 
-# Helper function to extract cluster details obtained from the SOM and input data
-def extract_cluster_details(som, data):
-    """
-    Returns Cluster Index Array, Cluster Distance Array,
-    Maximum Distance Array, and Cluster Size Array.
-
-    Parameters
-    ----------
-    som : SOM object
-        A SOM object trained on the input data.
-    data : numpy array
-        Input data to be clustered.
-
-    Returns
-    -------
-    clust : list
-        A cluster array of indices sorted by distances.
-    dist : list
-        A cluster array of distances sorted by distances.
-    mdist : numpy array
-        A list of maimum distance to any input in the cluster from cluster center.
-    clustSize : list
-        Cluster array sizes.
-    """
-
-    # Assertions (check if the input data and som weights have the same number of features)
-    if data.shape[0] != som.w.shape[1]:
-        raise ValueError('The number of features in the input data and the SOM weights do not match.')
-
-    w = som.w
-    shapw = w.shape
-    S = shapw[0]
-
-    x_w_dist = cdist(som.w, np.transpose(data), 'euclidean')
-    ind1 = np.argmin(x_w_dist, axis=0)
-
-    clust = []  # a cluster array of indices sorted by distances
-    dist = []  # a cluster array of distances sorted by distances
-    mdist = np.zeros(S)  # a list of maimum distance to any input in the cluster from cluster center
-    clustSize = []  # cluster array sizes
-
-    for i in range(S):
-        # Find which inputs are closest to each weight (in cluster i)
-        tempclust = np.where(ind1 == i)[0]
-
-        # Save distance of each input in the cluster to cluster center (weight)
-        tempdist = x_w_dist[i, tempclust]
-        indsort = np.argsort(tempdist)
-        tempclust = tempclust[indsort]  # Sort indices
-        tempdist = tempdist[indsort]
-
-        # Add to distance array sorted distances
-        dist.append(tempdist)
-
-        # Add to Cluster array sorted indices
-        clust.append(tempclust)
-
-        # Cluster size
-        num = len(tempclust)
-        clustSize.append(num)
-
-        # Save the maximum distance to any input in the cluster from cluster center
-        if num > 0:
-            mdist[i] = tempdist[-1]
-
-    return clust, dist, mdist, clustSize
-
-
 # Helper Functions to extract information from the input data for passing to the plot
 def get_cluster_data(data, clust):
     """
@@ -399,36 +331,6 @@ def count_classes_in_cluster(cat_feature, clust):
             cluster_counts[i] = np.zeros(num_classes, dtype=int)
 
     return cluster_counts
-
-
-def get_align_cluster(cat_feature, clust):
-    """
-    Create an array of alignments for each cluster based on class indices.
-
-    Parameters
-    ----------
-    cat_feature : array-like
-        Categorical feature array.
-    clust : list
-        A list of arrays, each containing the indices of elements in a cluster.
-
-    Returns
-    -------
-    alignment_cluster : numpy array
-        A 2D array with alignments for each cluster.
-    """
-    unique_classes = np.unique(cat_feature)
-    num_classes = len(unique_classes)
-
-    # Initialize the array to hold alignments for each cluster
-    alignment_cluster = np.zeros((len(clust), num_classes), dtype=int)
-
-    # Populate the alignment array
-    # Since the alignment seems to be the index of the class, we can directly use the unique_classes for alignment
-    for i in range(len(clust)):
-        alignment_cluster[i] = unique_classes
-
-    return alignment_cluster
 
 
 def cal_class_cluster_intersect(clust, *args):
