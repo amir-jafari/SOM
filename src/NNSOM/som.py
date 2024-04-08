@@ -214,6 +214,88 @@ class SOM():
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
 
+    def cluster_data(self, x):
+        """
+        Cluster the input data based on the trained SOM reference vectors.
+
+        Parameters
+        ----------
+        x : ndarray (normalized)
+            The input data to be clustered.
+
+        Returns
+        -------
+        clusters : list of lists
+            A list containing sub-lists, where each sublist represents a cluster.
+            The indices of the input data points belonging to the same cluster
+            are stored in the corresponding sublist, sorted by their proximity
+            to the cluster center.
+
+        cluster_distances : list of lists
+            A list containing sub-lists, where each sublist represents the distances
+            of the input data points to the corresponding cluster center, sorted in
+            the same order as the indices in the `clusters` list.
+
+        max_cluster_distances : ndarray
+            A list containing the maximum distance between each cluster center
+            and the data points belonging to that cluster.
+
+        cluster_sizes : ndarray
+            A list containing the number of data points in each cluster.
+
+        Raises
+        -------
+        ValueError
+            If the SOM has not been trained.
+
+        ValueError
+            If the number of features in the input data and the SOM weights do not match.
+        """
+
+        if self.sim_flag:
+            raise ValueError("SOM has not been trained.")
+
+        if x.shape[0] != self.w.shape[1]:
+            raise ValueError('The number of features in the input data and the SOM weights do not match.')
+
+        w = self.w
+        shapw = w.shape
+        S = shapw[0]
+
+        x_w_dist = cdist(w, np.transpose(x), 'euclidean')
+        ind1 = np.argmin(x_w_dist, axis=0)
+
+        clusters = []  # a cluster array of indices sorted by distances
+        cluster_distances = []  # a cluster array of distances sorted by distances
+        max_cluster_distances = np.zeros(S)  # a list of maimum distance to any input in the cluster from cluster center
+        cluster_sizes = []  # cluster array sizes
+
+        for i in range(S):
+            # Find which inputs are closest to each weight (in cluster i)
+            tempclust = np.where(ind1 == i)[0]
+
+            # Save distance of each input in the cluster to cluster center (weight)
+            tempdist = x_w_dist[i, tempclust]
+            indsort = np.argsort(tempdist)
+            tempclust = tempclust[indsort]  # Sort indices
+            tempdist = tempdist[indsort]
+
+            # Add to distance array sorted distances
+            cluster_distances.append(tempdist)
+
+            # Add to Cluster array sorted indices
+            clusters.append(tempclust)
+
+            # Cluster size
+            num = len(tempclust)
+            cluster_sizes.append(num)
+
+            # Save the maximum distance to any input in the cluster from cluster center
+            if num > 0:
+                max_cluster_distances[i] = tempdist[-1]
+
+        return clusters, cluster_distances, max_cluster_distances, cluster_sizes
+
     def quantization_error(self, dist):
         """
         Calculate quantization error
