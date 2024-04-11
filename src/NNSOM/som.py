@@ -4,6 +4,7 @@ from tensorflow.keras.utils import to_categorical
 from datetime import datetime
 from scipy.spatial.distance import cdist
 import pickle
+import warnings
 
 class SOM():
     """
@@ -75,12 +76,15 @@ class SOM():
         self.w = []
         # Set simulation flag to True,  needs to do simulation
         self.sim_flag = True
+        # Initialize the output of simulation
+        self.output = None
+        # Initialize a normalize() function
+        self.norm_func = None
 
         # Initialize the dictionary of sub-cluster. {neuron_number(int): sub-clustering SOM obj}
         self.sub_som = {}
 
-
-    def init_w(self, x):
+    def init_w(self, x, norm_func=None):
         """
         Initializes the weights of the SOM using principal components analysis (PCA) on the input data x.
 
@@ -96,6 +100,9 @@ class SOM():
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
+
+        # Normalize the input data
+        x = self.normalize(x, norm_func)
 
         sz = x.shape
 
@@ -182,7 +189,7 @@ class SOM():
         # a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change
         return np.transpose(a)
 
-    def train(self, x, init_neighborhood=3, epochs=200, steps=100):
+    def train(self, x, init_neighborhood=3, epochs=200, steps=100, norm_func=None):
         """
         Trains the SOM using the batch SOM algorithm on the input data x.
 
@@ -201,6 +208,9 @@ class SOM():
         -------
         None
         """
+        # Normalize the input data
+        x = self.normalize(x, norm_func)
+
         # Train the SOM using the batch SOM algorithm
 
         w = self.w
@@ -303,8 +313,11 @@ class SOM():
         if self.sim_flag:
             raise ValueError("SOM has not been trained.")
 
-        if x.shape[0] != self.w.shape[1]:
+        if x.shape[1] != self.w.shape[1]:
             raise ValueError('The number of features in the input data and the SOM weights do not match.')
+
+        # Normalize the input data
+        x = self.normalize(x, self.norm_func)
 
         w = self.w
         shapw = w.shape
@@ -343,6 +356,73 @@ class SOM():
                 max_cluster_distances[i] = tempdist[-1]
 
         return clusters, cluster_distances, max_cluster_distances, cluster_sizes
+
+    def normalize(self, x, norm_func=None):
+        """
+        Normalize the input data using a custom function.
+
+        Parameters
+        ----------
+        x: array-like
+            The input data to be normalized.
+        norm_func: callable, optional
+            A custom normalization or standardization function to be applied to the input data.
+            If provided, it should take the input data as its argument and return the preprocessed data.
+            Default is None, in which case the input data is returned as-is.
+
+        Returns
+        -------
+        x_preprocessed: array-like
+            The preprocessed input data.
+
+        Raises
+        ------
+        Warning
+            If `norm_func` is None, a warning is raised to indicate the potential inefficiency in SOM training.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> from sklearn.datasets import load_iris
+        >>> from sklearn.feature_extraction.text import TfidfVectorizer
+        >>> from sklearn.preprocessing import StandardScaler
+
+        >>> # Case 1: Tabular data (without normalization)
+        >>> iris = load_iris()
+        >>> X = iris.data
+        >>> som = SOM(dimensions=(5, 5))
+        >>> X_norm = som.normalize(X)
+        >>> print(np.allclose(np.transpose(X_norm), X))
+        True
+
+        >>> # Case 2: Image data (using custom normalization)
+        >>> image_data = np.random.randint(0, 256, size=(28, 28))
+        >>> som = SOM(dimensions=(10, 10))
+        >>> custom_norm_func = lambda x: x / 255  # Custom normalization function
+        >>> image_data_norm = som.normalize(image_data, norm_func=custom_norm_func)
+        >>> print(image_data_norm.min(), image_data_norm.max())
+        0.0 1.0
+
+        >>> # Case 3: Text data (without normalization)
+        >>> text_data = ["This is a sample text.", "Another example sentence."]
+        >>> vectorizer = TfidfVectorizer()
+        >>> tfidf_matrix = vectorizer.fit_transform(text_data)
+        >>> som = SOM(dimensions=(8, 8))
+        >>> text_data_norm = som.normalize(tfidf_matrix.toarray())
+        >>> print(np.allclose(np.transpose(text_data_norm), tfidf_matrix.toarray()))
+        True
+        """
+
+        if norm_func is not None:
+            x_norm = norm_func(x)  # Use the provided custom normalization function
+            self.norm_func = norm_func
+        else:
+            warnings.warn(
+                "Without normalization function: SOM training may be inefficient if you are not normalized.",
+                UserWarning, stacklevel=2)
+            x_norm = x  # Return the input data as-is
+
+        return np.transpose(x_norm)
 
     def quantization_error(self, dist):
         """
@@ -445,4 +525,3 @@ class SOM():
                 som = pickle.load(f)
 
         return som
-
