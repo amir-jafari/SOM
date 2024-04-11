@@ -8,7 +8,7 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src'))
+sys.path.insert(0, os.path.abspath('...'))
 
 
 project = 'NNSOM'
@@ -23,6 +23,8 @@ extensions = [
     'sphinx.ext.duration',
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
+    'sphinx.ext.mathjax',  # if you have mathematical expressions
+    'sphinx.ext.viewcode',
 ]
 
 templates_path = ['_templates']

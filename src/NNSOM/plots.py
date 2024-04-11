@@ -1304,6 +1304,73 @@ class SOMPlots(SOM):
 
         plt.show()
 
+    def weight_as_image(self, mouse_click=False, connect_pick_event=True, **kwargs):
+        w = self.w  # Weight matrix
+        pos = self.pos  # Positions of the neurons
+        numNeurons = self.numNeurons  # Number of neurons
+
+        # Get the shape of a single hexagon
+        shapex, shapey = get_hexagon_shape()
+
+        # Create the figure and axis with a larger size to accommodate the decorations
+        fig, ax = plt.subplots(figsize=(8, 6))
+
+        # Set the aspect of the plot to be equal
+        plt.axis('equal')
+
+        # List to keep track of the hexagon patches
+        patches = []
+
+        for i in range(numNeurons):
+            hex_center_x = pos[0, i]  # x coordinate of the ith position
+            hex_center_y = pos[1, i]  # y coordinate of the ith position
+
+            # Draw the hexagon
+            temp, = ax.fill(hex_center_x + shapex, hex_center_y + shapey, facecolor='none', edgecolor='k', picker=True)
+            patches.append(temp)
+
+            # Assign the cluster number for each hexagon
+            hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(patches)}
+
+            # Transform the row of weights into a matrix if necessary
+            weight_matrix = w[i].reshape((int(np.sqrt(w.shape[1])), -1))  # Assuming square matrix for simplicity
+
+            # Calculate the size and position for the imshow plot
+            # Find the radius of the hexagon, accounting for the scaling of the shape
+            hex_radius = (np.max(shapex) - np.min(shapex)) / 2
+
+            # Calculate the side length of the hexagon for a regular hexagon
+            side_length = hex_radius * np.sqrt(3) / 2
+
+            # Offset the inset_axes to be centered within the hexagon
+            # The factor of sqrt(3)/2 is because in a regular hexagon, the distance from the center to a side is sqrt(3)/2 times the side length
+            axins = ax.inset_axes([hex_center_x - side_length / 2,
+                                   hex_center_y - side_length * (np.sqrt(3) / 2) / 2,
+                                   side_length,
+                                   side_length * (np.sqrt(3) / 2)], transform=ax.transData)
+
+            # Ensure the imshow plot takes up the correct amount of space
+            # Adjust aspect ratio if necessary, depending on the weight matrix shape
+            aspect_ratio = weight_matrix.shape[0] / weight_matrix.shape[1]
+            axins.imshow(weight_matrix, aspect='equal')
+            axins.set_aspect(aspect_ratio * (side_length / (side_length * (np.sqrt(3) / 2))))
+
+            # Turn off the axis
+            axins.axis('off')
+
+        # Connect the pick event for interactivity if required
+        if mouse_click and connect_pick_event:
+            fig.canvas.mpl_connect('pick_event', lambda event: self.onpick(event, patches,hexagon_to_neuron, **kwargs))
+
+        # Adjust the layout to fit everything
+        plt.tight_layout()
+
+        # Display the plot
+        plt.show()
+
+        # Return the figure components
+        return fig, ax, patches
+
     # Generic Plot Function
     def plot(self, plot_type, data_dict=None, ind=None, target_class=None, use_add_1darray=False,
              use_add_2darray=False, **kwargs):
