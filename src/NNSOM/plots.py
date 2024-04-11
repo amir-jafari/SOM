@@ -1163,24 +1163,6 @@ class SOMPlots(SOM):
 
         return fig, ax, h_axes
 
-    def multiplot(self, plot_type, *args):
-        # Dictionary mapping plot types to corresponding plotting methods
-        plot_functions = {
-            'wgts' : self.plt_wgts,
-            'pie': self.plt_pie,
-            'stem': self.plt_stem,
-            'hist': self.plt_histogram,
-            'box': self.plt_boxplot,
-            'violin': self.plt_violin_plot,
-            'scatter': self.plt_scatter
-        }
-
-        selected_plot = plot_functions.get(plot_type)
-        if selected_plot:
-            return selected_plot(*args)
-        else:
-            raise ValueError("Invalid function type")
-
     def plt_scatter(self, x, y, reg_line=True, mouse_click=False, connect_pick_event=True, **kwargs):
         """ Generate Scatter Plot for Each Neuron.
 
@@ -1199,6 +1181,10 @@ class SOMPlots(SOM):
         # Setup figure, main axes, and sub-axes
         fig, ax, h_axes, hexagons, hexagon_to_neuron = self.setup_axes()
 
+        # Determine the global minimum and maximum of x and y for the axes limits
+        x_min, x_max = get_global_min_max(x)
+        y_min, y_max = get_global_min_max(y)
+
         # Loop over each neuron for hexagons and scatter plots
         for neuron in range(numNeurons):
             # Make Scatter Plot for each neuron
@@ -1208,6 +1194,20 @@ class SOMPlots(SOM):
                 if reg_line:
                     m, p = np.polyfit(x[neuron], y[neuron], 1)
                     h_axes[neuron].plot(x[neuron], m * x[neuron] + p, c='r', linewidth=1)
+
+                # Set the same x and y limits for each sub-plot based on global min and max
+                h_axes[neuron].set_xlim(x_min, x_max)
+                h_axes[neuron].set_ylim(y_min, y_max)
+
+                # Show only the left and bottom spines
+                h_axes[neuron].spines['top'].set_visible(False)
+                h_axes[neuron].spines['right'].set_visible(False)
+                h_axes[neuron].spines['left'].set_visible(True)
+                h_axes[neuron].spines['bottom'].set_visible(True)
+
+                # Enable the axes and show tick marks
+                h_axes[neuron].set_frame_on(True)
+                h_axes[neuron].tick_params(axis='both', which='both', length=5)
 
             else:
                 h_axes[neuron] = None
