@@ -97,3 +97,6 @@ som.component_positions(np.transpose(X))
 # Weight as Line
 fig6, ax6, h_axes6 = som.plt_wgts()
 plt.show()
+
+fig7, ax7, patches7 = som.weight_as_image()
+plt.show()
