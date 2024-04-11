@@ -8,27 +8,26 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('...'))
 
+sys.path.insert(0,os.path.abspath(".."))
 
 project = 'NNSOM'
-copyright = '2024, Lakshmi Sravya Chalapati, Ei Tanaka'
-author = 'Lakshmi Sravya Chalapati, Ei Tanaka'
+copyright = '2024, Lakshmi Sravya chalapati, Ei Tanaka'
+author = 'Lakshmi Sravya chalapati, Ei Tanaka'
 release = '0.0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx.ext.duration',
-    'sphinx.ext.doctest',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.mathjax',  # if you have mathematical expressions
+    'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'sphinx.ext.autodoc',
+
 ]
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 
