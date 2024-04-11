@@ -7,7 +7,7 @@ import pickle
 
 class SOM():
     """
-    A class     to represent a Self-Organizing Map (SOM), a type of artificial neural network
+    A class to represent a Self-Organizing Map (SOM), a type of artificial neural network
     trained using unsupervised learning to produce a two-dimensional, discretized representation
     of the input space of the training samples.
 
@@ -56,6 +56,14 @@ class SOM():
         Loads a SOM object from a file using the pickle format.
     """
     def __init__(self, dimensions):
+        """
+        Initializes the SOM with the specified dimensions and calculates the positions and distances between neurons in the SOM grid.
+
+        Parameters
+        ----------
+        dimensions : tuple, list, or np.ndarray
+                    The dimensions (shape) of the SOM grid.
+        """
 
         self.dimensions = dimensions
         self.numNeurons = np.prod(dimensions)
@@ -73,6 +81,14 @@ class SOM():
 
 
     def init_w(self, x):
+        """
+        Initializes the weights of the SOM using principal components analysis (PCA) on the input data x.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            The input data used for weight initialization.
+        """
         # Initialize SOM weights using principal components
 
         # Print Beginning time for initialization
@@ -131,6 +147,20 @@ class SOM():
         print("Current Time =", current_time)
 
     def sim_som(self, x):
+        """
+        Simulates the SOM with x as the input, determining which neurons are activated by the input vectors.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            The input data to simulate the SOM with.
+
+        Returns
+        -------
+        np.ndarray
+            The simulated output of the SOM.
+        """
+
         # Simulate the SOM, with x as the input
         shapx = x.shape   # shapes of the input x
         shapw = self.w.shape # weights of the SOM
@@ -153,6 +183,24 @@ class SOM():
         return np.transpose(a)
 
     def train(self, x, init_neighborhood=3, epochs=200, steps=100):
+        """
+        Trains the SOM using the batch SOM algorithm on the input data x.
+
+        Parameters
+        ----------
+        x : np.ndarray
+            The input data to train the SOM with.
+        init_neighborhood : int, optional
+            The initial neighborhood size.
+        epochs : int, optional
+            The number of epochs to train for.
+        steps : int, optional
+            The number of steps for training.
+
+        Returns
+        -------
+        None
+        """
         # Train the SOM using the batch SOM algorithm
 
         w = self.w
