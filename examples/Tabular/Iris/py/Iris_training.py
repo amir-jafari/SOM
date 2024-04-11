@@ -1,6 +1,6 @@
 # Importing Library
 from NNSOM.plots import SOMPlots
-from NNSOM.utils import extract_cluster_details
+from NNSOM.utils import *
 
 
 from sklearn.datasets import load_iris
@@ -55,7 +55,7 @@ som.save_pickle(Trained_SOM_File, model_dir + os.sep)
 
 
 # Extract Cluster details
-clust, dist, mdist, clustSize = extract_cluster_details(som, X)
+clust, dist, mdist, clustSize = get_cluster_data(som, X)
 
 # Error Analysis
 # Find quantization error
