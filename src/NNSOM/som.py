@@ -432,15 +432,18 @@ class SOM():
 
         return quant_err
 
-    def topological_error(self, data):
+    def topological_error(self, x):
         """
         Calculate topological error
         """
         w = self.w
         ndist = self.neuron_dist
 
+        # Normalize Input
+        x = self.normalize(x, self.norm_func)
+
         # Calculate the distance between item vs. cluster center
-        x_w_dist = cdist(w, np.transpose(data), 'euclidean')
+        x_w_dist = cdist(w, np.transpose(x), 'euclidean')
 
         sort_dist = np.argsort(x_w_dist, axis=0)
         top_dist = [ndist[sort_dist[0, ii], sort_dist[1, ii]] for ii in range(sort_dist.shape[1])]
@@ -451,16 +454,19 @@ class SOM():
 
         return top_error_1st, top_error_1st_and_2nd
 
-    def distortion_error(self, data):
+    def distortion_error(self, x):
         """
         Calculate distortion
         """
-        shapx = data.shape
+        # Normalize input data
+        x = self.normalize(x, self.norm_func)
+
+        shapx = x.shape
         Q = shapx[1]  # Number of samples
 
         ww = self.w
         ndist = self.neuron_dist
-        x_w_dist = cdist(ww, np.transpose(data), 'euclidean')
+        x_w_dist = cdist(ww, np.transpose(x), 'euclidean')
         ind1 = np.argmin(x_w_dist, axis=0)
 
         dd = [1, 2, 3]  # neighborhood distances
