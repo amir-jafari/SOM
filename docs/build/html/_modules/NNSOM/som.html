@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NNSOM.som &mdash; NNSOM 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NNSOM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../NNSOM.html">NNSOM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">NNSOM</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NNSOM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">NNSOM.som</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for NNSOM.som</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.utils</span> <span class="kn">import</span> <span class="n">to_categorical</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<div class="viewcode-block" id="SOM">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM">[docs]</a>
+<span class="k">class</span> <span class="nc">SOM</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to represent a Self-Organizing Map (SOM), a type of artificial neural network</span>
+<span class="sd">    trained using unsupervised learning to produce a two-dimensional, discretized representation</span>
+<span class="sd">    of the input space of the training samples.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dimensions : tuple, list, or array-like</span>
+<span class="sd">        The dimensions of the SOM grid. Determines the layout and number of neurons in the map.</span>
+<span class="sd">    numNeurons : int</span>
+<span class="sd">        The total number of neurons in the SOM, calculated as the product of the dimensions.</span>
+<span class="sd">    pos : array-like</span>
+<span class="sd">        The positions of the neurons in the SOM grid.</span>
+<span class="sd">    neuron_dist : array-like</span>
+<span class="sd">        The distances between neurons in the SOM.</span>
+<span class="sd">    w : array-like</span>
+<span class="sd">        The weight matrix of the SOM, representing the feature vectors of the neurons.</span>
+<span class="sd">    sim_flag : bool</span>
+<span class="sd">        A flag indicating whether the SOM has been simulated or not.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    __init__(self, dimensions):</span>
+<span class="sd">        Initializes the SOM with the specified dimensions.</span>
+
+<span class="sd">    init_w(self, x):</span>
+<span class="sd">        Initializes the weights of the SOM using principal components analysis on the input data x.</span>
+
+<span class="sd">    sim_som(self, x):</span>
+<span class="sd">        Simulates the SOM with x as the input, determining which neurons are activated by the input vectors.</span>
+
+<span class="sd">    train(self, x, init_neighborhood=3, epochs=200, steps=100):</span>
+<span class="sd">        Trains the SOM using the batch SOM algorithm on the input data x.</span>
+
+<span class="sd">    quantization_error(self, dist)</span>
+<span class="sd">        Calculate quantization error</span>
+
+<span class="sd">    topological_error(self, data)</span>
+<span class="sd">        Calculate 1st and 1st-2nd toplogical error</span>
+
+<span class="sd">    distortion_error(self, data)</span>
+<span class="sd">        Calculate distortion error</span>
+
+<span class="sd">    save_pickle(self, filename, path, data_format=&#39;pkl&#39;):</span>
+<span class="sd">        Saves the SOM object to a file using the pickle format.</span>
+
+<span class="sd">    load_pickle(self, filename, path, data_format=&#39;pkl&#39;):</span>
+<span class="sd">        Loads a SOM object from a file using the pickle format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the SOM with the specified dimensions and calculates the positions and distances between neurons in the SOM grid.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dimensions : tuple, list, or np.ndarray</span>
+<span class="sd">                    The dimensions (shape) of the SOM grid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="n">dimensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+        <span class="c1"># Calculate positions of neurons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">calculate_positions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+        <span class="c1"># Calculate distances between neurons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neuron_dist</span> <span class="o">=</span> <span class="n">distances</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+        <span class="c1"># Initialize the weight matrix with empty list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Set simulation flag to True,  needs to do simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim_flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># Initialize the output of simulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Initialize a normalize() function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_func</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Initialize the dictionary of sub-cluster. {neuron_number(int): sub-clustering SOM obj}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_som</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="SOM.init_w">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.init_w">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_w</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">norm_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the weights of the SOM using principal components analysis (PCA) on the input data x.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : np.ndarray</span>
+<span class="sd">            The input data used for weight initialization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize SOM weights using principal components</span>
+
+        <span class="c1"># Print Beginning time for initialization</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Beginning Initialization&#39;</span><span class="p">)</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current Time =&quot;</span><span class="p">,</span> <span class="n">current_time</span><span class="p">)</span>
+
+        <span class="c1"># Normalize the input data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">norm_func</span><span class="p">)</span>
+
+        <span class="n">sz</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="n">posMean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">posMean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">posMean</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">xc</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">posMean</span>
+
+        <span class="n">components</span><span class="p">,</span> <span class="n">gains</span><span class="p">,</span> <span class="n">encodedInputsT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">xc</span><span class="p">)</span>
+
+        <span class="n">encodedInputsT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">encodedInputsT</span><span class="p">)</span>
+
+        <span class="n">basis</span> <span class="o">=</span> <span class="n">components</span> <span class="o">*</span> <span class="n">gains</span>
+        <span class="n">stdev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">encodedInputsT</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">stdev</span> <span class="o">=</span> <span class="n">stdev</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">basis</span><span class="p">)]</span>
+        <span class="n">posBasis</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">*</span> <span class="n">basis</span> <span class="o">*</span> <span class="n">stdev</span>
+
+        <span class="n">numNeurons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span>
+        <span class="n">numDimensions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
+        <span class="n">sampleSize</span> <span class="o">=</span> <span class="n">sz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">inputSize</span> <span class="o">=</span> <span class="n">sz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dimOrder</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
+
+        <span class="n">restoreOrder</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">dimOrder</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">numDimensions</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">inputSize</span><span class="p">,</span> <span class="n">sampleSize</span><span class="p">))))</span>
+
+        <span class="k">if</span> <span class="n">numDimensions</span> <span class="o">&gt;</span> <span class="n">inputSize</span><span class="p">:</span>
+            <span class="n">posBasis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">posBasis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">inputSize</span><span class="p">,</span> <span class="n">inputSize</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span><span class="p">))</span>
+
+        <span class="n">posBasis</span> <span class="o">=</span> <span class="n">posBasis</span><span class="p">[</span><span class="n">restoreOrder</span><span class="p">]</span>
+
+        <span class="n">pos1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span>
+
+        <span class="k">if</span> <span class="n">sampleSize</span> <span class="o">&lt;</span> <span class="n">inputSize</span><span class="p">:</span>
+            <span class="n">posBasis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">posBasis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">inputSize</span><span class="p">,</span> <span class="n">inputSize</span> <span class="o">-</span> <span class="n">sampleSize</span><span class="p">))))</span>
+
+        <span class="k">if</span> <span class="n">inputSize</span> <span class="o">&gt;</span> <span class="n">numDimensions</span><span class="p">:</span>
+            <span class="n">pos1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">pos1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">inputSize</span> <span class="o">-</span> <span class="n">numDimensions</span><span class="p">,</span> <span class="n">numNeurons</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">pos2</span> <span class="o">=</span> <span class="n">normalize_position</span><span class="p">(</span><span class="n">pos1</span><span class="p">)</span>
+
+        <span class="n">pos3</span> <span class="o">=</span> <span class="n">spread_positions</span><span class="p">(</span><span class="n">pos2</span><span class="p">,</span> <span class="n">posMean</span><span class="p">,</span> <span class="n">posBasis</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pos3</span><span class="p">)</span>
+
+        <span class="c1"># Print Ending time for initialization</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ending Initialization&#39;</span><span class="p">)</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current Time =&quot;</span><span class="p">,</span> <span class="n">current_time</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SOM.sim_som">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.sim_som">[docs]</a>
+    <span class="k">def</span> <span class="nf">sim_som</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simulates the SOM with x as the input, determining which neurons are activated by the input vectors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : np.ndarray</span>
+<span class="sd">            The input data to simulate the SOM with.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            The simulated output of the SOM.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Simulate the SOM, with x as the input</span>
+        <span class="n">shapx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>   <span class="c1"># shapes of the input x</span>
+        <span class="n">shapw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># weights of the SOM</span>
+
+        <span class="c1"># Compute the negative distance from the inputs to each center</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="n">cdist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="c1"># n = np.empty((shapw[0], shapx[1]))</span>
+        <span class="c1"># for jj in range(shapw[0]):</span>
+        <span class="c1">#     wj = self.w[jj]</span>
+        <span class="c1">#     wj = np.expand_dims(wj, axis=1)</span>
+        <span class="c1">#     n[jj] = np.sum((x - wj)**2, axis=0)</span>
+
+        <span class="c1"># n = -np.sqrt(n)</span>
+        <span class="c1">#print(n)</span>
+
+        <span class="c1"># Find out which center was closest to the input</span>
+        <span class="n">maxRows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">to_categorical</span><span class="p">(</span><span class="n">maxRows</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">#made correction-added number of class</span>
+        <span class="c1"># a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SOM.train">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.train">[docs]</a>
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">init_neighborhood</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">norm_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trains the SOM using the batch SOM algorithm on the input data x.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : np.ndarray</span>
+<span class="sd">            The input data to train the SOM with.</span>
+<span class="sd">        init_neighborhood : int, optional</span>
+<span class="sd">            The initial neighborhood size.</span>
+<span class="sd">        epochs : int, optional</span>
+<span class="sd">            The number of epochs to train for.</span>
+<span class="sd">        steps : int, optional</span>
+<span class="sd">            The number of steps for training.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Normalize the input data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">norm_func</span><span class="p">)</span>
+
+        <span class="c1"># Train the SOM using the batch SOM algorithm</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="n">shapw</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">shapw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">shapx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">shapx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Beginning Training&#39;</span><span class="p">)</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current Time =&quot;</span><span class="p">,</span> <span class="n">current_time</span><span class="p">)</span>
+        <span class="c1"># Train the network</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+
+            <span class="c1"># network output</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_som</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="c1"># neighborhood distance</span>
+            <span class="n">nd</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">init_neighborhood</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">step</span><span class="o">/</span><span class="n">steps</span><span class="p">)</span>
+            <span class="n">neighborhood</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_dist</span> <span class="o">&lt;=</span> <span class="n">nd</span>
+            <span class="c1">#print(nd)</span>
+            <span class="c1"># remove some outputs at random</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.90</span><span class="p">)</span>
+            <span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">neighborhood</span><span class="p">,</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span>
+
+            <span class="c1"># find how many times each neuron won</span>
+            <span class="c1"># (The winning neuron is the one that exhibits the smallest distance or similarity to the input data)</span>
+            <span class="n">suma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">loserIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">suma2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">suma2</span><span class="p">[</span><span class="n">loserIndex</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">suma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">suma2</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">a3</span> <span class="o">=</span> <span class="n">a2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">suma2</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">neww</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+            <span class="n">dw</span> <span class="o">=</span> <span class="n">neww</span> <span class="o">-</span> <span class="n">w</span>
+
+            <span class="n">dw</span><span class="p">[</span><span class="n">loserIndex</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dw</span><span class="p">)</span>
+
+            <span class="n">step</span> <span class="o">=</span> <span class="n">step</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">step</span><span class="o">%</span><span class="mi">50</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+                <span class="n">current_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current Time =&quot;</span><span class="p">,</span> <span class="n">current_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_som</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim_flag</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ending Training&#39;</span><span class="p">)</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current Time =&quot;</span><span class="p">,</span> <span class="n">current_time</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SOM.cluster_data">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.cluster_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">cluster_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cluster the input data based on the trained SOM reference vectors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : ndarray (normalized)</span>
+<span class="sd">            The input data to be clustered.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        clusters : list of lists</span>
+<span class="sd">            A list containing sub-lists, where each sublist represents a cluster.</span>
+<span class="sd">            The indices of the input data points belonging to the same cluster</span>
+<span class="sd">            are stored in the corresponding sublist, sorted by their proximity</span>
+<span class="sd">            to the cluster center.</span>
+
+<span class="sd">        cluster_distances : list of lists</span>
+<span class="sd">            A list containing sub-lists, where each sublist represents the distances</span>
+<span class="sd">            of the input data points to the corresponding cluster center, sorted in</span>
+<span class="sd">            the same order as the indices in the `clusters` list.</span>
+
+<span class="sd">        max_cluster_distances : ndarray</span>
+<span class="sd">            A list containing the maximum distance between each cluster center</span>
+<span class="sd">            and the data points belonging to that cluster.</span>
+
+<span class="sd">        cluster_sizes : ndarray</span>
+<span class="sd">            A list containing the number of data points in each cluster.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        -------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the SOM has not been trained.</span>
+
+<span class="sd">        ValueError</span>
+<span class="sd">            If the number of features in the input data and the SOM weights do not match.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_flag</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SOM has not been trained.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The number of features in the input data and the SOM weights do not match.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Normalize the input data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_func</span><span class="p">)</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="n">shapw</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">shapw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">x_w_dist</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">ind1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">x_w_dist</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">clusters</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># a cluster array of indices sorted by distances</span>
+        <span class="n">cluster_distances</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># a cluster array of distances sorted by distances</span>
+        <span class="n">max_cluster_distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>  <span class="c1"># a list of maimum distance to any input in the cluster from cluster center</span>
+        <span class="n">cluster_sizes</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># cluster array sizes</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
+            <span class="c1"># Find which inputs are closest to each weight (in cluster i)</span>
+            <span class="n">tempclust</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ind1</span> <span class="o">==</span> <span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Save distance of each input in the cluster to cluster center (weight)</span>
+            <span class="n">tempdist</span> <span class="o">=</span> <span class="n">x_w_dist</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">tempclust</span><span class="p">]</span>
+            <span class="n">indsort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">tempdist</span><span class="p">)</span>
+            <span class="n">tempclust</span> <span class="o">=</span> <span class="n">tempclust</span><span class="p">[</span><span class="n">indsort</span><span class="p">]</span>  <span class="c1"># Sort indices</span>
+            <span class="n">tempdist</span> <span class="o">=</span> <span class="n">tempdist</span><span class="p">[</span><span class="n">indsort</span><span class="p">]</span>
+
+            <span class="c1"># Add to distance array sorted distances</span>
+            <span class="n">cluster_distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tempdist</span><span class="p">)</span>
+
+            <span class="c1"># Add to Cluster array sorted indices</span>
+            <span class="n">clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tempclust</span><span class="p">)</span>
+
+            <span class="c1"># Cluster size</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tempclust</span><span class="p">)</span>
+            <span class="n">cluster_sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+
+            <span class="c1"># Save the maximum distance to any input in the cluster from cluster center</span>
+            <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">max_cluster_distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tempdist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">clusters</span><span class="p">,</span> <span class="n">cluster_distances</span><span class="p">,</span> <span class="n">max_cluster_distances</span><span class="p">,</span> <span class="n">cluster_sizes</span></div>
+
+
+<div class="viewcode-block" id="SOM.normalize">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.normalize">[docs]</a>
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">norm_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Normalize the input data using a custom function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x: array-like</span>
+<span class="sd">            The input data to be normalized.</span>
+<span class="sd">        norm_func: callable, optional</span>
+<span class="sd">            A custom normalization or standardization function to be applied to the input data.</span>
+<span class="sd">            If provided, it should take the input data as its argument and return the preprocessed data.</span>
+<span class="sd">            Default is None, in which case the input data is returned as-is.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        x_preprocessed: array-like</span>
+<span class="sd">            The preprocessed input data.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        Warning</span>
+<span class="sd">            If `norm_func` is None, a warning is raised to indicate the potential inefficiency in SOM training.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from sklearn.datasets import load_iris</span>
+<span class="sd">        &gt;&gt;&gt; from sklearn.feature_extraction.text import TfidfVectorizer</span>
+<span class="sd">        &gt;&gt;&gt; from sklearn.preprocessing import StandardScaler</span>
+
+<span class="sd">        &gt;&gt;&gt; # Case 1: Tabular data (without normalization)</span>
+<span class="sd">        &gt;&gt;&gt; iris = load_iris()</span>
+<span class="sd">        &gt;&gt;&gt; X = iris.data</span>
+<span class="sd">        &gt;&gt;&gt; som = SOM(dimensions=(5, 5))</span>
+<span class="sd">        &gt;&gt;&gt; X_norm = som.normalize(X)</span>
+<span class="sd">        &gt;&gt;&gt; print(np.allclose(np.transpose(X_norm), X))</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &gt;&gt;&gt; # Case 2: Image data (using custom normalization)</span>
+<span class="sd">        &gt;&gt;&gt; image_data = np.random.randint(0, 256, size=(28, 28))</span>
+<span class="sd">        &gt;&gt;&gt; som = SOM(dimensions=(10, 10))</span>
+<span class="sd">        &gt;&gt;&gt; custom_norm_func = lambda x: x / 255  # Custom normalization function</span>
+<span class="sd">        &gt;&gt;&gt; image_data_norm = som.normalize(image_data, norm_func=custom_norm_func)</span>
+<span class="sd">        &gt;&gt;&gt; print(image_data_norm.min(), image_data_norm.max())</span>
+<span class="sd">        0.0 1.0</span>
+
+<span class="sd">        &gt;&gt;&gt; # Case 3: Text data (without normalization)</span>
+<span class="sd">        &gt;&gt;&gt; text_data = [&quot;This is a sample text.&quot;, &quot;Another example sentence.&quot;]</span>
+<span class="sd">        &gt;&gt;&gt; vectorizer = TfidfVectorizer()</span>
+<span class="sd">        &gt;&gt;&gt; tfidf_matrix = vectorizer.fit_transform(text_data)</span>
+<span class="sd">        &gt;&gt;&gt; som = SOM(dimensions=(8, 8))</span>
+<span class="sd">        &gt;&gt;&gt; text_data_norm = som.normalize(tfidf_matrix.toarray())</span>
+<span class="sd">        &gt;&gt;&gt; print(np.allclose(np.transpose(text_data_norm), tfidf_matrix.toarray()))</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">norm_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x_norm</span> <span class="o">=</span> <span class="n">norm_func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Use the provided custom normalization function</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">norm_func</span> <span class="o">=</span> <span class="n">norm_func</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Without normalization function: SOM training may be inefficient if you are not normalized.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">x_norm</span> <span class="o">=</span> <span class="n">x</span>  <span class="c1"># Return the input data as-is</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x_norm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SOM.quantization_error">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.quantization_error">[docs]</a>
+    <span class="k">def</span> <span class="nf">quantization_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate quantization error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">quant_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">quant_err</span></div>
+
+
+<div class="viewcode-block" id="SOM.topological_error">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.topological_error">[docs]</a>
+    <span class="k">def</span> <span class="nf">topological_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate topological error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="n">ndist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_dist</span>
+
+        <span class="c1"># Normalize Input</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_func</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the distance between item vs. cluster center</span>
+        <span class="n">x_w_dist</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+
+        <span class="n">sort_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x_w_dist</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">top_dist</span> <span class="o">=</span> <span class="p">[</span><span class="n">ndist</span><span class="p">[</span><span class="n">sort_dist</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ii</span><span class="p">],</span> <span class="n">sort_dist</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">ii</span><span class="p">]]</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sort_dist</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">top_dist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.1</span><span class="p">)</span>
+        <span class="n">top_error_1st</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">x_w_dist</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">top_dist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">2.1</span><span class="p">)</span>
+        <span class="n">top_error_1st_and_2nd</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">x_w_dist</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">top_error_1st</span><span class="p">,</span> <span class="n">top_error_1st_and_2nd</span></div>
+
+
+<div class="viewcode-block" id="SOM.distortion_error">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.distortion_error">[docs]</a>
+    <span class="k">def</span> <span class="nf">distortion_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate distortion</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Normalize input data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_func</span><span class="p">)</span>
+
+        <span class="n">shapx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">shapx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Number of samples</span>
+
+        <span class="n">ww</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+        <span class="n">ndist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_dist</span>
+        <span class="n">x_w_dist</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">ww</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">ind1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">x_w_dist</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">dd</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>  <span class="c1"># neighborhood distances</span>
+        <span class="n">wwdist</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">ww</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+        <span class="n">sst</span> <span class="o">=</span> <span class="n">ndist</span><span class="p">[:,</span> <span class="n">ind1</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dd</span><span class="p">:</span>
+            <span class="n">factor1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span>
+            <span class="n">factor2</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">sst</span><span class="p">,</span> <span class="n">sst</span><span class="p">)</span> <span class="o">/</span> <span class="n">factor1</span><span class="p">)</span>
+            <span class="n">distortion</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">x_w_dist</span><span class="p">))</span> <span class="o">/</span> <span class="n">factor2</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Distortion (d=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;) = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">distortion</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SOM.save_pickle">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.save_pickle">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="s1">&#39;pkl&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Save the SOM object to a file using pickle.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The name of the file to save the SOM object to.</span>
+
+<span class="sd">        path : str</span>
+<span class="sd">            The path to the file to save the SOM object to.</span>
+
+<span class="sd">        data_format : str</span>
+<span class="sd">            The format to save the SOM object in. Must be one of: pkl</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pkl&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;data_format must be one of: pkl&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data_format</span> <span class="o">==</span> <span class="s1">&#39;pkl&#39;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SOM.load_pickle">
+<a class="viewcode-back" href="../../NNSOM.html#NNSOM.som.SOM.load_pickle">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="s1">&#39;pkl&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Load the SOM object from a file using pickle.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The name of the file to load the SOM object from.</span>
+
+<span class="sd">        path : str</span>
+<span class="sd">            The path to the file to load the SOM object from.</span>
+
+<span class="sd">        data_format : str</span>
+<span class="sd">            The format to load the SOM object from. Must be one of: pkl</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pkl&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;data_format must be one of: pkl&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data_format</span> <span class="o">==</span> <span class="s1">&#39;pkl&#39;</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">som</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">som</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Lakshmi Sravya Chalapati, Ei Tanaka.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
