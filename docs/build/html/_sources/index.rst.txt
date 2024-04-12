@@ -12,9 +12,10 @@ Welcome to NNSOM's documentation!
 
 
    intro
-   installation
+   install
    NNSOM
    modules
+   examples
 
 
 
