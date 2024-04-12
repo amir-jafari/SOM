@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="NNSOM" href="modules.html" />
+    <link rel="next" title="examples" href="examples.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
@@ -62,6 +62,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots.determine_button_types"><code class="docutils literal notranslate"><span class="pre">SOMPlots.determine_button_types()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots.gray_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.gray_hist()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots.hit_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.hit_hist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots.multiplot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.multiplot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots.neuron_dist_plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.neuron_dist_plot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots.onpick"><code class="docutils literal notranslate"><span class="pre">SOMPlots.onpick()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots.plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plot()</span></code></a></li>
@@ -120,7 +121,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#NNSOM.utils.get_cluster_data"><code class="docutils literal notranslate"><span class="pre">get_cluster_data()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#NNSOM.utils.get_color_labels"><code class="docutils literal notranslate"><span class="pre">get_color_labels()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#NNSOM.utils.get_conf_indices"><code class="docutils literal notranslate"><span class="pre">get_conf_indices()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#NNSOM.utils.get_dominant_class_error_types"><code class="docutils literal notranslate"><span class="pre">get_dominant_class_error_types()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#NNSOM.utils.get_edge_shape"><code class="docutils literal notranslate"><span class="pre">get_edge_shape()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#NNSOM.utils.get_edge_widths"><code class="docutils literal notranslate"><span class="pre">get_edge_widths()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#NNSOM.utils.get_global_min_max"><code class="docutils literal notranslate"><span class="pre">get_global_min_max()</span></code></a></li>
@@ -137,53 +137,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-NNSOM">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NNSOM</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">NNSOM package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NNSOM.plots">NNSOM.plots module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.plots.SOMPlots"><code class="docutils literal notranslate"><span class="pre">SOMPlots</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NNSOM.som">NNSOM.som module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.som.SOM"><code class="docutils literal notranslate"><span class="pre">SOM</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NNSOM.utils">NNSOM.utils module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.cal_class_cluster_intersect"><code class="docutils literal notranslate"><span class="pre">cal_class_cluster_intersect()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.calculate_button_positions"><code class="docutils literal notranslate"><span class="pre">calculate_button_positions()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.calculate_positions"><code class="docutils literal notranslate"><span class="pre">calculate_positions()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.cart2pol"><code class="docutils literal notranslate"><span class="pre">cart2pol()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.closest_class_cluster"><code class="docutils literal notranslate"><span class="pre">closest_class_cluster()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.count_classes_in_cluster"><code class="docutils literal notranslate"><span class="pre">count_classes_in_cluster()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.create_buttons"><code class="docutils literal notranslate"><span class="pre">create_buttons()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.distances"><code class="docutils literal notranslate"><span class="pre">distances()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.flatten"><code class="docutils literal notranslate"><span class="pre">flatten()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_cluster_array"><code class="docutils literal notranslate"><span class="pre">get_cluster_array()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_cluster_avg"><code class="docutils literal notranslate"><span class="pre">get_cluster_avg()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_cluster_data"><code class="docutils literal notranslate"><span class="pre">get_cluster_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_color_labels"><code class="docutils literal notranslate"><span class="pre">get_color_labels()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_conf_indices"><code class="docutils literal notranslate"><span class="pre">get_conf_indices()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_dominant_class_error_types"><code class="docutils literal notranslate"><span class="pre">get_dominant_class_error_types()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_edge_shape"><code class="docutils literal notranslate"><span class="pre">get_edge_shape()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_edge_widths"><code class="docutils literal notranslate"><span class="pre">get_edge_widths()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_global_min_max"><code class="docutils literal notranslate"><span class="pre">get_global_min_max()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_hexagon_shape"><code class="docutils literal notranslate"><span class="pre">get_hexagon_shape()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_ind_misclassified"><code class="docutils literal notranslate"><span class="pre">get_ind_misclassified()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_perc_cluster"><code class="docutils literal notranslate"><span class="pre">get_perc_cluster()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.get_perc_misclassified"><code class="docutils literal notranslate"><span class="pre">get_perc_misclassified()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.majority_class_cluster"><code class="docutils literal notranslate"><span class="pre">majority_class_cluster()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.normalize_position"><code class="docutils literal notranslate"><span class="pre">normalize_position()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.pol2cart"><code class="docutils literal notranslate"><span class="pre">pol2cart()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.preminmax"><code class="docutils literal notranslate"><span class="pre">preminmax()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.rotate_xy"><code class="docutils literal notranslate"><span class="pre">rotate_xy()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#NNSOM.utils.spread_positions"><code class="docutils literal notranslate"><span class="pre">spread_positions()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-NNSOM">Module contents</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">examples</a></li>
@@ -315,7 +268,7 @@ It indicates what the majority class in each cluster is, and how many specific c
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.component_positions">
-<span class="sig-name descname"><span class="pre">component_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/plots.html#SOMPlots.component_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.plots.SOMPlots.component_positions" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">component_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_scaled</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/plots.html#SOMPlots.component_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.plots.SOMPlots.component_positions" title="Link to this definition"></a></dt>
 <dd><p>Plots the SOM weight vectors, the Iris dataset input vectors, and connects neighboring neurons.</p>
 <p>Parameters:
 - som: A trained SOM instance with attributes ‘w’ for weight vectors and ‘dimensions’ for grid dimensions.
@@ -391,6 +344,11 @@ Possible keys includes:
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.multiplot">
+<span class="sig-name descname"><span class="pre">multiplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/plots.html#SOMPlots.multiplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.plots.SOMPlots.multiplot" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.neuron_dist_plot">
 <span class="sig-name descname"><span class="pre">neuron_dist_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/plots.html#SOMPlots.neuron_dist_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.plots.SOMPlots.neuron_dist_plot" title="Link to this definition"></a></dt>
 <dd><p>Generates distance map.
@@ -440,7 +398,7 @@ Args:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_add_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/plots.html#SOMPlots.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.plots.SOMPlots.plot" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_add_1darray</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_add_2darray</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/plots.html#SOMPlots.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.plots.SOMPlots.plot" title="Link to this definition"></a></dt>
 <dd><p>Generic Plot Function.
 It generates a plot based on the plot type and data provides.</p>
 <section id="id7">
@@ -455,13 +413,16 @@ It generates a plot based on the plot type and data provides.</p>
 </dd>
 <dt>data_dict: dict (optional)</dt><dd><p>A dictionary containing the data to be plotted.
 The key is prefixed with the data type and the value is the data itself.
-{“data”, “target”, “clust”, “add_1d_array”, “add_2d_array”}</p>
+{“original_data”, “input_data”, “target”, “clust”,”cat_1darray”, “cat_2darray”,
+“num_1darray”}</p>
 </dd>
 <dt>ind<span class="classifier">int, str or array-like (optional)</span></dt><dd><p>The indices of the data to be plotted.</p>
 </dd>
 <dt>target_class: int (optional)</dt><dd><p>The target class to be plotted.</p>
 </dd>
-<dt>use_add_array: bool (optional)</dt><dd><p>If true, the additional array to be used.</p>
+<dt>use_add_1darray: bool (optional)</dt><dd><p>If true, the additional array to be used.</p>
+</dd>
+<dt>use_add_2darray: bool (optional)</dt><dd><p>If true, the additional 2D array to be used.</p>
 </dd>
 <dt><a href="#id8"><span class="problematic" id="id9">**</span></a>kwargs<span class="classifier">dict</span></dt><dd><p>Additional arguments to be passed to the interactive plot function.</p>
 </dd>
@@ -1333,29 +1294,6 @@ flattened into a single list.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="NNSOM.utils.get_dominant_class_error_types">
-<span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">get_dominant_class_error_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dominant_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/utils.html#get_dominant_class_error_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.utils.get_dominant_class_error_types" title="Link to this definition"></a></dt>
-<dd><p>Map dominant class to the corresponding majority error type for each cluster,
-dynamically applying the correct error type based on the dominant class.</p>
-<section id="id42">
-<h3>Parameters:<a class="headerlink" href="#id42" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>dominant_classes: array-like (som.numNeurons, )</dt><dd><p>List of dominant class labels for each cluster. May contain NaN values.</p>
-</dd>
-<dt>error_types: list of array-like (numClasses, som.numNeurons)</dt><dd><p>Variable number of arrays, each representing majority error types for each class.</p>
-</dd>
-</dl>
-</section>
-<section id="id43">
-<h3>Returns:<a class="headerlink" href="#id43" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>array-like (som.numNeurons, )</dt><dd><p>List of majority error type for each cluster corresponding to the dominant class.</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="NNSOM.utils.get_edge_shape">
 <span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">get_edge_shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/utils.html#get_edge_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.utils.get_edge_shape" title="Link to this definition"></a></dt>
 <dd></dd></dl>
@@ -1404,8 +1342,8 @@ in the data, and max_value is the maximum value.</p>
 <dt class="sig sig-object py" id="NNSOM.utils.get_ind_misclassified">
 <span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">get_ind_misclassified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/utils.html#get_ind_misclassified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.utils.get_ind_misclassified" title="Link to this definition"></a></dt>
 <dd><p>Get the indices of misclassified items.</p>
-<section id="id44">
-<h3>Parameters<a class="headerlink" href="#id44" title="Link to this heading"></a></h3>
+<section id="id42">
+<h3>Parameters<a class="headerlink" href="#id42" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>target<span class="classifier">array-like</span></dt><dd><p>The true target values.</p>
 </dd>
@@ -1413,8 +1351,8 @@ in the data, and max_value is the maximum value.</p>
 </dd>
 </dl>
 </section>
-<section id="id45">
-<h3>Returns<a class="headerlink" href="#id45" title="Link to this heading"></a></h3>
+<section id="id43">
+<h3>Returns<a class="headerlink" href="#id43" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>misclassified_indices<span class="classifier">list</span></dt><dd><p>List of indices of misclassified items.</p>
 </dd>
@@ -1426,8 +1364,8 @@ in the data, and max_value is the maximum value.</p>
 <dt class="sig sig-object py" id="NNSOM.utils.get_perc_cluster">
 <span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">get_perc_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cat_feature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/utils.html#get_perc_cluster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.utils.get_perc_cluster" title="Link to this definition"></a></dt>
 <dd><p>Return cluster array with the percentage of a specific target class in each cluster.</p>
-<section id="id46">
-<h3>Parameters<a class="headerlink" href="#id46" title="Link to this heading"></a></h3>
+<section id="id44">
+<h3>Parameters<a class="headerlink" href="#id44" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>cat_feature<span class="classifier">array-like</span></dt><dd><p>Categorical feature array.</p>
 </dd>
@@ -1437,8 +1375,8 @@ in the data, and max_value is the maximum value.</p>
 </dd>
 </dl>
 </section>
-<section id="id47">
-<h3>Returns<a class="headerlink" href="#id47" title="Link to this heading"></a></h3>
+<section id="id45">
+<h3>Returns<a class="headerlink" href="#id45" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>cluster_array<span class="classifier">numpy array</span></dt><dd><p>A cluster array with the percentage of target class.</p>
 </dd>
@@ -1450,8 +1388,8 @@ in the data, and max_value is the maximum value.</p>
 <dt class="sig sig-object py" id="NNSOM.utils.get_perc_misclassified">
 <span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">get_perc_misclassified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/utils.html#get_perc_misclassified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.utils.get_perc_misclassified" title="Link to this definition"></a></dt>
 <dd><p>Calculate the percentage of misclassified items in each cluster and return as a numpy array.</p>
-<section id="id48">
-<h3>Parameters<a class="headerlink" href="#id48" title="Link to this heading"></a></h3>
+<section id="id46">
+<h3>Parameters<a class="headerlink" href="#id46" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>target<span class="classifier">array-like</span></dt><dd><p>The true target values.</p>
 </dd>
@@ -1461,8 +1399,8 @@ in the data, and max_value is the maximum value.</p>
 </dd>
 </dl>
 </section>
-<section id="id49">
-<h3>Returns<a class="headerlink" href="#id49" title="Link to this heading"></a></h3>
+<section id="id47">
+<h3>Returns<a class="headerlink" href="#id47" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>proportion_misclassified<span class="classifier">numpy array</span></dt><dd><p>Percentage of misclassified items in each cluster.</p>
 </dd>
@@ -1474,8 +1412,8 @@ in the data, and max_value is the maximum value.</p>
 <dt class="sig sig-object py" id="NNSOM.utils.majority_class_cluster">
 <span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">majority_class_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cat_feature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NNSOM/utils.html#majority_class_cluster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.utils.majority_class_cluster" title="Link to this definition"></a></dt>
 <dd><p>Returns the cluster array with the majority class for each cluster.</p>
-<section id="id50">
-<h3>Paramters<a class="headerlink" href="#id50" title="Link to this heading"></a></h3>
+<section id="id48">
+<h3>Paramters<a class="headerlink" href="#id48" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>cat_feature<span class="classifier">array-like</span></dt><dd><p>Categorical feature array.</p>
 </dd>
@@ -1483,8 +1421,8 @@ in the data, and max_value is the maximum value.</p>
 </dd>
 </dl>
 </section>
-<section id="id51">
-<h3>Returns<a class="headerlink" href="#id51" title="Link to this heading"></a></h3>
+<section id="id49">
+<h3>Returns<a class="headerlink" href="#id49" title="Link to this heading"></a></h3>
 <dl class="simple">
 <dt>majority_class<span class="classifier">numpy array</span></dt><dd><p>A cluster array with the majority class</p>
 </dd>
@@ -1528,7 +1466,7 @@ in the data, and max_value is the maximum value.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="modules.html" class="btn btn-neutral float-right" title="NNSOM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
