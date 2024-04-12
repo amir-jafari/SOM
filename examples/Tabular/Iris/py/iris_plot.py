@@ -1,17 +1,12 @@
 from NNSOM.plots import SOMPlots
-from NNSOM.utils import extract_cluster_details, get_perc_cluster, closest_class_cluster, \
-    majority_class_cluster, get_cluster_array, count_classes_in_cluster, get_cluster_data
 
-import matplotlib.pyplot as plt
 from numpy.random import default_rng
-from sklearn.datasets import load_iris
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-import os
+import matplotlib.pyplot as plt
 
-# SOM Parameters
-SOM_Row_Num = 4  # The number of row used for the SOM grid.
-Dimensions = (SOM_Row_Num, SOM_Row_Num) # The dimensions of the SOM grid.
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import MinMaxScaler
+
+import os
 
 # Random State
 SEED = 1234567
@@ -24,77 +19,98 @@ y = iris.target
 X = X[rng.permutation(len(X))]
 y = y[rng.permutation(len(X))]
 scaler = MinMaxScaler(feature_range=(-1, 1))
-X = scaler.fit_transform(X)
-X = np.transpose(X)
 
 # Define the directory path for saving the model outside the repository
 model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
 trained_file_name = "SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl"
 
+# SOM Parameters
+SOM_Row_Num = 4  # The number of row used for the SOM grid.
+Dimensions = (SOM_Row_Num, SOM_Row_Num) # The dimensions of the SOM grid.
+
 som = SOMPlots(Dimensions)
 som = som.load_pickle(trained_file_name, model_dir + os.sep)
 
-# Data post processing
-clust, dist, mdist, clustSize = extract_cluster_details(som, X)
+# Data Preparation for Visualization
+clust, dist, mdist, clustSize = som.cluster_data(X)
 
-# Extract information from input to pass plot functions
-perc_sentosa = get_perc_cluster(y, 0, clust)
-closest_class_array = closest_class_cluster(y, clust)
-majority_class_array = majority_class_cluster(y, clust)
-target_in_cluster = get_cluster_array(y, clust)
-iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
-iris_class_align = np.tile([0, 1, 2], (len(clust), 1))
-sepal_length_in_cluster = get_cluster_array(np.transpose(X)[:, 0], clust)
-sepal_width_in_cluster = get_cluster_array(np.transpose(X)[:, 1], clust)
-iris_cluster = get_cluster_data(iris.data, clust)
-
-clust, dist, mdist, clustSize = extract_cluster_details(som, X)
-
-# Data Preparation to pass additional variables
-# Extract Information from input to pass plot functions
-perc_sentosa = get_perc_cluster(y, 0, clust)
-closest_class_array = closest_class_cluster(y, clust)
-majority_class_array = majority_class_cluster(y, clust)
-target_in_cluster = get_cluster_array(y, clust)
-iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
-iris_class_align = np.tile([0, 1, 2], (len(clust), 1))
-sepal_length_in_cluster = get_cluster_array(np.transpose(X)[:, 0], clust)
-sepal_width_in_cluster = get_cluster_array(np.transpose(X)[:, 1], clust)
-iris_cluster = get_cluster_data(iris.data, clust)
+data_dict = {
+    "data": X,
+    "target": y,
+    "clust": clust
+}
 
 # Visualization
 # Grey Hist
-fig, ax, pathces, text = som.gray_hist(X, perc_sentosa)
+fig, ax, pathces, text = som.plot('gray_hist', data_dict, ind=0)
+plt.suptitle("Gray Hist with Sepal Length", fontsize=16)
+plt.show()
+
+fig, ax, pathces, text = som.plot('gray_hist', data_dict, target_class=0)
+plt.suptitle("Gray Hist with Sentosa Distribution")
 plt.show()
 
 # Color Hist
-fig2, ax2, pathces2, text2 = som.color_hist(X, perc_sentosa)
+fig, ax, pathces, text, cbar = som.plot('color_hist', data_dict, ind=0)
+plt.suptitle("Color Hist with Sepal Length", fontsize=16)
 plt.show()
 
+fig, ax, patches, text, cbar = som.plot('color_hist', data_dict, target_class=0)
+plt.suptitle("Color Hist with Sentosa Distribution", fontsize=16)
+plt.show()
 
 # Pie Chart
-fig3, ax3, h_axes3 = som.multiplot('pie', "Class Distribution", perc_sentosa, iris_class_counts_cluster_array, False)
+fig, ax, h_axes = som.plot("pie", data_dict)
+plt.suptitle("Iris Class Distribution", fontsize=16)
 plt.show()
 
 # Stem Plot
-fig4, ax4, h_axes4 = som.multiplot('stem', iris_class_align, iris_class_counts_cluster_array)
+fig, ax, h_axes = som.plot('stem', data_dict)
 plt.show()
 
 # Histogram
-fig, ax, h_axes = som.multiplot('hist', sepal_length_in_cluster)
+fig, ax, h_axes = som.plot('hist', data_dict, ind=0)
+plt.suptitle("Sepal Length", fontsize=16)
+plt.show()
+
+fig, ax, h_axes = som.plot('hist', data_dict, ind=1)
+plt.suptitle("Sepal Width", fontsize=16)
 plt.show()
 
 # Boxplot
-fig, ax, h_axes = som.multiplot('boxplot', sepal_length_in_cluster)
+fig, ax, h_axes = som.plot("box", data_dict)
+plt.suptitle("Iris Feature Distirbution", fontsize=16)
+plt.show()
+
+fig, ax, h_axes = som.plot("box", data_dict, ind=[0, 1])
+plt.suptitle("Box Plot with Sepal length and width", fontsize=16)
+plt.show()
+
+fig, ax, h_axes = som.plot("box", data_dict, ind=0)
+plt.suptitle("Box Plot with Sepal Length", fontsize=16)
 plt.show()
 
 # Violin plot
-fig, ax, h_axes = som.multiplot('violin', iris_cluster)
+fig, ax, h_axes = som.plot("violin", data_dict)
+plt.suptitle("Violin Plot with all feature in Iris", fontsize=16)
+plt.show()
+
+fig, ax, h_axes = som.plot("violin", data_dict, ind=[0, 1])
+plt.suptitle("Violin Plot with Sepal Length and Width", fontsize=16)
+plt.show()
+
+fig, ax, h_axes = som.plot("violin", data_dict, ind=0)
+plt.suptitle("Violin Plot with Sepal Length", fontsize=16)
 plt.show()
 
 # Scatter Plot
-fig, axes, h_axes = som.plt_scatter(sepal_length_in_cluster, sepal_width_in_cluster)
+fig, ax, h_axes = som.plot("scatter", data_dict, ind=[0, 1])
+plt.suptitle("Scatter Plot with Sepal Length and Width", fontsize=16)
+plt.show()
+
+fig, ax, h_axes = som.plot("scatter", data_dict, ind=[2, 3])
+plt.suptitle("Scatter Plot with Petal Length and Width", fontsize=16)
 plt.show()
 
 # Components Plane
-som.component_planes(X)
+som.plot('component_planes', data_dict)
