@@ -17,6 +17,7 @@
         <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -43,8 +44,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../NNSOM.html">NNSOM package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">NNSOM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">examples</a></li>
 </ul>
 
         </div>
@@ -81,6 +85,7 @@
 <span class="kn">from</span> <span class="nn">matplotlib.widgets</span> <span class="kn">import</span> <span class="n">Button</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
 <span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+
 <div class="viewcode-block" id="SOMPlots">
 <a class="viewcode-back" href="../../NNSOM.html#NNSOM.plots.SOMPlots">[docs]</a>
 <span class="k">class</span> <span class="nc">SOMPlots</span><span class="p">(</span><span class="n">SOM</span><span class="p">):</span>
@@ -326,6 +331,7 @@
 
         <span class="c1"># Compute the SOM outputs for the data set</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_flag</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_func</span><span class="p">)</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_som</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sim_flag</span> <span class="o">=</span> <span class="kc">False</span>
@@ -369,16 +375,16 @@
         <span class="c1"># means more PDB ligands, darker color means more well-docked bad binders.</span>
 
         <span class="n">numNeurons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span>
+        <span class="n">dmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">perc</span><span class="p">))</span>    <span class="c1"># Find the maximum value of perc across all clusters</span>
 
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">patches</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hit_hist</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mouse_click</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Scale the gray scale to the perc value</span>
         <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numNeurons</span><span class="p">):</span>
-            <span class="n">scale</span> <span class="o">=</span> <span class="n">perc</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span>
-            <span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="n">scale</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-            <span class="n">color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
-            <span class="n">color</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
-            <span class="n">patches</span><span class="p">[</span><span class="n">neuron</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_facecolor</span> <span class="o">=</span> <span class="n">color</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">perc</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span> <span class="o">/</span> <span class="n">dmax</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="n">scale</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>  <span class="c1"># Create a gray color based on the scaled value</span>
+            <span class="n">color</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># Add alpha value</span>
+            <span class="n">patches</span><span class="p">[</span><span class="n">neuron</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_facecolor</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>  <span class="c1"># Apply the color to the patch</span>
 
         <span class="c1"># Get rid of extra white space on sides</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -541,7 +547,7 @@
 
         <span class="c1"># Check if the input data can be cdist with self.w</span>
         <span class="c1"># the input data must be transposed</span>
-        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The input data must have the same number of features as the SOM&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check if the face color, line width and edge color are 1D arrays</span>
@@ -1290,27 +1296,6 @@
         <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">h_axes</span></div>
 
 
-<div class="viewcode-block" id="SOMPlots.multiplot">
-<a class="viewcode-back" href="../../NNSOM.html#NNSOM.plots.SOMPlots.multiplot">[docs]</a>
-    <span class="k">def</span> <span class="nf">multiplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="c1"># Dictionary mapping plot types to corresponding plotting methods</span>
-        <span class="n">plot_functions</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;wgts&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_wgts</span><span class="p">,</span>
-            <span class="s1">&#39;pie&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_pie</span><span class="p">,</span>
-            <span class="s1">&#39;stem&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_stem</span><span class="p">,</span>
-            <span class="s1">&#39;hist&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_histogram</span><span class="p">,</span>
-            <span class="s1">&#39;box&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_boxplot</span><span class="p">,</span>
-            <span class="s1">&#39;violin&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_violin_plot</span><span class="p">,</span>
-            <span class="s1">&#39;scatter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plt_scatter</span>
-        <span class="p">}</span>
-
-        <span class="n">selected_plot</span> <span class="o">=</span> <span class="n">plot_functions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plot_type</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">selected_plot</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid function type&quot;</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="SOMPlots.plt_scatter">
 <a class="viewcode-back" href="../../NNSOM.html#NNSOM.plots.SOMPlots.plt_scatter">[docs]</a>
     <span class="k">def</span> <span class="nf">plt_scatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">reg_line</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mouse_click</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">connect_pick_event</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1331,6 +1316,10 @@
         <span class="c1"># Setup figure, main axes, and sub-axes</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">h_axes</span><span class="p">,</span> <span class="n">hexagons</span><span class="p">,</span> <span class="n">hexagon_to_neuron</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_axes</span><span class="p">()</span>
 
+        <span class="c1"># Determine the global minimum and maximum of x and y for the axes limits</span>
+        <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">get_global_min_max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">get_global_min_max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
         <span class="c1"># Loop over each neuron for hexagons and scatter plots</span>
         <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numNeurons</span><span class="p">):</span>
             <span class="c1"># Make Scatter Plot for each neuron</span>
@@ -1340,6 +1329,20 @@
                 <span class="k">if</span> <span class="n">reg_line</span><span class="p">:</span>
                     <span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">neuron</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">neuron</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">neuron</span><span class="p">],</span> <span class="n">m</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># Set the same x and y limits for each sub-plot based on global min and max</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
+
+                <span class="c1"># Show only the left and bottom spines</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="c1"># Enable the axes and show tick marks</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">h_axes</span><span class="p">[</span><span class="n">neuron</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1356,7 +1359,7 @@
 
 <div class="viewcode-block" id="SOMPlots.component_positions">
 <a class="viewcode-back" href="../../NNSOM.html#NNSOM.plots.SOMPlots.component_positions">[docs]</a>
-    <span class="k">def</span> <span class="nf">component_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_scaled</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">component_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the SOM weight vectors, the Iris dataset input vectors, and connects neighboring neurons.</span>
 
@@ -1364,6 +1367,9 @@
 <span class="sd">        - som: A trained SOM instance with attributes &#39;w&#39; for weight vectors and &#39;dimensions&#39; for grid dimensions.</span>
 <span class="sd">        - X_scaled: The normalized Iris dataset input vectors.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
         <span class="c1"># Extract the trained weight vectors and the SOM grid dimensions</span>
         <span class="n">weight_vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
         <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span>
@@ -1374,7 +1380,7 @@
         <span class="c1">#     plt.annotate(str(i), (vec[0], vec[1]), textcoords=&quot;offset points&quot;, xytext=(0,5), ha=&#39;center&#39;)</span>
 
         <span class="c1"># Plot the Iris data points as blue dots</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_scaled</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Input Vectors&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Input Vectors&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
         <span class="c1"># Draw red lines to connect neighboring neurons</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid_x</span><span class="p">):</span>
@@ -1516,8 +1522,8 @@
     <span class="c1"># Generic Plot Function</span>
 <div class="viewcode-block" id="SOMPlots.plot">
 <a class="viewcode-back" href="../../NNSOM.html#NNSOM.plots.SOMPlots.plot">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ind</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_add_1darray</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">use_add_2darray</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">,</span> <span class="n">data_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ind</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Generic Plot Function.</span>
 <span class="sd">        It generates a plot based on the plot type and data provides.</span>
 
@@ -1534,8 +1540,7 @@
 <span class="sd">        data_dict: dict (optional)</span>
 <span class="sd">            A dictionary containing the data to be plotted.</span>
 <span class="sd">            The key is prefixed with the data type and the value is the data itself.</span>
-<span class="sd">            {&quot;original_data&quot;, &quot;input_data&quot;, &quot;target&quot;, &quot;clust&quot;,&quot;cat_1darray&quot;, &quot;cat_2darray&quot;,</span>
-<span class="sd">            &quot;num_1darray&quot;}</span>
+<span class="sd">            {&quot;data&quot;, &quot;target&quot;, &quot;clust&quot;, &quot;add_1d_array&quot;, &quot;add_2d_array&quot;}</span>
 
 <span class="sd">        ind : int, str or array-like (optional)</span>
 <span class="sd">            The indices of the data to be plotted.</span>
@@ -1543,11 +1548,8 @@
 <span class="sd">        target_class: int (optional)</span>
 <span class="sd">            The target class to be plotted.</span>
 
-<span class="sd">        use_add_1darray: bool (optional)</span>
+<span class="sd">        use_add_array: bool (optional)</span>
 <span class="sd">            If true, the additional array to be used.</span>
-
-<span class="sd">        use_add_2darray: bool (optional)</span>
-<span class="sd">            If true, the additional 2D array to be used.</span>
 
 <span class="sd">        **kwargs : dict</span>
 <span class="sd">            Additional arguments to be passed to the interactive plot function.</span>
@@ -1607,193 +1609,137 @@
             <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># ======== Components Plane Family ==========</span>
-        <span class="c1"># Need to be modified</span>
         <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;component_positions&#39;</span><span class="p">,</span> <span class="s1">&#39;component_planes&#39;</span><span class="p">]:</span>
             <span class="c1"># Error Handling if the data_dict have the scaled input data X</span>
-            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;input_data&quot;</span><span class="p">])</span>
+            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
             <span class="c1"># Data Preparation</span>
-            <span class="n">x_scaled</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;input_data&#39;</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_func</span><span class="p">)</span>
             <span class="c1"># Invoke Function</span>
-            <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="n">x_scaled</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
         <span class="c1"># =====================  Hit Histogram Family =====================</span>
         <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;hit_hist&#39;</span><span class="p">,</span> <span class="s1">&#39;gray_hist&#39;</span><span class="p">,</span> <span class="s1">&#39;color_hist&#39;</span><span class="p">,</span> <span class="s1">&#39;complex_hist&#39;</span><span class="p">]:</span>
             <span class="c1"># Validate the data_dict have the scaled input data</span>
-            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;input_data&quot;</span><span class="p">])</span>
+            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
 
             <span class="c1"># Extract input data</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;input_data&#39;</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;hit_hist&#39;</span><span class="p">]:</span>
                 <span class="c1"># Invoke the function</span>
                 <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;gray_hist&#39;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">use_add_1darray</span><span class="p">:</span>  <span class="c1"># Check if user want to use additional 1D array</span>
+                <span class="c1"># Gray Hist with add_1d_array</span>
+                <span class="k">if</span> <span class="n">use_add_array</span><span class="p">:</span>
+                    <span class="c1"># Validate the data_dict have the additional 1D array</span>
+                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;add_1d_array&quot;</span><span class="p">])</span>
 
-                    <span class="c1"># Validate the data_dict have the additional 1D array and original data</span>
-                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;cat_1darray&quot;</span><span class="p">,</span> <span class="s2">&quot;original_data&quot;</span><span class="p">])</span>
-
-                    <span class="c1"># Validate the length of additional 1D array is equal to number of neuron or length of original data.</span>
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_1darray&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_1darray&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span>
-                            <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_1d_array&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                             <span class="s2">&quot;The additional 1D array must have the same length as the clust data or original data.&quot;</span><span class="p">)</span>
 
-                    <span class="c1"># If the length of additional 1D array is equal to the length of clust data just extract data</span>
-                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_1darray&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
-                        <span class="n">perc</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_1darray&#39;</span><span class="p">]</span>
+                    <span class="n">perc</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_1d_array&#39;</span><span class="p">]</span>
 
-                    <span class="c1"># If the length of additional 1D array is equal to the length of original data then preprocess the data</span>
-                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_1darray&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">]):</span>
-
-                        <span class="c1"># Validate the data_dict have the clust data</span>
-                        <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;clust&quot;</span><span class="p">])</span>
-
-                        <span class="k">if</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The target class is required. Eg. target_class = 1&quot;</span><span class="p">)</span>
-
-                        <span class="c1"># Preprocess and extract the data</span>
-                        <span class="n">perc</span> <span class="o">=</span> <span class="n">get_perc_cluster</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_1darray&#39;</span><span class="p">],</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">])</span>
-
+                <span class="c1"># Gray hist with data</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Error Handling if the target data not provided</span>
-                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
+                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;clust&quot;</span><span class="p">])</span>
 
-                    <span class="c1"># Validate the data_dict have the clust data</span>
-                    <span class="k">if</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The target class is required. Eg. target_class = 1&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This plot requires either the target class or ind.&quot;</span><span class="p">)</span>
 
-                    <span class="n">perc</span> <span class="o">=</span> <span class="n">get_perc_cluster</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ind</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This plot requires only either the target class or ind.&quot;</span><span class="p">)</span>
+
+                    <span class="k">elif</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">validate_data_dict</span><span class="p">([</span><span class="s1">&#39;target&#39;</span><span class="p">])</span>
+                        <span class="n">perc</span> <span class="o">=</span> <span class="n">get_perc_cluster</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">])</span>
+
+                    <span class="k">elif</span> <span class="n">ind</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">feature</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">]</span>
+                        <span class="n">perc</span> <span class="o">=</span> <span class="n">get_cluster_avg</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">])</span>
 
                 <span class="c1"># Invoke the gray hist function</span>
                 <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">perc</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;color_hist&#39;</span><span class="p">]:</span>
-                <span class="c1"># Check if user want to use additional 1D array</span>
-                <span class="k">if</span> <span class="n">use_add_1darray</span><span class="p">:</span>
-                    <span class="c1"># Check if the additional 1D array and original data are provided</span>
-                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;num_1darray&quot;</span><span class="p">,</span> <span class="s2">&quot;original_data&quot;</span><span class="p">])</span>
+                <span class="c1"># Color Hist with additional data</span>
+                <span class="k">if</span> <span class="n">use_add_array</span><span class="p">:</span>
+                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s1">&#39;add_1d_array&#39;</span><span class="p">])</span>
 
-                    <span class="n">num_feature</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;num_1darray&#39;</span><span class="p">]</span>
-                    <span class="n">original_data_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_1d_array&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The additional 1D array must have the same length as the clust data or original data.&quot;</span><span class="p">)</span>
 
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">!=</span> <span class="n">original_data_size</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                            <span class="s2">&quot;The additional 1D array must have the same length as the clust data or original data.&quot;</span><span class="p">)</span>
-
-                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">==</span> <span class="n">original_data_size</span><span class="p">:</span>
-                        <span class="c1"># Check if the clust data is provided</span>
-                        <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;clust&quot;</span><span class="p">])</span>
-
-                        <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
-                        <span class="n">avg</span> <span class="o">=</span> <span class="n">get_cluster_avg</span><span class="p">(</span><span class="n">num_feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
-
-                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
-
-                        <span class="n">avg</span> <span class="o">=</span> <span class="n">num_feature</span>
-
+                    <span class="n">avg</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_1d_array&#39;</span><span class="p">]</span>
+                <span class="c1"># Color Hist with input data</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Error Handling if the original data and clust are provided</span>
-                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;original_data&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
+                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;clust&quot;</span><span class="p">])</span>
 
-                    <span class="k">if</span> <span class="n">ind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                            <span class="s2">&quot;The indices is required for this plot type. Which numerical feature in the original data you want to plot? Eg. ind = 0&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This plot requires either the target class or ind.&quot;</span><span class="p">)</span>
 
-                    <span class="n">feature</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ind</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This plot requires only either the target class or ind.&quot;</span><span class="p">)</span>
 
-                    <span class="n">avg</span> <span class="o">=</span> <span class="n">get_cluster_avg</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">validate_data_dict</span><span class="p">([</span><span class="s1">&#39;target&#39;</span><span class="p">])</span>
+                        <span class="n">avg</span> <span class="o">=</span> <span class="n">get_perc_cluster</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">])</span>
+
+                    <span class="k">elif</span> <span class="n">ind</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">feature</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">]</span>
+                        <span class="n">avg</span> <span class="o">=</span> <span class="n">get_cluster_avg</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">])</span>
 
                 <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">avg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;complex_hist&#39;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">use_add_2darray</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">use_add_array</span><span class="p">:</span>
                     <span class="c1"># Validate the data_dict have the additional 2D array</span>
-                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;cat_2darray&quot;</span><span class="p">])</span>
+                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;add_2d_array&quot;</span><span class="p">])</span>
 
-                    <span class="n">cat_2darray</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_2darray&#39;</span><span class="p">]</span>
+                    <span class="n">add_2d_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">])</span>
 
-                    <span class="k">if</span> <span class="n">cat_2darray</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">add_2d_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                             <span class="s2">&quot;The additional 2D array must have the same length as the number of neurons.&quot;</span><span class="p">)</span>
 
-                    <span class="c1"># Validate the additional 2D array have 3 features</span>
-                    <span class="k">if</span> <span class="n">cat_2darray</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                            <span class="s2">&quot;The additional 2D array must have 3 features. E.g. [numNeurons, [face_labels, edge_labels, edge_widths]]&quot;</span><span class="p">)</span>
+                    <span class="c1"># Assuming add_2d_array is a list of lists</span>
+                    <span class="k">if</span> <span class="n">add_2d_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each inner list in the additional 2D array must have exactly 3 items. </span><span class="se">\</span>
+<span class="s2">                        E.g. [numNeurons, [face_labels, edge_labels, edge_widths[0-20]]&quot;</span><span class="p">)</span>
 
                     <span class="c1"># Extract Data</span>
-                    <span class="n">face_labels</span> <span class="o">=</span> <span class="n">cat_2darray</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-                    <span class="n">edge_labels</span> <span class="o">=</span> <span class="n">cat_2darray</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-                    <span class="n">edge_widths</span> <span class="o">=</span> <span class="n">cat_2darray</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+                    <span class="n">face_labels</span> <span class="o">=</span> <span class="n">add_2d_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="n">edge_labels</span> <span class="o">=</span> <span class="n">add_2d_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="n">edge_widths</span> <span class="o">=</span> <span class="n">add_2d_array</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
 
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Error Handling if the target and clust data not provided</span>
-                    <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
-                    <span class="c1"># Error Handling if the target class not provided</span>
-                    <span class="k">if</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The target class is required&quot;</span><span class="p">)</span>
-
-                    <span class="c1"># Generate Data</span>
-                    <span class="n">target</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span>
-                    <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
-
-                    <span class="n">face_labels</span> <span class="o">=</span> <span class="n">majority_class_cluster</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
-                    <span class="n">edge_labels</span> <span class="o">=</span> <span class="n">closest_class_cluster</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
-                    <span class="n">target_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">target</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">edge_widths</span> <span class="o">=</span> <span class="n">get_edge_widths</span><span class="p">(</span><span class="n">target_ind</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;This plot requires an additional 2-D array in data_dict. &quot;</span>
+                                     <span class="s2">&quot;The additional 2D array must have 3 features. &quot;</span>
+                                     <span class="s2">&quot;E.g. [numNeurons, [face_labels, edge_labels, edge_widths[0-20]]&quot;</span><span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">selected_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">face_labels</span><span class="p">,</span> <span class="n">edge_labels</span><span class="p">,</span> <span class="n">edge_widths</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># ===================== Simple Grid =====================</span>
         <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;simple_grid&#39;</span><span class="p">]:</span>
             <span class="c1"># Validate the data_dict have the original data</span>
-            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;original_data&quot;</span><span class="p">])</span>
+            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+            <span class="c1"># Simple grid with addtional variable</span>
+            <span class="k">if</span> <span class="n">use_add_array</span><span class="p">:</span>
+                <span class="c1"># Error Handlig if the additional 2D arrays not privided</span>
+                <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;add_2d_array&quot;</span><span class="p">])</span>
+                <span class="n">add_2d_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;add_2d_array&quot;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                <span class="c1"># Validate Length</span>
+                <span class="k">if</span> <span class="n">add_2d_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The additional 2D array must have the same length as the number of cluster&quot;</span><span class="p">)</span>
+                <span class="c1"># Validate number of items in each cluster</span>
+                <span class="k">if</span> <span class="n">add_2d_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each cluster must have only 2 items in the additional 2D array&quot;</span><span class="p">)</span>
 
-            <span class="n">original_data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">]</span>
-
-            <span class="c1"># Check if there&#39;re additional variables</span>
-            <span class="k">if</span> <span class="n">use_add_1darray</span><span class="p">:</span>
-                <span class="c1"># Error Handling if the additional 1D arrays and clust not provided</span>
-                <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;cat_1darray&quot;</span><span class="p">,</span> <span class="s2">&quot;num_1darray&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
-
-                <span class="n">cat_feature</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_1darray&#39;</span><span class="p">]</span>
-                <span class="n">num_feature</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;num_1darray&#39;</span><span class="p">]</span>
-                <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
-
-                <span class="c1"># ================================</span>
-                <span class="c1"># Extract avg from num_1darray</span>
-                <span class="c1"># potential input of num_1darray</span>
-                <span class="c1"># 1. the specific column of the original data</span>
-                <span class="c1"># 2. the pre-processes 1-d array with average value for each cluster</span>
-                <span class="c1"># ================================</span>
-                <span class="c1"># Validate the length of additional 1D array is equal to the number of neuron or length of original data.</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">original_data</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;The additional 1D array must have the same length as the clust data or original data.&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
-                    <span class="n">avg</span> <span class="o">=</span> <span class="n">num_feature</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_feature</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">original_data</span><span class="p">):</span>
-                    <span class="n">avg</span> <span class="o">=</span> <span class="n">get_cluster_avg</span><span class="p">(</span><span class="n">num_feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
-
-                <span class="c1"># ===============================</span>
-                <span class="c1"># Extract sizes from cat_1darray</span>
-                <span class="c1"># potential input of cat_1darray</span>
-                <span class="c1"># 1. The specific feature of the original data (e.g. the specific column) &lt;- it&#39;requres target class</span>
-                <span class="c1"># 2. The specific feature of the pre-processes 1-d array with magnitude for each cluster (e.g. percentage)</span>
-                <span class="c1"># ===============================</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">original_data</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;The additional 1D array must have the same length as the clust data or original data.&quot;</span><span class="p">)</span>
-
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
-                    <span class="n">sizes</span> <span class="o">=</span> <span class="n">cat_feature</span>
-
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">original_data</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">target_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The target class is required&quot;</span><span class="p">)</span>
-                    <span class="n">sizes</span> <span class="o">=</span> <span class="n">get_perc_cluster</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">,</span> <span class="n">target_class</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
+                <span class="n">avg</span> <span class="o">=</span> <span class="n">add_2d_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">sizes</span> <span class="o">=</span> <span class="n">add_2d_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Error Handling if the target and clust data not provided</span>
@@ -1808,7 +1754,7 @@
                 <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
 
                 <span class="c1"># Extract avg from the original data</span>
-                <span class="n">num_feature</span> <span class="o">=</span> <span class="n">original_data</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">]</span>
+                <span class="n">num_feature</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">]</span>
                 <span class="n">avg</span> <span class="o">=</span> <span class="n">get_cluster_avg</span><span class="p">(</span><span class="n">num_feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
 
                 <span class="c1"># Extract size from the target</span>
@@ -1819,26 +1765,27 @@
 
         <span class="c1"># ===================== Basic Plot Family =====================</span>
         <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;stem&#39;</span><span class="p">,</span> <span class="s1">&#39;pie&#39;</span><span class="p">]:</span>
-            <span class="c1"># Error Handling if the clust data not provided</span>
-            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
 
-            <span class="c1"># Extract Information</span>
-            <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
-
-            <span class="c1"># If the user wanna plot input data</span>
-            <span class="k">if</span> <span class="n">use_add_2darray</span><span class="p">:</span>
+            <span class="c1"># If the user want to plot addtional data</span>
+            <span class="k">if</span> <span class="n">use_add_array</span><span class="p">:</span>
                 <span class="c1"># Error Handling if the additional 2D array not provided</span>
-                <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;cat_2darray&quot;</span><span class="p">])</span>
+                <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;add_2d_array&quot;</span><span class="p">])</span>
 
                 <span class="c1"># Error Handling if additional vategorical variable has correct length</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;cat_2darray&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;add_2d_array&quot;</span><span class="p">])</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numNeurons</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The additional categorical data must have the same length as the clust data.&quot;</span><span class="p">)</span>
 
                 <span class="c1">#  Get Additional Data</span>
-                <span class="n">sizes</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;cat_2darray&#39;</span><span class="p">]</span>
+                <span class="n">sizes</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span>
 
             <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Error Handling if the clust data not provided</span>
+                <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
+
+                <span class="c1"># Extract Information</span>
+                <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
                 <span class="n">target</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span>
+
                 <span class="n">sizes</span> <span class="o">=</span> <span class="n">count_classes_in_cluster</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s1">&#39;pie&#39;</span><span class="p">:</span>
@@ -1852,7 +1799,7 @@
 
             <span class="k">elif</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s1">&#39;stem&#39;</span><span class="p">:</span>
                 <span class="c1"># Extract Align</span>
-                <span class="k">if</span> <span class="n">use_add_2darray</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">use_add_array</span><span class="p">:</span>
                     <span class="n">align</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sizes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">align</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">target</span><span class="p">)))]</span>
@@ -1865,11 +1812,11 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The indices is required for this plot type.&quot;</span><span class="p">)</span>
 
             <span class="c1"># Error Handling if the original data not provided</span>
-            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;original_data&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
+            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
 
             <span class="c1"># Extract the feature from the original data</span>
             <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
-            <span class="n">feature</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">]</span>
+            <span class="n">feature</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">]</span>
 
             <span class="n">x</span> <span class="o">=</span> <span class="n">get_cluster_array</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
 
@@ -1884,11 +1831,11 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The indices must contain exactly two elements. Eg. [0, 1]&quot;</span><span class="p">)</span>
 
             <span class="c1"># Error Handling if the original data and clust not provided</span>
-            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;original_data&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
+            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
 
             <span class="c1"># Extract the feature from the original data</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
             <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">get_cluster_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">get_cluster_array</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
@@ -1898,19 +1845,19 @@
 
         <span class="k">elif</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;box&#39;</span><span class="p">,</span> <span class="s1">&#39;violin&#39;</span><span class="p">]:</span>
             <span class="c1"># Error Handling if the original data not provided</span>
-            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;original_data&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
+            <span class="n">validate_data_dict</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;clust&quot;</span><span class="p">])</span>
 
             <span class="c1"># Extract the feature from the original data</span>
             <span class="n">clust</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;clust&#39;</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">ind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Extract All data</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">]</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">get_cluster_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>  <span class="c1"># index just have 1 index</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">]</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">]</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">get_cluster_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>  <span class="c1"># index have multiple indices</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;original_data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">]</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][:,</span> <span class="n">ind</span><span class="p">]</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">get_cluster_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
 
             <span class="c1"># Call the box plot and violin function</span>
