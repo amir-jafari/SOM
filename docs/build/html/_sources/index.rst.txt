@@ -14,7 +14,6 @@ Welcome to NNSOM's documentation!
    intro
    install
    NNSOM
-   modules
    examples
 
 

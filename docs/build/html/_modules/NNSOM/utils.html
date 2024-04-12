@@ -47,7 +47,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../NNSOM.html">NNSOM package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules.html">NNSOM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">examples</a></li>
 </ul>
 
@@ -604,46 +603,6 @@
     <span class="n">fn_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">target</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span> <span class="o">!=</span> <span class="n">target_class</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">tp_index</span><span class="p">,</span> <span class="n">tn_index</span><span class="p">,</span> <span class="n">fp_index</span><span class="p">,</span> <span class="n">fn_index</span></div>
-
-
-
-<div class="viewcode-block" id="get_dominant_class_error_types">
-<a class="viewcode-back" href="../../NNSOM.html#NNSOM.utils.get_dominant_class_error_types">[docs]</a>
-<span class="k">def</span> <span class="nf">get_dominant_class_error_types</span><span class="p">(</span><span class="n">dominant_classes</span><span class="p">,</span> <span class="n">error_types</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Map dominant class to the corresponding majority error type for each cluster,</span>
-<span class="sd">    dynamically applying the correct error type based on the dominant class.</span>
-
-<span class="sd">    Parameters:</span>
-<span class="sd">    ---------------</span>
-<span class="sd">    dominant_classes: array-like (som.numNeurons, )</span>
-<span class="sd">        List of dominant class labels for each cluster. May contain NaN values.</span>
-<span class="sd">    error_types: list of array-like (numClasses, som.numNeurons)</span>
-<span class="sd">        Variable number of arrays, each representing majority error types for each class.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">    ---------------</span>
-<span class="sd">    array-like (som.numNeurons, )</span>
-<span class="sd">        List of majority error type for each cluster corresponding to the dominant class.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_types</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">dc</span> <span class="k">for</span> <span class="n">dc</span> <span class="ow">in</span> <span class="n">dominant_classes</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">dc</span><span class="p">)])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough error type arrays provided for all classes.&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Initialize the output array with NaNs to handle possible missing classes</span>
-    <span class="n">output_error_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dominant_classes</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-
-    <span class="c1"># Map the correct error type based on the dominant class</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">dominant_class</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dominant_classes</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">dominant_class</span><span class="p">):</span>  <span class="c1"># Check if the dominant class is not NaN</span>
-            <span class="k">if</span> <span class="n">dominant_class</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_types</span><span class="p">):</span>
-                <span class="n">output_error_types</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_types</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">dominant_class</span><span class="p">)][</span><span class="n">idx</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Class </span><span class="si">{</span><span class="n">dominant_class</span><span class="si">}</span><span class="s2"> is out of the provided error type array bounds.&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">output_error_types</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># Explicitly setting NaN if no dominant class</span>
-
-    <span class="k">return</span> <span class="n">output_error_types</span></div>
-
 
 
 <div class="viewcode-block" id="flatten">
