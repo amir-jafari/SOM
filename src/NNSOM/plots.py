@@ -1590,7 +1590,7 @@ class SOMPlots(SOM):
                 if add_2d_array.shape[0] != self.numNeurons:
                     raise ValueError("The additional 2D array must have the same length as the number of cluster")
                 # Validate number of items in each cluster
-                if add_2d_array.shpae[1] != 2:
+                if add_2d_array.shape[1] != 2:
                     raise ValueError("Each cluster must have only 2 items in the additional 2D array")
 
                 avg = add_2d_array[:, 0]

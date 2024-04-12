@@ -465,6 +465,43 @@ def get_conf_indices(target, results, target_class):
 
     return tp_index, tn_index, fp_index, fn_index
 
+
+def get_dominant_class_error_types(dominant_classes, error_types):
+    """
+    Map dominant class to the corresponding majority error type for each cluster,
+    dynamically applying the correct error type based on the dominant class.
+
+    Parameters:
+    ---------------
+    dominant_classes: array-like (som.numNeurons, )
+        List of dominant class labels for each cluster. May contain NaN values.
+    error_types: list of array-like (numClasses, som.numNeurons)
+        Variable number of arrays, each representing majority error types for each class.
+
+    Returns:
+    ---------------
+    array-like (som.numNeurons, )
+        List of majority error type for each cluster corresponding to the dominant class.
+    """
+    if len(error_types) < np.max([dc for dc in dominant_classes if not np.isnan(dc)]) + 1:
+        raise ValueError("Not enough error type arrays provided for all classes.")
+
+    # Initialize the output array with NaNs to handle possible missing classes
+    output_error_types = np.full(len(dominant_classes), np.nan)
+
+    # Map the correct error type based on the dominant class
+    for idx, dominant_class in enumerate(dominant_classes):
+        if not np.isnan(dominant_class):  # Check if the dominant class is not NaN
+            if dominant_class < len(error_types):
+                output_error_types[idx] = error_types[int(dominant_class)][idx]
+            else:
+                raise ValueError(f"Class {dominant_class} is out of the provided error type array bounds.")
+        else:
+            output_error_types[idx] = np.nan  # Explicitly setting NaN if no dominant class
+
+    return output_error_types
+
+
 def flatten(data):
     """
     Recursively flattens a nested list structure of numbers into a single list.
