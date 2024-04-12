@@ -1,14 +1,11 @@
 # Importing Library
 from NNSOM.plots import SOMPlots
-from NNSOM.utils import extract_cluster_details
-
-
-from sklearn.datasets import load_iris
 
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 from numpy.random import default_rng
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import MinMaxScaler
 
 import os
 
@@ -34,14 +31,13 @@ y = iris.target
 X = X[rng.permutation(len(X))]
 y = y[rng.permutation(len(X))]
 
+# Define the normalize funciton
 scaler = MinMaxScaler(feature_range=(-1, 1))
-X = scaler.fit_transform(X)
-X = np.transpose(X)
 
 # Training
 som = SOMPlots(Dimensions)
-som.init_w(X)
-som.train(X, Init_neighborhood, Epochs, Steps)
+som.init_w(X, norm_func=scaler.fit_transform)
+som.train(X, Init_neighborhood, Epochs, Steps, norm_func=scaler.fit_transform)
 
 # Define the directory path for saving the model outside the repository
 model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
@@ -53,11 +49,9 @@ Trained_SOM_File = "SOM_Model_iris_Epoch_" + str(Epochs) + '_Seed_'  + str(SEED)
 # Save the model
 som.save_pickle(Trained_SOM_File, model_dir + os.sep)
 
-
 # Extract Cluster details
-clust, dist, mdist, clustSize = extract_cluster_details(som, X)
+clust, dist, mdist, clustSize = som.cluster_data(X)
 
-# Error Analysis
 # Find quantization error
 quant_err = som.quantization_error(dist)
 print('Quantization error: ' + str(quant_err))
@@ -71,32 +65,40 @@ print('Topological Error (1st and 2nd neighbor) = ' + str(top_error_1_2) + '%')
 som.distortion_error(X)
 
 # Visualization
+# Data Preparation
+data_dict = {
+    "data": X,
+    "target": y,
+    "clust": clust,
+}
+
 # SOM Topology
-fig1, ax1, patches1 = som.plt_top()
+fig1, ax1, patches1 = som.plot('top')
 plt.show()
 
 # SOM Topology with neruon numbers
-fig2, ax2, pathces2, text2 = som.plt_top_num()
+fig2, ax2, pathces2, text2 = som.plot('top_num')
 plt.show()
 
 # Hit Histogram
-fig3, ax3, patches3, text3 = som.hit_hist(X, True)
+fig3, ax3, patches3, text3 = som.plot('hit_hist', data_dict)
 plt.show()
 
 # Neighborhood Connection Map
-fig4, ax4, patches4 = som.plt_nc()
+fig4, ax4, patches4 = som.plot('neuron_connection')
 plt.show()
 
 # Distance Map
-fig5, ax5, patches5 = som.neuron_dist_plot()
+fig5, ax5, patches5 = som.plot('neuron_dist')
 plt.show()
 
 # Weight Position Plot
-som.component_positions(np.transpose(X))
+som.plot('component_positions', data_dict)
 
 # Weight as Line
-fig6, ax6, h_axes6 = som.plt_wgts()
+fig6, ax6, h_axes6 = som.plot('wgts')
 plt.show()
 
+# Weight as Image
 fig7, ax7, patches7 = som.weight_as_image()
 plt.show()
