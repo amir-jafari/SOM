@@ -73,7 +73,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, pathces
@@ -124,7 +124,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, pathces, text
@@ -190,7 +190,7 @@ class SOMPlots(SOM):
             Additional arguments to be passed to the on_pick function
             Possible keys includes:
             'data', 'labels', 'clust', 'target', 'num1', 'num2',
-            'cat', 'align', 'height' and 'topn'
+            'cat', and 'topn'
 
         Returns
         -------
@@ -429,7 +429,7 @@ class SOMPlots(SOM):
             Additional arguments to be passed to the onpick function
             Possible keys include:
             'data', 'clust', 'target', 'num1', 'num2',
-            'cat', 'align', 'height' and 'topn'
+            'cat', and 'topn'
 
         Returns:
             fig, ax, patches, text
@@ -497,7 +497,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, pathces
@@ -574,7 +574,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
         Returns:
             fig, ax, pathces, text
         """
@@ -687,7 +687,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, pathces, cbar
@@ -891,7 +891,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, h_axes
@@ -908,8 +908,7 @@ class SOMPlots(SOM):
             h_axes[neuron].stem(x, y[neuron])
 
         if mouse_click and connect_pick_event:
-            kwargs['align'] = x
-            kwargs['height'] = y
+            kwargs['cat'] = y
             fig.canvas.mpl_connect(
                 'pick_event', lambda event: self.onpick(event, hexagons, hexagon_to_neuron, **kwargs)
             )
@@ -927,7 +926,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, h_axes
@@ -967,7 +966,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, h_axes
@@ -1035,7 +1034,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, h_axes
@@ -1086,7 +1085,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, h_axes
@@ -1132,7 +1131,7 @@ class SOMPlots(SOM):
             kwarg: dict
                 Additional arguments to be passed to the onpick function
                 Possible keys include:
-                    'data', 'clust', 'target', 'num1', 'num2', 'cat', 'align', 'height' and 'topn'
+                    'data', 'clust', 'target', 'num1', 'num2', 'cat', and 'topn'
 
         Returns:
             fig, ax, h_axes
@@ -1746,9 +1745,9 @@ class SOMPlots(SOM):
             return
 
         # Create a new window
-        fig, ax1 = plt.subplots(figsize=(6, 6))
+        fig, ax = plt.subplots(figsize=(6, 6))
         fig.subplots_adjust(right=0.8)
-        ax1.set_aspect('equal')
+        ax.set_aspect('equal')
 
         # Button Configuration
         button_types = self.determine_button_types(**kwargs)
@@ -1756,10 +1755,16 @@ class SOMPlots(SOM):
 
         # Set up button click events
         for button_type, button in buttons.items():
-            button.on_clicked(lambda event, b=button_type:
-                              self.button_click_event(b, ax1, neuron_ind, **kwargs))
+            button.on_clicked(self.create_click_handler(button_type, ax, neuron_ind, **kwargs))
 
+        # Show up the 2nd window
         plt.show()
+
+    def create_click_handler(self, button_type, ax, neuron_ind, **kwargs):
+        def handler(event):
+            self.button_click_event(button_type, ax, neuron_ind, **kwargs)
+
+        return handler
 
     def button_click_event(self, button_type, ax, neuron_ind, **kwargs):
 
@@ -1769,8 +1774,13 @@ class SOMPlots(SOM):
             sizes = kwargs['cat']
             sizes = sizes[neuron_ind][:kwargs['topn']]
             self.plot_pie(ax, sizes, neuron_ind)
+
         elif button_type == 'stem':
-            self.plot_stem(ax, kwargs['align'], kwargs['height'], neuron_ind)
+            sizes = kwargs['cat']
+            # Generate the align array: 0, 1, 2, ..., number of unique item -1
+            align = np.arange(len(sizes[0]))
+
+            self.plot_stem(ax, align, sizes, neuron_ind)
 
         elif button_type == 'hist':
             num1 = kwargs['num1'][neuron_ind][:kwargs['topn']]
@@ -1801,7 +1811,7 @@ class SOMPlots(SOM):
             self.plot_scatter(ax, nums[0], nums[1], neuron_ind)
 
         elif button_type == 'sub_cluster':
-            cluster_data = get_cluster_data(np.transpose(kwargs['input_data']), kwargs['clust'])
+            cluster_data = get_cluster_data(kwargs['data'], kwargs['clust'])
             sub_clust_data = cluster_data[neuron_ind]  # Get the data for the
             self.sub_clustering(sub_clust_data, neuron_ind)
 
@@ -1814,9 +1824,6 @@ class SOMPlots(SOM):
         # Check for categorical data for pie charts
         if 'cat' in kwargs and kwargs['cat'] is not None:
             button_types.append('pie')
-
-        # Check for alignment and height data for stem plots
-        if 'align' in kwargs and 'height' in kwargs:
             button_types.append('stem')
 
         # Check for numerical data and decide which buttons to add
@@ -1831,7 +1838,7 @@ class SOMPlots(SOM):
                 button_types.append('scatter')
 
         # Assuming sub-clustering is always an option
-        if 'input_data' in kwargs:
+        if 'data' in kwargs:
             button_types.append('sub_cluster')
 
         return button_types
@@ -1941,21 +1948,18 @@ class SOMPlots(SOM):
             print("There is no enough data to create sub-cluster")
             return
 
-        # Data Prep
-        sub_x = np.transpose(data)
-
         if neuron_ind in self.sub_som:
             print('Sub clustering already done')
             sub_clust = self.sub_som[neuron_ind]
         else:
             # Training Sub Cluster
             sub_clust = SOMPlots((2, 2))
-            sub_clust.init_w(sub_x)
-            sub_clust.train(sub_x, 3, 500, 100)
+            sub_clust.init_w(data, norm_func=self.norm_func)
+            sub_clust.train(data, 3, 500, 100, norm_func=self.norm_func)
 
             self.sub_som[neuron_ind] = sub_clust
 
         # Plot the sub cluster <- Can we h
-        fig, ax, patches, text = sub_clust.hit_hist(sub_x, True, connect_pick_event=False)
+        fig, ax, patches, text = sub_clust.hit_hist(data, True, connect_pick_event=False)
 
         plt.show()

@@ -44,27 +44,26 @@ som = SOMPlots(Dimensions)
 som = som.load_pickle(Trained_SOM_File, model_dir + os.sep)
 
 # Data Processing
-clust, dist, mdist, clustSize = extract_cluster_details(som, X_scaled)
+clust, dist, mdist, clustSize = som.cluster_data(X)
+
+# Items for int_dict
 num1 = get_cluster_array(X[:, 0], clust)
 num2 = get_cluster_array(X[:, 1], clust)
 cat = count_classes_in_cluster(y, clust)
-height = count_classes_in_cluster(y, clust)  # height for stem
-align = [0, 1, 2]
+
+# Items for plots
 perc_sentosa = get_perc_cluster(y, 0, clust)
 iris_class_counts_cluster_array = count_classes_in_cluster(y, clust)
 num_classes = count_classes_in_cluster(y, clust)
 num_sentosa = num_classes[:, 0]
 
 interactive_dict = {
-        'original_data': X,
-        'input_data': X_scaled,
+        'data': X,
         'target': y,
         'clust': clust,
         'num1': num1,
         'num2': num2,
         'cat': cat,
-        'align': align,
-        'height': height,
         'topn': 5,
     }
 
