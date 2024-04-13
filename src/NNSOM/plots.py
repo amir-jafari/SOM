@@ -1308,7 +1308,7 @@ class SOMPlots(SOM):
 
         plt.show()
 
-    def weight_as_image(self, mouse_click=False, connect_pick_event=True, **kwargs):
+    def weight_as_image(self,rows= None, mouse_click=False, connect_pick_event=True, **kwargs):
         w = self.w  # Weight matrix
         pos = self.pos  # Positions of the neurons
         numNeurons = self.numNeurons  # Number of neurons
@@ -1337,7 +1337,10 @@ class SOMPlots(SOM):
             hexagon_to_neuron = {hex: neuron for neuron, hex in enumerate(patches)}
 
             # Transform the row of weights into a matrix if necessary
-            weight_matrix = w[i].reshape((int(np.sqrt(w.shape[1])), -1))  # Assuming square matrix for simplicity
+            if rows is None:
+                weight_matrix = w[i].reshape(int(np.sqrt(w.shape[1])), -1)  # Default to square matrix for simplicity
+            else:
+                weight_matrix = w[i].reshape(rows, -1)
 
             # Calculate the size and position for the imshow plot
             # Find the radius of the hexagon, accounting for the scaling of the shape
