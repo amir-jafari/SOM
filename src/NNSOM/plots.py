@@ -1756,8 +1756,11 @@ class SOMPlots(SOM):
         button_types = self.determine_button_types(**kwargs)
         buttons = create_buttons(fig, button_types)
 
+        # Store buttons in an attribute to maintain a reference
+        self.buttons = buttons
+
         # Set up button click events
-        for button_type, button in buttons.items():
+        for button_type, button in self.buttons.items():
             button.on_clicked(self.create_click_handler(button_type, ax, neuron_ind, **kwargs))
 
         # Show up the 2nd window

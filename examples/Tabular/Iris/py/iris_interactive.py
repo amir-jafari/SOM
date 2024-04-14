@@ -6,7 +6,6 @@ from numpy.random import default_rng
 import matplotlib.pyplot as plt
 
 from sklearn.datasets import load_iris
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
 
 import os
@@ -32,9 +31,6 @@ y = iris.target
 # Preprocessing data
 X = X[rng.permutation(len(X))]
 y = y[rng.permutation(len(X))]
-scaler = MinMaxScaler(feature_range=(-1, 1))
-X_scaled = scaler.fit_transform(X)
-X_scaled = np.transpose(X_scaled)
 
 # Determine model dir and file name
 model_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "..", "..", "..", "Model"))
