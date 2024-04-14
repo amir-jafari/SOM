@@ -128,8 +128,8 @@ plt.show()
 # Train Logistic Regression on Iris
 print('start training')
 logit = LogisticRegression(random_state=SEED)
-logit.fit(np.transpose(X_scaled), y)
-results = logit.predict(np.transpose(X_scaled))
+logit.fit(X, y)
+results = logit.predict(X)
 print('end training')
 
 ind_missClass = get_ind_misclassified(y, results)
