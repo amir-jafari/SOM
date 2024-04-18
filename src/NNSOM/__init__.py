@@ -1,5 +1,5 @@
 try:
-    import cupy
+    import cupy as cp
     from .som_gpu import SOMGpu
 except ImportError:
     from .som import SOM
