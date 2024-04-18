@@ -40,7 +40,7 @@ html_context = {
     "github_user": "amir-jafari",
     "github_repo": "SOM",
     "github_version": "main",  # e.g., 'main' or 'master'
-    "doc_path": "source/",  # e.g., 'source/' if your .rst files are in the 'source' folder
+    "doc_path": "",  # e.g., 'source/' if your .rst files are in the 'source' folder
 }
 
 
