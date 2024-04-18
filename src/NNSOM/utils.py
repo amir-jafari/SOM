@@ -6,7 +6,6 @@ from matplotlib.widgets import Button
 
 
 def preminmax(p):
-    p = np.asarray(p)
     # Normalize the inputs to be in the range [-1, 1]
     minp = np.amin(p, 1)
     maxp = np.amax(p, 1)
@@ -59,9 +58,6 @@ def calculate_positions(dim):
 
 
 def cart2pol(x, y):
-    x = np.asarray(x)
-    y = np.asarray(y)
-
     # Convert cartesian coordinates to polar coordinates
     theta = np.arctan2(y, x)
     rho = np.hypot(x, y)
@@ -76,9 +72,6 @@ def pol2cart(theta, rho):
 
 
 def rotate_xy(x1, y1, angle):
-    x1 = np.asarray(x1)
-    y1 = np.asarray(y1)
-
     # Rotate the coordinates x1, y1 by angle
     [a, r] = cart2pol(x1, y1)
     a = a + angle
@@ -157,9 +150,6 @@ def get_cluster_data(data, clust):
     cluster_data_list : list of numpy arrays
         A list where each element is a numpy array containing the data points of a cluster.
     """
-    data = np.asarray(data)
-    clust = np.asarray(clust)
-
     cluster_data_list = []
     for cluster_indices in clust:
         if len(cluster_indices) > 0:
@@ -189,9 +179,6 @@ def get_cluster_array(feature, clust):
     cluster_array : numpy.ndarray
         A NumPy array where each element is an array of feature values for that cluster.
     """
-    feature = np.asarray(feature)
-    clust = np.asarray(clust)
-
     cluster_array = np.empty(len(clust), dtype=object)
 
     for i, cluster_indices in enumerate(clust):
@@ -219,9 +206,6 @@ def get_cluster_avg(feature, clust):
     cluster_avg : numpy array
         A cluster array with the average value of the feature for each cluster.
     """
-    feature = np.asarray(feature)
-    clust = np.asarray(clust)
-
     cluster_array = get_cluster_array(feature, clust)
     cluster_avg = np.zeros(len(cluster_array))
     for i in range(len(cluster_array)):
@@ -247,9 +231,6 @@ def closest_class_cluster(cat_feature, clust):
     closest_class : numpy array
         A cluster array with the closest class for each cluster.
     """
-    cat_feature = np.asarray(cat_feature)
-    clust = np.asarray(clust)
-
     closest_class = np.zeros(len(clust))
     for i in range(len(clust)):
         cluster_indices = clust[i]
@@ -277,9 +258,6 @@ def majority_class_cluster(cat_feature, clust):
     majority_class : numpy array
         A cluster array with the majority class
     """
-    cat_feature = np.asarray(cat_feature)
-    clust = np.asarray(clust)
-
     majority_class = np.zeros(len(clust))
     for i in range(len(clust)):
         cluster_indices = clust[i]
@@ -309,10 +287,6 @@ def get_perc_cluster(cat_feature, target, clust):
     cluster_array : numpy array
         A cluster array with the percentage of target class.
     """
-    cat_feature = np.asarray(cat_feature)
-    target = np.asarray(target)
-    clust = np.asarray(clust)
-
     # Create Cluster Array with the percentage of target class
     cluster_array = np.zeros(len(clust))
     for i in range(len(clust)):
@@ -342,9 +316,6 @@ def count_classes_in_cluster(cat_feature, clust):
     cluster_counts : numpy array
         A 2D array with counts of each class in each cluster.
     """
-    cat_feature = np.asarray(cat_feature)
-    clust = np.asarray(clust)
-
     unique_classes, _ = np.unique(cat_feature, return_counts=True)
     num_classes = len(unique_classes)
 
@@ -397,8 +368,6 @@ def cal_class_cluster_intersect(clust, *args):
            [1, 0, 0, 2],
            [1, 1, 1, 0]])
     """
-    clust = np.asarray(clust)
-
     numst = list(args)
 
     cluster_sizes_matrix = np.zeros((len(numst), len(clust)))
@@ -427,9 +396,6 @@ def get_ind_misclassified(target, prediction):
     misclassified_indices : list
         List of indices of misclassified items.
     """
-    target = np.asarray(target)
-    prediction = np.asarray(prediction)
-
     misclassified_indices = np.where(target != prediction)[0]
 
     return misclassified_indices
@@ -453,10 +419,6 @@ def get_perc_misclassified(target, prediction, clust):
     proportion_misclassified : numpy array
         Percentage of misclassified items in each cluster.
     """
-    target = np.asarray(target)
-    prediction = np.asarray(prediction)
-    clust = np.asarray(clust)
-
     # Get the indices of misclassified items.
     misclassified_indices = get_ind_misclassified(target, prediction)
 
@@ -496,9 +458,6 @@ def get_conf_indices(target, results, target_class):
     fn_index : numpy array
         Indices of False Negatives.
     """
-    target = np.asarray(target)
-    results = np.asarray(results)
-
     tp_index = np.where((target == target_class) & (results == target_class))[0]
     tn_index = np.where((target != target_class) & (results != target_class))[0]
     fp_index = np.where((target != target_class) & (results == target_class))[0]
@@ -524,9 +483,6 @@ def get_dominant_class_error_types(dominant_classes, error_types):
     array-like (som.numNeurons, )
         List of majority error type for each cluster corresponding to the dominant class.
     """
-    dominant_classes = np.asarray(dominant_classes)
-    error_types = np.asarray(error_types)
-
     if len(error_types) < np.max([dc for dc in dominant_classes if not np.isnan(dc)]) + 1:
         raise ValueError("Not enough error type arrays provided for all classes.")
 
@@ -580,7 +536,6 @@ def get_global_min_max(data):
         A tuple (min_value, max_value) where min_value is the minimum value
         in the data, and max_value is the maximum value.
     """
-    data = np.asarray(data)
     flat_list = flatten(data)
     return min(flat_list), max(flat_list)
 
@@ -598,9 +553,6 @@ def get_edge_widths(indices, clust):
         lwidth: 1-d array
             Array of edge widths for each cluster.
     """
-    indices = np.asarray(indices)
-    clust = np.asarray(clust)
-
     lwidth = np.zeros(len(clust))
 
     for i in range(len(clust)):
@@ -625,8 +577,6 @@ def get_color_labels(clust, *listOfIndices):
         *args: 1-d array
             A list of indices where the specific class is present.
     """
-    clust = np.asarray(clust)
-
     # Validate if the user have provided at least one class indices
     if len(listOfIndices) == 0:
         raise ValueError('At least one class indices must be provided.')
@@ -647,7 +597,6 @@ def get_color_labels(clust, *listOfIndices):
     # If that class is majority in the cluster, assign 1, otherwise 0.
     if len(numst) == 1:
         indices = numst[0]
-        indices = np.asarray(indices)
         for i in range(len(clust)):
             if len(clust[i]) != 0:
                 num_class = len(np.intersect1d(clust[i], indices))

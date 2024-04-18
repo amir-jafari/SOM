@@ -361,6 +361,15 @@ class SOMGpu:
             if num > 0:
                 max_cluster_distances[i] = tempdist[-1]
 
+        # Convert clusters to a list of lists
+        clusters = [clust.get().tolist() for clust in clusters]
+        # Convert cluster_distances to a list of lists
+        cluster_distances = [dist.get().tolist() for dist in cluster_distances]
+        # Convert max_cluster_distances to a NumPy array
+        max_cluster_distances = max_cluster_distances.get()
+        # Convert cluster_sizes to a NumPy array
+        cluster_sizes = np.array(cluster_sizes)
+
         return clusters, cluster_distances, max_cluster_distances, cluster_sizes
 
     def normalize(self, x, norm_func=None):
