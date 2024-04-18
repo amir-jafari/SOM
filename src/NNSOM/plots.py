@@ -1,4 +1,12 @@
-from .som import SOM
+# Dynamically choose a parent class for your subclass based on whether CuPy is available
+try:
+    import cupy as cp
+    from .som_gpu import SOMGpu
+    base_class = SOMGpu
+except ImportError:
+    from .som import SOM
+    base_class = SOM
+
 from .utils import *
 
 import numpy as np
@@ -9,7 +17,7 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.colors as mcolors
 
 
-class SOMPlots(SOM):
+class SOMPlots(base_class):
     """
     SOMPlots extends the SOM class by adding visualization capabilities to
     the Self-Organizing Map (SOM). It allows for the graphical representation
