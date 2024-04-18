@@ -1,60 +1,65 @@
-from .utils import calculate_positions, distances, normalize_position, spread_positions
+try:
+    import cupy as cp
+    print("You are using GPU acceleration with Cupy")
+except ImportError:
+    print("CuPy is not available. For CPU-based operations, you can use the NumPy version of this SOM.")
+    print("Please consider installing the 'NNSOM' package, and use 'from NNSOM.som import SOM' for a NumPy-based SOM implementation.")
+    raise SystemExit
+
+from .utils import calculate_positions, distances
 
 import numpy as np
 from datetime import datetime
-from scipy.spatial.distance import cdist
 import pickle
 import warnings
 
-class SOM:
+
+class SOMGpu:
     """
-    A class to represent a Self-Organizing Map (SOM), a type of artificial neural network
-    trained using unsupervised learning to produce a two-dimensional, discretized representation
-    of the input space of the training samples.
+    Represents a Self-Organizing Map (SOM) using GPU acceleration with CuPy.
 
-    Attributes
-    ----------
-    dimensions : tuple, list, or array-like
-        The dimensions of the SOM grid. Determines the layout and number of neurons in the map.
-    numNeurons : int
-        The total number of neurons in the SOM, calculated as the product of the dimensions.
-    pos : array-like
-        The positions of the neurons in the SOM grid.
-    neuron_dist : array-like
-        The distances between neurons in the SOM.
-    w : array-like
-        The weight matrix of the SOM, representing the feature vectors of the neurons.
-    sim_flag : bool
-        A flag indicating whether the SOM has been simulated or not.
+    A Self-Organizing Map (SOM) is an artificial neural network used for unsupervised learning,
+    which projects high-dimensional data into a lower-dimensional (typically two-dimensional) space.
+    It is trained using a competitive learning approach to produce a discretized representation
+    of the input space of training samples.
 
-    Methods
-    -------
-    __init__(self, dimensions):
-        Initializes the SOM with the specified dimensions.
+    Attributes:
+        dimensions (tuple, list, np.ndarray): Dimensions of the SOM grid, defining the layout and number of neurons.
+        numNeurons (int): Total number of neurons, computed as the product of the grid dimensions.
+        pos (np.ndarray): Positions of neurons within the grid.
+        neuron_dist (np.ndarray): Precomputed Euclidean distances between neurons in the grid.
+        w (np.ndarray): Weight matrix representing the feature vectors of the neurons.
+        sim_flag (bool): Indicates if the SOM has been simulated/trained.
+        output (np.ndarray): Output from the latest simulation.
+        norm_func (callable): Function used to normalize input data.
+        sub_som (dict): Optional sub-clustering using additional SOMs at neuron positions.
 
-    init_w(self, x):
-        Initializes the weights of the SOM using principal components analysis on the input data x.
+    Methods:
+        __init__(self, dimensions): Initializes the SOM with the specified dimensions.
+        init_w(self, x, norm_func=None): Initializes the weights using PCA on input data `x`.
+        sim_som(self, x): Simulates SOM processing for input `x`, identifying activated neurons.
+        train(self, x, init_neighborhood=3, epochs=200, steps=100, norm_func=None):
+            Trains the SOM using batch SOM algorithm on input data `x`.
+        quantization_error(self, dist): Calculates the quantization error of the model.
+        topological_error(self, data): Calculates the topological error of the model.
+        distortion_error(self, data): Calculates the distortion error of the model.
+        save_pickle(self, filename, path, data_format='pkl'): Saves the SOM object to a file in pickle format.
+        load_pickle(self, filename, path, data_format='pkl'): Loads the SOM object from a file in pickle format.
+        _normalize_position(self, position): Helper method to normalize neuron positions.
+        _spread_positions(self, position, positionMean, positionBasis): Helper method to adjust neuron positions.
+        _euclidean_distance(self, XA, XB): Computes Euclidean distances between two sets of vectors.
+        _to_categorical(self, x, num_classes=None): Converts class vector to binary class matrix.
 
-    sim_som(self, x):
-        Simulates the SOM with x as the input, determining which neurons are activated by the input vectors.
+    Raises:
+        ImportError: If CuPy is not available, suggests using the NNSOM package for a NumPy-based implementation.
 
-    train(self, x, init_neighborhood=3, epochs=200, steps=100):
-        Trains the SOM using the batch SOM algorithm on the input data x.
-
-    quantization_error(self, dist)
-        Calculate quantization error
-
-    topological_error(self, data)
-        Calculate 1st and 1st-2nd toplogical error
-
-    distortion_error(self, data)
-        Calculate distortion error
-
-    save_pickle(self, filename, path, data_format='pkl'):
-        Saves the SOM object to a file using the pickle format.
-
-    load_pickle(self, filename, path, data_format='pkl'):
-        Loads a SOM object from a file using the pickle format.
+    Example:
+        >>> dimensions = (10, 10)
+        >>> som = SOMGpu(dimensions)
+        >>> data = np.random.rand(100, 10)
+        >>> som.init_w(data, norm_func=None)
+        >>> som.train(data, norm_func=None)
+        >>> output = som.sim_som(data)
     """
     def __init__(self, dimensions):
         """
@@ -66,8 +71,8 @@ class SOM:
                     The dimensions (shape) of the SOM grid.
         """
 
-        self.dimensions = dimensions
-        self.numNeurons = np.prod(dimensions)
+        self.dimensions = dimensions  # Processing as numpy
+        self.numNeurons = np.prod(dimensions) # Processing as numpy
         # Calculate positions of neurons
         self.pos = calculate_positions(dimensions)
         # Calculate distances between neurons
@@ -77,7 +82,7 @@ class SOM:
         # Set simulation flag to True,  needs to do simulation
         self.sim_flag = True
         # Initialize the output of simulation
-        self.outputs = None
+        self.output = None
         # Initialize a normalize() function
         self.norm_func = None
 
@@ -103,49 +108,52 @@ class SOM:
 
         # Normalize the input data
         x = self.normalize(x, norm_func)
+        x = cp.asarray(x)
 
         sz = x.shape
 
-        posMean = np.mean(x, axis=1)
-        posMean = np.expand_dims(posMean, axis=1)
+        posMean = cp.mean(x, axis=1)
+        posMean = cp.expand_dims(posMean, axis=1)
 
         xc = x - posMean
 
-        components, gains, encodedInputsT = np.linalg.svd(xc)
+        components, gains, encodedInputsT = cp.linalg.svd(xc)
 
-        encodedInputsT = np.transpose(encodedInputsT)
+        encodedInputsT = cp.transpose(encodedInputsT)
 
         basis = components * gains
-        stdev = np.std(encodedInputsT, axis=0)
+        stdev = cp.std(encodedInputsT, axis=0)
         stdev = stdev[:len(basis)]
         posBasis = 2.5 * basis * stdev
 
         numNeurons = self.numNeurons
         numDimensions = len(self.dimensions)
+        dimensions = self.dimensions
         sampleSize = sz[1]
         inputSize = sz[0]
-        dimOrder = np.argsort(self.dimensions)
+        dimOrder = cp.argsort(cp.asarray(dimensions))
 
-        restoreOrder = np.concatenate((np.sort(dimOrder), np.arange(numDimensions, np.minimum(inputSize, sampleSize))))
+        restoreOrder = cp.concatenate((cp.sort(dimOrder), cp.arange(numDimensions, cp.minimum(inputSize, sampleSize))))
 
         if numDimensions > inputSize:
-            posBasis = np.concatenate((posBasis, np.random.rand(inputSize, inputSize) * 0.001))
+            posBasis = cp.concatenate((posBasis, cp.random.rand(inputSize, inputSize) * 0.001))
 
         posBasis = posBasis[restoreOrder]
 
         pos1 = self.pos
+        pos1 = cp.asarray(pos1)
 
         if sampleSize < inputSize:
-            posBasis = np.concatenate((posBasis, np.zeros((inputSize, inputSize - sampleSize))))
+            posBasis = cp.concatenate((posBasis, cp.zeros((inputSize, inputSize - sampleSize))))
 
         if inputSize > numDimensions:
-            pos1 = np.concatenate((pos1, np.zeros((inputSize - numDimensions, numNeurons))), axis=0)
+            pos1 = cp.concatenate((pos1, cp.zeros((inputSize - numDimensions, numNeurons))), axis=0)
 
-        pos2 = normalize_position(pos1)
+        pos2 = self._normalize_position(pos1)
 
-        pos3 = spread_positions(pos2, posMean, posBasis)
+        pos3 = self._spread_positions(pos2, posMean, posBasis)
 
-        self.w = np.transpose(pos3)
+        self.w = cp.asnumpy(cp.transpose(pos3))
 
         # Print Ending time for initialization
         print('Ending Initialization')
@@ -167,26 +175,19 @@ class SOM:
         np.ndarray
             The simulated output of the SOM.
         """
-
         # Simulate the SOM, with x as the input
-        shapx = x.shape   # shapes of the input x
-        shapw = self.w.shape # weights of the SOM
+        # Transform np.ndarray into cp.ndarray
+        w = cp.asarray(self.w)
+        x = cp.asarray(x)
 
         # Compute the negative distance from the inputs to each center
-        n = -cdist(self.w, np.transpose(x), 'euclidean')
-        # n = np.empty((shapw[0], shapx[1]))
-        # for jj in range(shapw[0]):
-        #     wj = self.w[jj]
-        #     wj = np.expand_dims(wj, axis=1)
-        #     n[jj] = np.sum((x - wj)**2, axis=0)
-
-        # n = -np.sqrt(n)
-        #print(n)
+        n = -self._euclidean_distance(w, cp.transpose(x))
 
         # Find out which center was closest to the input
-        maxRows = np.argmax(n, axis=0)
-        a = self._to_categorical(maxRows, num_classes=n.shape[0])   # made correction-added number of class
-        # a = tf.constant(a, shape=[np.transpose(n).shape[0],np.transpose(n).shape[1]])  # made change
+        maxRows = cp.argmax(n, axis=0)
+        a = self._to_categorical(maxRows, num_classes=n.shape[0]) #made correction-added number of class
+        a = cp.asnumpy(a)
+
         return np.transpose(a)
 
     def train(self, x, init_neighborhood=3, epochs=200, steps=100, norm_func=None):
@@ -210,10 +211,12 @@ class SOM:
         """
         # Normalize the input data
         x = self.normalize(x, norm_func)
+        x = cp.asarray(x)
 
         # Train the SOM using the batch SOM algorithm
 
         w = self.w
+        w = cp.asarray(w)
         shapw = w.shape
         S = shapw[0]
         shapx = x.shape
@@ -221,9 +224,8 @@ class SOM:
 
         step = 0
 
-        now = datetime.now()
-
         print('Beginning Training')
+        now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("Current Time =", current_time)
         # Train the network
@@ -231,30 +233,32 @@ class SOM:
 
             # network output
             a = self.sim_som(x)
+            a = cp.asarray(a)
 
             # neighborhood distance
             nd = 1 + (init_neighborhood-1) * (1 - step/steps)
             neighborhood = self.neuron_dist <= nd
+            neighborhood = cp.asarray(neighborhood)
             #print(nd)
             # remove some outputs at random
-            a = a * (np.random.rand(S, Q) < 0.90)
-            a2 = np.matmul(neighborhood,a) + a
+            a = a * (cp.random.rand(S, Q) < 0.90)
+            a2 = cp.matmul(neighborhood, a) + a
 
             # find how many times each neuron won
             # (The winning neuron is the one that exhibits the smallest distance or similarity to the input data)
-            suma2 = np.sum(a2, axis=1)
-            loserIndex = np.squeeze(np.asarray(suma2 == 0))
+            suma2 = cp.sum(a2, axis=1)
+            loserIndex = cp.squeeze(cp.asarray(suma2 == 0))
             suma2[loserIndex] = 1
-            suma2 = np.expand_dims(suma2,axis = 1)
-            a3 = a2 / np.repeat(suma2, Q, axis=1)
+            suma2 = cp.expand_dims(suma2,axis = 1)
+            a3 = a2 / cp.repeat(suma2, Q, axis=1)
 
-            neww = np.matmul(a3, np.transpose(x))
+            neww = cp.matmul(a3, cp.transpose(x))
 
             dw = neww - w
 
             dw[loserIndex] = 0
 
-            w = w + np.array(dw)
+            w = w + cp.array(dw)
 
             step = step + 1
 
@@ -264,7 +268,7 @@ class SOM:
                 current_time = now.strftime("%H:%M:%S")
                 print("Current Time =", current_time)
 
-        self.w = w
+        self.w = cp.asnumpy(w)
         self.outputs = self.sim_som(x)
         self.sim_flag = False
 
@@ -318,26 +322,28 @@ class SOM:
 
         # Normalize the input data
         x = self.normalize(x, self.norm_func)
+        x = cp.asarray(x)
 
         w = self.w
+        w = cp.asarray(w)
         shapw = w.shape
         S = shapw[0]
 
-        x_w_dist = cdist(w, np.transpose(x), 'euclidean')
-        ind1 = np.argmin(x_w_dist, axis=0)
+        x_w_dist = self._euclidean_distance(w, cp.transpose(x))
+        ind1 = cp.argmin(x_w_dist, axis=0)
 
         clusters = []  # a cluster array of indices sorted by distances
         cluster_distances = []  # a cluster array of distances sorted by distances
-        max_cluster_distances = np.zeros(S)  # a list of maimum distance to any input in the cluster from cluster center
+        max_cluster_distances = cp.zeros(S)  # a list of maimum distance to any input in the cluster from cluster center
         cluster_sizes = []  # cluster array sizes
 
         for i in range(S):
             # Find which inputs are closest to each weight (in cluster i)
-            tempclust = np.where(ind1 == i)[0]
+            tempclust = cp.where(ind1 == i)[0]
 
             # Save distance of each input in the cluster to cluster center (weight)
             tempdist = x_w_dist[i, tempclust]
-            indsort = np.argsort(tempdist)
+            indsort = cp.argsort(tempdist)
             tempclust = tempclust[indsort]  # Sort indices
             tempdist = tempdist[indsort]
 
@@ -443,7 +449,7 @@ class SOM:
         x = self.normalize(x, self.norm_func)
 
         # Calculate the distance between item vs. cluster center
-        x_w_dist = cdist(w, np.transpose(x), 'euclidean')
+        x_w_dist = self._euclidean_distance(w, np.transpose(x))
 
         sort_dist = np.argsort(x_w_dist, axis=0)
         top_dist = [ndist[sort_dist[0, ii], sort_dist[1, ii]] for ii in range(sort_dist.shape[1])]
@@ -466,11 +472,11 @@ class SOM:
 
         ww = self.w
         ndist = self.neuron_dist
-        x_w_dist = cdist(ww, np.transpose(x), 'euclidean')
+        x_w_dist = self._euclidean_distance(ww, np.transpose(x))
         ind1 = np.argmin(x_w_dist, axis=0)
 
         dd = [1, 2, 3]  # neighborhood distances
-        wwdist = cdist(ww, ww, 'euclidean')
+        wwdist = self._euclidean_distance(ww, ww)
         sst = ndist[:, ind1]
 
         for d in dd:
@@ -482,7 +488,7 @@ class SOM:
 
     def save_pickle(self, filename, path, data_format='pkl'):
         """ Save the SOM object to a file using pickle.
-        
+
         Parameters
         ----------
         filename : str
@@ -532,6 +538,80 @@ class SOM:
 
         return som
 
+    def _normalize_position(self, position):  # Implement from utils
+        # Normalize the positions of the neurons to be in the range [-1, 1]
+        shap = position.shape
+        numPos = shap[1]
+        minPos = cp.ndarray.min(position,axis=1)
+        maxPos = cp.ndarray.max(position,axis=1)
+        difPos = maxPos - minPos
+        equal = cp.equal(minPos, maxPos)
+        difPos[equal] = 1
+        minPos = cp.expand_dims(minPos, axis=1)
+        minPos = cp.repeat(minPos, numPos, axis=1)
+        difPos = cp.expand_dims(difPos, axis=1)
+        difPos = cp.repeat(difPos, numPos, axis=1)
+        posit = 2 * ((position - minPos)/difPos) - 1
+        return posit
+
+    def _spread_positions(self, position, positionMean, positionBasis): # Implement from utils
+        # Spread the positions of the neurons
+        shappos = position.shape
+        numPos = shappos[1]
+        position1 = cp.repeat(positionMean, numPos, axis=1) + cp.matmul(positionBasis, position)
+        return position1
+
+    def _euclidean_distance(self, XA, XB):
+        """ Compute distance between each pair of the two collections of inputs.
+
+        Parameters
+        ----------
+        XA : array_like
+            An :math:`m_A` by :math:`n` array of :math:`m_A`
+            original observations in an :math:`n`-dimensional space.
+            Inputs are converted to float type.
+        XB : array_like
+            An :math:`m_B` by :math:`n` array of :math:`m_B`
+            original observations in an :math:`n`-dimensional space.
+            Inputs are converted to float type.
+
+        Returns
+        -------
+        Y : ndarray
+            A :math:`m_A` by :math:`m_B` distance matrix is returned.
+            For each :math:`i` and :math:`j`, the metric
+            ``dist(u=XA[i], v=XB[j])`` is computed and stored in the
+            :math:`ij` th entry.
+
+        Raises
+        ------
+        ValueError
+            An exception is thrown if `XA` and `XB` do not have
+            the same number of columns.
+
+
+        """
+        XA = cp.asarray(XA)
+        XB = cp.asarray(XB)
+
+        s = XA.shape
+        sB = XB.shape
+
+        if len(s) != 2:
+            raise ValueError('XA must be a 2-dimensional array.')
+        if len(sB) != 2:
+            raise ValueError('XB must be a 2-dimensional array.')
+        if s[1] != sB[1]:
+            raise ValueError('XA and XB must have the same number of columns '
+                            '(i.e. feature dimension.)')
+
+        XA2 = cp.sum(XA**2, axis=1).reshape(-1, 1)  # Squares of norms of x, reshaped to column vector
+        XB2 = cp.sum(XB**2, axis=1).reshape(1, -1)  # Squares of norms of y, reshaped to row vector
+        xy = cp.dot(XA, XB.T)  # Matrix product of x and transpose of y
+        distances = cp.sqrt(cp.maximum(0, XA2 + XB2 - 2 * xy))  # Ensure non-negative for sqrt
+
+        return distances
+
     def _to_categorical(self, x, num_classes=None):
         """ Converts a class vector (integers) to binary class matrix.
 
@@ -545,8 +625,16 @@ class SOM:
         A binary matrix representation of the input as a NumPy or Cupy array. The class
         axis is placed last.
 
+        Examples:
+
+        >>> a = self._to_categorical([0, 1, 2, 3], num_classes=4)
+        >>> a
+        array([[1., 0., 0., 0.],
+               [0., 1., 0., 0.],
+               [0., 0., 1., 0.],
+               [0., 0., 0., 1.]])
         """
-        x = np.array(x, dtype="int64")
+        x = cp.array(x, dtype="int64")
         input_shape = x.shape
 
         # Shrink the last dimension if the shape is (..., 1).
@@ -555,11 +643,11 @@ class SOM:
 
         x = x.reshape(-1)
         if not num_classes:
-            num_classes = np.max(x) + 1
+            num_classes = cp.max(x) + 1
         batch_size = x.shape[0]
-        categorical = np.zeros((batch_size, num_classes))
-        categorical[np.arange(batch_size), x] = 1
+        categorical = cp.zeros((batch_size, num_classes))
+        categorical[cp.arange(batch_size), x] = 1
         output_shape = input_shape + (num_classes,)
-        categorical = np.reshape(categorical, output_shape)
+        categorical = cp.reshape(categorical, output_shape)
 
         return categorical

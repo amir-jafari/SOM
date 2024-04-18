@@ -8,6 +8,7 @@ from matplotlib.widgets import Button
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.colors as mcolors
 
+
 class SOMPlots(SOM):
     """
     SOMPlots extends the SOM class by adding visualization capabilities to
