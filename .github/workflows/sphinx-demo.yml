@@ -42,11 +42,16 @@ jobs:
           cd src/docs/
           make html
       - name: Deploy to GitHub Pages
-        env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         run: |
-          ghp-import -n -p -f src/docs/_build/html -r origin -o -b gh-pages --remote-url=https://${{ secrets.PERSONAL_TOKEN }}@github.com/amir-jafari/SOM.git
-
+          git fetch
+          git checkout gh-pages
+          # Assuming your build script outputs files to src/docs/_build/html
+          rm -rf *
+          cp -r src/docs/_build/html/* .
+          git add .
+          git -c user.name='GitHub Action' -c user.email='action@github.com' commit -m "Deploy updates"
+          git push origin gh-pages
+          
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
