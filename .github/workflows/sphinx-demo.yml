@@ -31,6 +31,11 @@ jobs:
           make -C src/docs clean 
           # sphinx-apidoc -f -o docs/source . -H Test -e -t docs/source/_templates
           make -C src/docs html
+          
+      - name: List build directory
+        run: |
+          ls -la src/docs/_build/html/
+
 
       - name: Init new repo in dist folder and commit generated files
         run: |
