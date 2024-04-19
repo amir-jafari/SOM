@@ -22,6 +22,8 @@ pip install NNSOM
 
 ## How to use it
 
+You can see the example file with Iris dataset on Jupyter Notebook [here](https://github.com/amir-jafari/SOM/blob/main/examples/Tabular/Iris/notebook/Iris_training.ipynb).
+
 ### Data Preparation
 To use the NNSOM library effectively, format your data as a NumPy matrix where each row is an observation. 
 ```bash
