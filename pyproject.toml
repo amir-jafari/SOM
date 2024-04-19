@@ -10,7 +10,7 @@ packages = ["src/NNSOM"]
 
 [project]
 name = "NNSOM"
-version = "1.6.9"
+version = "1.7.1"
 description = "A SOM package"
 readme = "README.md"
 requires-python = ">=3.8"
