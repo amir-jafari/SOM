@@ -10,7 +10,7 @@ jobs:
   build_docs_job:
     runs-on: ubuntu-latest
     env:
-      GEN_TKN: ${{ secrets.GEN_TKN }}
+      GITHUB_PAT: ${{ secrets.GEN_TKN }}
  
     steps:
       - name: Checkout
@@ -49,5 +49,5 @@ jobs:
           github_token: ${{ secrets.GEN_TKN }}
           branch: gh-pages
           force: true
-          directory: src/docs/build/html
+          directory: src/docs/_build/html
 
