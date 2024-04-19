@@ -43,10 +43,13 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -m 'deploy'
 
+      - name: Configure safe directory
+        run: git config --global --add safe.directory /github/workspace/src/docs/_build/html
+
       - name: Force push to destination branch
         uses: ad-m/github-push-action@v0.5.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          force: true
-          directory: src/docs/_build/html
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         branch: gh-pages
+         force: true
+         directory: src/docs/_build/html
