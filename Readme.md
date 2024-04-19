@@ -87,7 +87,7 @@ som.save_pickle(file_name, model_path)
 and can be loaded as follows:
 ```bash
 from NNSOM.plots import SOMPlots
-som = SOMPlots(Dimensions)
+som = SOMPlots(Dimensions)  # Use the same dimension with the stored model.
 som = som.load_pickle(file_name, model_path)
 ```
 
