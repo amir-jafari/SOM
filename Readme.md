@@ -146,7 +146,7 @@ To effectively understand and interpret the results of your SOM training, visual
 The NNSOM library offers a variety of plotting functions that allow you to visualize different aspects of the SOM and the training process.
 
 #### The Generic Plot Function [[source]](https://github.com/amir-jafari/SOM/blob/main/src/NNSOM/plots.py#L1391)
-The NNSOM library offers a versatile plotting function that enables users to visualize various aspects of the trained SOM. This generic plot function can be used to generate multiple types of visualizations depending on the specified plot type.
+This generic plot function can be used to generate multiple types of visualizations depending on the specified plot type.
 
 Usage of the Plot Function:
 ```bash
