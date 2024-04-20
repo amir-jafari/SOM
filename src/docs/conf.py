@@ -36,7 +36,7 @@ sphinx_gallery_conf = {
      #
         'examples_dirs': '../../examples/Tabular/Iris/py',  # path to your example scripts
         'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
-        'capture_stdout': True,  # Captures output from stdout
+        #'capture_stdout': True,  # Captures output from stdout
         'image_scrapers': ('matplotlib',),
         'filename_pattern': '.*\\.ipynb$',  # Changed to include all Python files
         'ignore_pattern': '__init__\\.py'
