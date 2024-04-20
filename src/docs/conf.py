@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath("../NNSOM"))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'NNSOM'
-copyright = '2024, Lakshmi Sravya Chalapati, Ei Tanaka'
+copyright = '2024'
 author = 'Lakshmi Sravya Chalapati, Ei Tanaka, Amir Jafari, Martin Hagan'
 release = '0.0.2'
 

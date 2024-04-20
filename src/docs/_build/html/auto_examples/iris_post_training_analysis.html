@@ -1,0 +1,732 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>post training &#8212; NNSOM 0.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=d58853b1"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/iris_post_training_analysis';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Authors" href="../authors.html" />
+    <link rel="prev" title="Iris interactive" href="iris_interactive.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">NNSOM 0.0.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../usage.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../contributor.html">
+                        Contributor Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../NNSOM.html">
+                        NNSOM package
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors.html">
+                        Authors
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/amir-jafari/SOM" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/NNSOM/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box-open fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../usage.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../contributor.html">
+                        Contributor Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../NNSOM.html">
+                        NNSOM package
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../authors.html">
+                        Authors
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/amir-jafari/SOM" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/NNSOM/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fas fa-box-open fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="iris_training.html">Iris training example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iris_plot.html">Iris plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iris_interactive.html">Iris interactive</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">post training</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Examples</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">post training</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="post-training">
+<span id="sphx-glr-auto-examples-iris-post-training-analysis-py"></span><h1>post training<a class="headerlink" href="#post-training" title="Link to this heading">#</a></h1>
+<div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-iris-post-training-analysis-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<p class="sphx-glr-example-title" id="id1">This script demonstrates post training analysis on the Iris dataset using matplotlib.</p>
+<ul class="sphx-glr-horizontal">
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_001.png" srcset="../_images/sphx_glr_iris_post_training_analysis_001.png" alt="Gray Hist with the percentage of misclassified items" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_002.png" srcset="../_images/sphx_glr_iris_post_training_analysis_002.png" alt="Color Hist with the percentage of misclassified items" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_003.png" srcset="../_images/sphx_glr_iris_post_training_analysis_003.png" alt="Complex Hit Histogram - Error Analysis" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_004.png" srcset="../_images/sphx_glr_iris_post_training_analysis_004.png" alt="Simple Grid" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_005.png" srcset="../_images/sphx_glr_iris_post_training_analysis_005.png" alt="Pie Chart with tp, tn, fp, and fn of sentosa" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_006.png" srcset="../_images/sphx_glr_iris_post_training_analysis_006.png" alt="Pie Chart with tp, tn, fp, and fn of versicolor" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_007.png" srcset="../_images/sphx_glr_iris_post_training_analysis_007.png" alt="Pie Chart with tp, tn, fp, and fn of virginica" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_008.png" srcset="../_images/sphx_glr_iris_post_training_analysis_008.png" alt="Stem Plot with tp, tn, fp, fn of Sentosa" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_009.png" srcset="../_images/sphx_glr_iris_post_training_analysis_009.png" alt="Stem Plot with tp, tn, fp, fn of Versicolor" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_iris_post_training_analysis_010.png" srcset="../_images/sphx_glr_iris_post_training_analysis_010.png" alt="Stem Plot with tp, tn, fp, fn of Virginica" class = "sphx-glr-multi-img"/></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">NNSOM.plots</span> <span class="kn">import</span> <span class="n">SOMPlots</span>
+<span class="kn">from</span> <span class="nn">NNSOM.utils</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">default_rng</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Random State</span>
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">1234567</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">default_rng</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+
+<span class="c1"># Data Preprocessing</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
+
+<span class="c1"># Define the directory path for saving the model outside the repository</span>
+<span class="n">model_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;Model&quot;</span><span class="p">))</span>
+<span class="n">trained_file_name</span> <span class="o">=</span> <span class="s2">&quot;SOM_Model_iris_Epoch_500_Seed_1234567_Size_4.pkl&quot;</span>
+
+<span class="c1"># SOM Parameters</span>
+<span class="n">SOM_Row_Num</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1"># The number of row used for the SOM grid.</span>
+<span class="n">Dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="n">SOM_Row_Num</span><span class="p">,</span> <span class="n">SOM_Row_Num</span><span class="p">)</span>  <span class="c1"># The dimensions of the SOM grid.</span>
+
+<span class="n">som</span> <span class="o">=</span> <span class="n">SOMPlots</span><span class="p">(</span><span class="n">Dimensions</span><span class="p">)</span>
+<span class="n">som</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">load_pickle</span><span class="p">(</span><span class="n">trained_file_name</span><span class="p">,</span> <span class="n">model_dir</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)</span>
+
+<span class="c1"># Data post processing</span>
+<span class="n">clust</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">mdist</span><span class="p">,</span> <span class="n">clustSizes</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">cluster_data</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Train Logistic Regression on Iris</span>
+<span class="n">logit</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">logit</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">logit</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">perc_misclassified</span> <span class="o">=</span> <span class="n">get_perc_misclassified</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
+
+<span class="c1"># For Pie chart and Stem Plot</span>
+<span class="n">sent_tp</span><span class="p">,</span> <span class="n">sent_tn</span><span class="p">,</span> <span class="n">sent_fp</span><span class="p">,</span> <span class="n">sent_fn</span> <span class="o">=</span> <span class="n">get_conf_indices</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Confusion matrix for sentosa</span>
+<span class="n">sentosa_conf</span> <span class="o">=</span> <span class="n">cal_class_cluster_intersect</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="n">sent_tp</span><span class="p">,</span> <span class="n">sent_tn</span><span class="p">,</span> <span class="n">sent_fp</span><span class="p">,</span> <span class="n">sent_fn</span><span class="p">)</span>
+<span class="n">vers_tp</span><span class="p">,</span> <span class="n">vers_tn</span><span class="p">,</span> <span class="n">vers_fp</span><span class="p">,</span> <span class="n">vers_fn</span> <span class="o">=</span> <span class="n">get_conf_indices</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Confusion matrix for versicolor</span>
+<span class="n">versicolor_conf</span> <span class="o">=</span> <span class="n">cal_class_cluster_intersect</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="n">vers_tp</span><span class="p">,</span> <span class="n">vers_tn</span><span class="p">,</span> <span class="n">vers_fp</span><span class="p">,</span> <span class="n">vers_fn</span><span class="p">)</span>
+<span class="n">virg_tp</span><span class="p">,</span> <span class="n">virg_tn</span><span class="p">,</span> <span class="n">virg_fp</span><span class="p">,</span> <span class="n">virg_fn</span> <span class="o">=</span> <span class="n">get_conf_indices</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Confusion matrix for virginica</span>
+<span class="n">virginica_conf</span> <span class="o">=</span> <span class="n">cal_class_cluster_intersect</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="n">virg_tp</span><span class="p">,</span> <span class="n">virg_tn</span><span class="p">,</span> <span class="n">virg_fp</span><span class="p">,</span> <span class="n">virg_fn</span><span class="p">)</span>
+<span class="n">conf_align</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="c1"># Complex Hit Histogram</span>
+<span class="c1"># Get the list with dominat class in each cluster</span>
+<span class="n">dominant_classes</span> <span class="o">=</span> <span class="n">majority_class_cluster</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
+
+<span class="c1"># Get the majority error type (0: type 1 error, 1: type 2 error) corresponding dominat class</span>
+<span class="n">sent_error</span> <span class="o">=</span> <span class="n">get_color_labels</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="n">sent_tn</span><span class="p">,</span> <span class="n">sent_fp</span><span class="p">)</span>  <span class="c1"># Get the majority error type in sentosa</span>
+<span class="n">vers_error</span> <span class="o">=</span> <span class="n">get_color_labels</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="n">vers_tn</span><span class="p">,</span> <span class="n">vers_fp</span><span class="p">)</span>  <span class="c1"># Get the majority error type in versicolor</span>
+<span class="n">virg_error</span> <span class="o">=</span> <span class="n">get_color_labels</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="n">virg_tn</span><span class="p">,</span> <span class="n">virg_fp</span><span class="p">)</span>  <span class="c1"># Get the majority error type in virginica</span>
+<span class="n">iris_error_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">sent_error</span><span class="p">,</span> <span class="n">vers_error</span><span class="p">,</span> <span class="n">virg_error</span><span class="p">]</span>
+<span class="n">error_types</span> <span class="o">=</span> <span class="n">get_dominant_class_error_types</span><span class="p">(</span><span class="n">dominant_classes</span><span class="p">,</span> <span class="n">iris_error_types</span><span class="p">)</span>
+
+<span class="c1"># Get the edge width based on the perc of misclassified</span>
+<span class="n">ind_misclassified</span> <span class="o">=</span> <span class="n">get_ind_misclassified</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+<span class="n">edge_width</span> <span class="o">=</span> <span class="n">get_edge_widths</span><span class="p">(</span><span class="n">ind_misclassified</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
+
+<span class="c1"># Make an additional 2-D array</span>
+<span class="n">comp_2d_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dominant_classes</span><span class="p">,</span> <span class="n">error_types</span><span class="p">,</span> <span class="n">edge_width</span><span class="p">]))</span>
+
+<span class="c1"># Simple Grid</span>
+<span class="n">perc_sentosa</span> <span class="o">=</span> <span class="n">get_perc_cluster</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
+<span class="n">simple_2d_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">perc_sentosa</span><span class="p">,</span> <span class="n">perc_sentosa</span><span class="p">]))</span>
+
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span>
+    <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+    <span class="s2">&quot;clust&quot;</span><span class="p">:</span> <span class="n">clust</span><span class="p">,</span>
+    <span class="s2">&quot;add_1d_array&quot;</span><span class="p">:</span> <span class="n">perc_misclassified</span><span class="p">,</span>
+    <span class="s2">&quot;add_2d_array&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="c1"># Visualization</span>
+<span class="c1"># Gray Hist (Brighter: more, Darker: less)</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">patches1</span><span class="p">,</span> <span class="n">text1</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;gray_hist&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Gray Hist with the percentage of misclassified items&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Color Hist</span>
+<span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">patches2</span><span class="p">,</span> <span class="n">text2</span><span class="p">,</span> <span class="n">cbar2</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;color_hist&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Color Hist with the percentage of misclassified items&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Complex Hit hist</span>
+<span class="c1"># sentosa: Blue, versicolor: Green, virginica: Red (inner color)</span>
+<span class="c1"># type 1 error (tn): Pink, type 2 error (fn): blue (edge color) for corresponding dominat classes</span>
+<span class="c1"># Edge width: percentage of misclassified items (edge width)</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comp_2d_array</span>  <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig3</span><span class="p">,</span> <span class="n">ax3</span><span class="p">,</span> <span class="n">patches3</span><span class="p">,</span> <span class="n">text3</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;complex_hist&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Complex Hit Histogram - Error Analysis&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Simple Grid</span>
+<span class="c1"># color: perc misclassified</span>
+<span class="c1"># sizes: perc sentosa</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simple_2d_array</span>  <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig4</span><span class="p">,</span> <span class="n">ax4</span><span class="p">,</span> <span class="n">patches4</span><span class="p">,</span> <span class="n">cbar4</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;simple_grid&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Simple Grid&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Pie chart</span>
+<span class="c1"># tp: Blue, tn: Purple, fp: Orange, and fn: Yellow</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sentosa_conf</span>  <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig5</span><span class="p">,</span> <span class="n">ax5</span><span class="p">,</span> <span class="n">h_axes5</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pie&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Pie Chart with tp, tn, fp, and fn of sentosa&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># tp: Blue, tn: Purple, fp: Orange, and fn: Yellow</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versicolor_conf</span>  <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig6</span><span class="p">,</span> <span class="n">ax6</span><span class="p">,</span> <span class="n">h_axes6</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pie&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Pie Chart with tp, tn, fp, and fn of versicolor&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># tp: Blue, tn: Purple, fp: Orange, and fn: Yellow</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">virginica_conf</span>  <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig7</span><span class="p">,</span> <span class="n">ax7</span><span class="p">,</span> <span class="n">h_axes7</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pie&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Pie Chart with tp, tn, fp, and fn of virginica&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Stem Plot</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sentosa_conf</span>  <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig8</span><span class="p">,</span> <span class="n">ax8</span><span class="p">,</span> <span class="n">h_axes8</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;stem&quot;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Stem Plot with tp, tn, fp, fn of Sentosa&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versicolor_conf</span> <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig9</span><span class="p">,</span> <span class="n">ax9</span><span class="p">,</span> <span class="n">h_axes9</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;stem&quot;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Stem Plot with tp, tn, fp, fn of Versicolor&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;add_2d_array&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">virginica_conf</span>  <span class="c1"># Update an additional 2-D array</span>
+<span class="n">fig10</span><span class="p">,</span> <span class="n">ax10</span><span class="p">,</span> <span class="n">h_axes10</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;stem&quot;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">use_add_array</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Stem Plot with tp, tn, fp, fn of Virginica&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.182 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-iris-post-training-analysis-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/ab136086d988a3f12b3fed6dff469a0c/iris_post_training_analysis.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">iris_post_training_analysis.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/7298048513e508f3646b11ca44d63cc7/iris_post_training_analysis.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">iris_post_training_analysis.py</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="iris_interactive.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Iris interactive</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../authors.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Authors</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/amir-jafari/SOM/edit/main/auto_examples/iris_post_training_analysis.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/auto_examples/iris_post_training_analysis.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
