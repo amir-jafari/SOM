@@ -29,10 +29,16 @@ extensions = [
 ]
 
 sphinx_gallery_conf = {
-     'examples_dirs': '../../examples/Tabular/Iris/py',   # path to your example scripts
-     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
-     'filename_pattern': '.*\\.py$',  # Changed to include all Python files
-     'ignore_pattern': '__init__\\.py',
+     # 'examples_dirs': '../../examples/Tabular/Iris/py',   # path to your example scripts
+     # 'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+     # 'filename_pattern': '.*\\.py$',  # Changed to include all Python files
+     # 'ignore_pattern': '__init__\\.py',
+     #
+        'examples_dirs': '../../examples/Tabular/Iris/notebook',  # path to your example scripts
+        'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+        'filename_pattern': '.*\\.ipynb$',  # Changed to include all Python files
+        'ignore_pattern': '__init__\\.py'
+
 }
 
 # inside conf.py
