@@ -17,7 +17,7 @@ The package **NNSOM** likely stands for "Neural Network Self-Organizing Map." Se
    contributor
    NNSOM
    auto_examples/index
-   more
+   authors
 
 
 
