@@ -10,7 +10,7 @@ packages = ["src/NNSOM"]
 
 [project]
 name = "NNSOM"
-version = "1.7.1"
+version = "1.7.3"
 description = "A SOM package"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -46,3 +46,4 @@ keywords = ["SOM", "Neural Network", "Machine Learning", "Unsupervised Learning"
 [project.urls]
 Repository = "https://github.com/amir-jafari/SOM"
 Issues = "https://github.com/amir-jafari/SOM/issues"
+Documenation="https://amir-jafari.github.io/SOM/"
