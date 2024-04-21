@@ -1,10 +1,6 @@
 NNSOM package
 =============
 
-.. contents::
-   :local:
-   :depth: 2
-
 Submodules
 ----------
 
