@@ -16,14 +16,15 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
 authors = [
-  { name = "Dr. Hagan" },
+  { name = "Dr. Hagan" }, { name = "Ei Tanaka" },
   { name = "Dr. Amir Jafari", email = "amir.h.jafari@okstate.edu" },
   { name = "Lakshmi Sravya Chalapati" },
   { name = "Ei Tanaka" },
+
 ]
-maintainers = [
-  { name = "Dr. Amir Jafari", email = "amir.h.jafari@okstate.edu" },
-]
+#maintainers = [
+#  { name = "Dr. Amir Jafari", email = "amir.h.jafari@okstate.edu" },
+#]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
