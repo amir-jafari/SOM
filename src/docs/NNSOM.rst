@@ -4,18 +4,18 @@ NNSOM package
 Submodules
 ----------
 
-NNSOM.plots module
-------------------
-
-.. automodule:: NNSOM.plots
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 NNSOM.som module
 ----------------
 
 .. automodule:: NNSOM.som
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+NNSOM.plots module
+------------------
+
+.. automodule:: NNSOM.plots
    :members:
    :undoc-members:
    :show-inheritance:
