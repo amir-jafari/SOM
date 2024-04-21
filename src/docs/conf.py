@@ -70,7 +70,6 @@ html_theme_options = {
     ],
     "use_edit_page_button": True,  # If you want an edit button for source files
     "navigation_with_keys": True,
-    "navigation_depth": 4,
     # ...
 }
 
