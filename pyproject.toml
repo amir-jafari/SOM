@@ -10,21 +10,21 @@ packages = ["src/NNSOM"]
 
 [project]
 name = "NNSOM"
-version = "1.7.6"
+version = "1.7.7"
 description = "A SOM package"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
 authors = [
-  { name = "Dr. Martin Hagan" , email= "mhagan@ieee.org" },
-  { name = "Dr. Amir Jafari" , email = "amir.h.jafari@okstate.edu"},
+  { name = "Dr. Martin Hagan" },
+  { name = "Dr. Amir Jafari" },
   { name = "Lakshmi Sravya Chalapati" },
   { name = "Ei Tanaka" },
 
 ]
-#maintainers = [
-#  { name = "Dr. Amir Jafari", email = "amir.h.jafari@okstate.edu" },
-#]
+maintainers = [
+  { name = "Dr. Amir Jafari", email = "amir.h.jafari@okstate.edu" },
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
