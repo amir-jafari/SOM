@@ -17,7 +17,7 @@ requires-python = ">=3.8"
 license = { file = "LICENSE" }
 authors = [
   { name = "Dr. Hagan" },
-  { name = "Dr. Amir Jafari" },
+  { name = "Dr. Amir Jafari" , email = "amir.h.jafari@okstate.edu"},
   { name = "Lakshmi Sravya Chalapati" },
   { name = "Ei Tanaka" },
 
