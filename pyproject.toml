@@ -10,13 +10,13 @@ packages = ["src/NNSOM"]
 
 [project]
 name = "NNSOM"
-version = "1.7.3"
+version = "1.7.4"
 description = "A SOM package"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
 authors = [
-  { name = "Dr. Hagan" }, { name = "Ei Tanaka" },
+  { name = "Dr. Hagan" },
   { name = "Dr. Amir Jafari" },
   { name = "Lakshmi Sravya Chalapati" },
   { name = "Ei Tanaka" },
