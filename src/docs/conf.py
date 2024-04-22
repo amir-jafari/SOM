@@ -45,6 +45,7 @@ nbsphinx_allow_errors = True
 #         'ignore_pattern': '__init__\\.py'
 #
 # }
+nbsphinx_link_target_root = "../../examples/Tabular/Iris/notebook"
 
 nbsphinx_prolog = r"""
 .. raw:: html
@@ -53,9 +54,6 @@ nbsphinx_prolog = r"""
         <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" style="vertical-align:text-bottom"/>
     </a>
 """
-
-# Ensure you replace 'docs/' with the correct subpath if your .rst files are in a different subdirectory within 'src/docs'
-
 
 # inside conf.py
 html_context = {
