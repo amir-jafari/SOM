@@ -24,10 +24,9 @@ jobs:
           pip install -r requirements.txt
       - name: Install additional dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme myst_parser
+          pip install sphinx pandoc
       - name: Sphinx build
         run: |
-          make clean
           sphinx-build src/docs src/docs/_build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
