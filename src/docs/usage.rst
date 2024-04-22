@@ -26,7 +26,7 @@ To test it out, you could load and plot one of the example datasets.
 Getting help
 ============
 
-If you think you've encountered a bug in NNSOM, please report it on the
+If you   think you've encountered a bug in NNSOM, please report it on the
 `GitHub issue tracker <https://github.com/amir-jafari/SOM/issues>`_.
 To be useful, bug reports must include the following information:
 

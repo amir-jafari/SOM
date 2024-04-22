@@ -1,3 +1,0 @@
-{
-  "path": "../../examples/Tabular/Iris/notebook/iris_post_training_analysis.ipynb"
-}
