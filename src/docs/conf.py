@@ -22,26 +22,29 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.todo",
     "sphinx.ext.napoleon",
-    #"sphinx.ext.linkcode",
     "sphinx.ext.doctest",
-    "sphinx_gallery.gen_gallery",
+    "nbsphinx",
+    "nbsphinx_link",
 
 ]
 
-sphinx_gallery_conf = {
-     # 'examples_dirs': '../../examples/Tabular/Iris/py',   # path to your example scripts
-     # 'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
-     # 'filename_pattern': '.*\\.py$',  # Changed to include all Python files
-     # 'ignore_pattern': '__init__\\.py',
-     #
-        'examples_dirs': '../../examples/Tabular/Iris/py',  # path to your example scripts
-        'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
-        #'capture_stdout': True,  # Captures output from stdout
-        'image_scrapers': ('matplotlib',),
-        'filename_pattern': '.*\\.ipynb$',  # Changed to include all Python files
-        'ignore_pattern': '__init__\\.py'
+nbsphinx_allow_errors = True
 
-}
+
+# sphinx_gallery_conf = {
+#      # 'examples_dirs': '../../examples/Tabular/Iris/py',   # path to your example scripts
+#      # 'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+#      # 'filename_pattern': '.*\\.py$',  # Changed to include all Python files
+#      # 'ignore_pattern': '__init__\\.py',
+#      #
+#         'examples_dirs': '../../examples/Tabular/Iris/py',  # path to your example scripts
+#         'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+#         #'capture_stdout': True,  # Captures output from stdout
+#         'image_scrapers': ('matplotlib',),
+#         'filename_pattern': '.*\\.ipynb$',  # Changed to include all Python files
+#         'ignore_pattern': '__init__\\.py'
+#
+# }
 
 # inside conf.py
 html_context = {
