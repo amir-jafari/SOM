@@ -29,10 +29,6 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
@@ -42,10 +38,11 @@
     <script src="_static/documentation_options.js?v=d58853b1"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="User Guide" href="usage.html" />
+    <link rel="next" title="Installing and getting started" href="usage.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -134,14 +131,7 @@
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="usage.html">
-                        User Guide
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="contributor.html">
-                        Contributor Guide
+                        Installing and getting started
                       </a>
                     </li>
                 
@@ -154,8 +144,15 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="auto_examples/index.html">
-                        Examples
+                      <a class="nav-link nav-internal" href="examples.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="cupy.html">
+                        Cupy
                       </a>
                     </li>
                 
@@ -280,14 +277,7 @@ document.write(`
     
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="usage.html">
-                        User Guide
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="contributor.html">
-                        Contributor Guide
+                        Installing and getting started
                       </a>
                     </li>
                 
@@ -300,8 +290,15 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="auto_examples/index.html">
-                        Examples
+                      <a class="nav-link nav-internal" href="examples.html">
+                        Tutorial
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="cupy.html">
+                        Cupy
                       </a>
                     </li>
                 
@@ -394,16 +391,27 @@ document.write(`
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">User Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Installing and getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html#dependencies">Dependencies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#supported-python-versions">Supported Python versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="contributor.html">Contributor Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html#quickstart">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html#getting-help">Getting help</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">NNSOM</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="NNSOM.html">NNSOM package</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="iris_training.html">Training SOM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iris_training.html#Extract-SOM-Cluster-Details">Extract SOM Cluster Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iris_training.html#Error-Analysis">Error Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iris_training.html#Visualize-the-SOM">Visualize the SOM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iris_plot.html">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cupy.html">Cupy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 </ul>
 </div>
@@ -432,7 +440,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">User Guide</p>
+        <p class="prev-next-title">Installing and getting started</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
