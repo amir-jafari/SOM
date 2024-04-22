@@ -46,6 +46,17 @@ nbsphinx_allow_errors = True
 #
 # }
 
+nbsphinx_prolog = r"""
+.. raw:: html
+
+    <a href="https://colab.research.google.com/github/amir-jafari/SOM/blob/main/examples/Tabular/Iris/notebook/{{ env.doc2path(env.docname, base=None).replace('src/docs/', 'examples/Tabular/Iris/notebook/').replace('.nblink', '.ipynb') }}" target="_blank" rel="noopener noreferrer">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" style="vertical-align:text-bottom"/>
+    </a>
+"""
+
+# Ensure you replace 'docs/' with the correct subpath if your .rst files are in a different subdirectory within 'src/docs'
+
+
 # inside conf.py
 html_context = {
     "github_user": "amir-jafari",
