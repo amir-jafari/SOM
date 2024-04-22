@@ -3,13 +3,13 @@
 .. currentmodule:: NNSOM
 
 Installing and getting started
-------------------------------
+==============================
 
 Official releases of NNSOM can be installed from `PyPI <https://pypi.org/project/NNSOM/>`_::
 
     pip install NNSOM
 Dependencies
-~~~~~~~~~~~~
+============
 
 Supported Python versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -17,14 +17,14 @@ Supported Python versions
 - Python 3.8+
 
 Quickstart
-~~~~~~~~~~
+==========
 
 Once you have NNSOM installed, you're ready to get started.
-To test it out, you could load and plot one of the example datasets::
+To test it out, you could load and plot one of the example datasets.
 
 
 Getting help
-~~~~~~~~~~~~
+============
 
 If you think you've encountered a bug in NNSOM, please report it on the
 `GitHub issue tracker <https://github.com/amir-jafari/SOM/issues>`_.
