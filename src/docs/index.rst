@@ -16,11 +16,9 @@ The package **NNSOM** likely stands for "Neural Network Self-Organizing Map." Se
    usage
    contributor
    modules
-   Iris_training.ipynb
-   iris_plot.ipynb
-   Iris_post_training_analysis.ipynb
-
-   authors
+   Tutorial<examples>
+   Cupy<cupy>
+   Authors<authors>
 
 
 
