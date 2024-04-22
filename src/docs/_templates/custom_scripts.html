@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ docstitle|e }}</title>
+    {% block extrahead %}{% endblock %}
+</head>
+<body>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  var notebooks = document.querySelectorAll('.notebookSpecificClass'); // Class that identifies notebook cells or divs
+  notebooks.forEach(function(nb) {
+    var colabLink = 'https://colab.research.google.com/github/amir-jafari/SOM/blob/main/examples/Tabular/Iris/notebook/';
+    var btnHTML = '<a href="' + colabLink + '" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>';
+    nb.insertAdjacentHTML('beforebegin', btnHTML);
+  });
+});
+</script>
+    <hr>
+    {% endblock %}
+{% endblock %}
+</body>
+</html>
+
+
+
+
+<!-- custom_scripts.html -->
