@@ -12,6 +12,14 @@ NNSOM.som module
    :undoc-members:
    :show-inheritance:
 
+NNSOM.som_gpu module
+------------------
+
+.. automodule:: NNSOM.som_gpu
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 NNSOM.plots module
 ------------------
 
