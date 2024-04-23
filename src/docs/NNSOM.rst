@@ -13,7 +13,7 @@ NNSOM.som module
    :show-inheritance:
 
 NNSOM.som_gpu module
-------------------
+--------------------
 
 .. automodule:: NNSOM.som_gpu
    :members:
