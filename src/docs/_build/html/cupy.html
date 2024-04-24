@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>CuPy &#8212; NNSOM 0.0.2 documentation</title>
+    <title>CuPy Functionality &#8212; NNSOM 1.7.9 documentation</title>
   
   
   
@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="_static/documentation_options.js?v=d58853b1"></script>
+    <script src="_static/documentation_options.js?v=48b5722a"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">NNSOM 0.0.2 documentation</p>
+    <p class="title logo__title">NNSOM 1.7.9 documentation</p>
   
 </a></div>
     
@@ -402,7 +402,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">CuPy</li>
+    <li class="breadcrumb-item active" aria-current="page">CuPy Functionality</li>
   </ul>
 </nav>
 </div>
@@ -419,8 +419,73 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="cupy">
-<h1>CuPy<a class="headerlink" href="#cupy" title="Link to this heading">#</a></h1>
+  <section id="cupy-functionality">
+<h1>CuPy Functionality<a class="headerlink" href="#cupy-functionality" title="Link to this heading">#</a></h1>
+<p>NNSOM leverages CuPy, a library for GPU-accelerated computing with a NumPy-compatible interface, to enhance the performance of SOM computations. By utilizing the parallel processing power of GPUs, NNSOM can process large datasets significantly faster than using CPU-based implementations. This document outlines how to use NNSOM with CuPy and the benefits it offers.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
+<p>Before using CuPy with NNSOM, ensure you have the following:</p>
+<ul class="simple">
+<li><p>A compatible GPU (NVIDIA CUDA-capable GPU)</p></li>
+<li><p>CUDA Toolkit (check compatibility with your CuPy version)</p></li>
+<li><p>CuPy library installed in your Python environment</p></li>
+</ul>
+<p>To install CuPy, you can use pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>cupy
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<p>To utilize CuPy with NNSOM, import the CuPy-enabled version of the SOM:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">NNSOM.som_gpu</span> <span class="kn">import</span> <span class="n">SOMGpu</span>
+</pre></div>
+</div>
+<p>Here is an example of initializing and training a SOM on GPU:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># Dimensions of the SOM grid</span>
+<span class="n">som</span> <span class="o">=</span> <span class="n">SOMGpu</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>  <span class="c1"># Initialize SOM</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># Generate some random data</span>
+<span class="n">som</span><span class="o">.</span><span class="n">init_w</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Initialize weights</span>
+<span class="n">som</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Train SOM</span>
+</pre></div>
+</div>
+</section>
+<section id="benefits">
+<h2>Benefits<a class="headerlink" href="#benefits" title="Link to this heading">#</a></h2>
+<p>Using CuPy with NNSOM provides the following benefits:</p>
+<ul class="simple">
+<li><p><strong>Faster computation</strong>: Leveraging GPU for the training and simulation processes of SOMs speeds up computations, especially beneficial for large datasets.</p></li>
+<li><p><strong>Efficient memory usage</strong>: CuPy efficiently manages memory on GPUs, which can be more restrictive than CPU memory.</p></li>
+<li><p><strong>Seamless integration</strong>: Works with existing NumPy arrays and functions, minimizing the need to modify your existing codebase.</p></li>
+</ul>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h2>
+<p>While CuPy accelerates computations, there are a few limitations to consider:</p>
+<ul class="simple">
+<li><p><strong>Hardware dependency</strong>: Requires an NVIDIA GPU; not compatible with other GPU brands.</p></li>
+<li><p><strong>Software compatibility</strong>: Ensure compatibility with CUDA versions and the operating system.</p></li>
+<li><p><strong>Debugging and profiling</strong>: GPU debugging can be more complex compared to CPU.</p></li>
+</ul>
+</section>
+<section id="automatic-cupy-detection">
+<h2>Automatic CuPy Detection<a class="headerlink" href="#automatic-cupy-detection" title="Link to this heading">#</a></h2>
+<p>The <cite>SOMPlots</cite> class in NNSOM is designed to automatically detect if CuPy is available in the user’s environment. If CuPy is detected, <cite>SOMPlots</cite> will utilize GPU acceleration for all applicable operations, optimizing performance without requiring manual configuration from the user.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">NNSOM.som_plots</span> <span class="kn">import</span> <span class="n">SOMPlots</span>
+
+<span class="c1"># SOMPlots instantiation automatically checks for CuPy</span>
+<span class="n">som_plots</span> <span class="o">=</span> <span class="n">SOMPlots</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1"># Example data</span>
+<span class="n">som_plots</span><span class="o">.</span><span class="n">init_w</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Initialize weights with potential GPU acceleration</span>
+<span class="n">som_plots</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Train SOM with potential GPU acceleration</span>
+</pre></div>
+</div>
+<p>If CuPy is not available, <cite>SOMPlots</cite> will automatically fall back to a CPU-based implementation, ensuring that SOM computations can still be performed, albeit at a slower speed compared to GPU acceleration. This feature provides a seamless user experience by adapting to the available system resources.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>Integrating CuPy with NNSOM allows users to exploit the computational power of GPUs, making it a suitable choice for large-scale and real-time data processing scenarios in machine learning and</p>
+</section>
 </section>
 
 
@@ -460,6 +525,23 @@ document.write(`
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits">Benefits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cupy-detection">Automatic CuPy Detection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 
