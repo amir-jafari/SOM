@@ -1317,7 +1317,7 @@ class SOMPlots(base_class):
 
         plt.show()
 
-    def weight_as_image(self,rows= None, mouse_click=False, connect_pick_event=True, **kwargs):
+    def weight_as_image(self, rows= None, mouse_click=False, connect_pick_event=True, **kwargs):
         w = self.w  # Weight matrix
         pos = self.pos  # Positions of the neurons
         numNeurons = self.numNeurons  # Number of neurons
@@ -1376,7 +1376,7 @@ class SOMPlots(base_class):
 
         # Connect the pick event for interactivity if required
         if mouse_click and connect_pick_event:
-            fig.canvas.mpl_connect('pick_event', lambda event: self.onpick(event, patches,hexagon_to_neuron, **kwargs))
+            fig.canvas.mpl_connect('pick_event', lambda event: self.onpick(event, patches, hexagon_to_neuron, **kwargs))
 
         # Adjust the layout to fit everything
         plt.tight_layout()
