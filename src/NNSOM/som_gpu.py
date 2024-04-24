@@ -2,9 +2,9 @@ try:
     import cupy as cp
     print("You are using GPU acceleration with Cupy")
 except ImportError:
+    cp = None
     print("CuPy is not available. For CPU-based operations, you can use the NumPy version of this SOM.")
     print("Please consider installing the 'NNSOM' package, and use 'from NNSOM.som import SOM' for a NumPy-based SOM implementation.")
-    raise SystemExit
 
 from .utils import calculate_positions, distances
 
@@ -71,6 +71,8 @@ class SOMGpu:
                     The dimensions (shape) of the SOM grid.
         """
 
+        if cp is None:
+            raise ImportError("CuPy is not installed. This class requires CuPy for GPU acceleration.")
         self.dimensions = dimensions  # Processing as numpy
         self.numNeurons = np.prod(dimensions) # Processing as numpy
         # Calculate positions of neurons
