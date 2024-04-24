@@ -10,7 +10,7 @@ packages = ["src/NNSOM"]
 
 [project]
 name = "NNSOM"
-version = "1.7.7"
+version = "1.7.8"
 description = "A SOM package"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -26,22 +26,20 @@ maintainers = [
   { name = "Dr. Amir Jafari", email = "amir.h.jafari@okstate.edu" },
 ]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",  # Update this if the project is more stable
+    "Intended Audience :: Science/Research",  # More specific audience
+    "Intended Audience :: Education",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Scientific/Engineering :: Information Analysis",
-    "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Visualization",
     "Topic :: Software Development :: Libraries",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: Python Modules"
 ]
+
 keywords = ["SOM", "Neural Network", "Machine Learning", "Unsupervised Learning", "Clustering"]
 
 [project.urls]

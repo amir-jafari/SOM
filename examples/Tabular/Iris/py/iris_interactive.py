@@ -76,6 +76,10 @@ plt.show()
 fig, ax, patches = som.neuron_dist_plot(True, **int_dict)
 plt.show()
 
+# Interactive weight_as_image
+fig, ax, pathces = som.weight_as_image(mouse_click=True, **int_dict)
+plt.show()
+
 # Interactive pie plot
 fig, ax, h_axes = som.plt_pie(iris_class_counts_cluster_array, perc_sentosa, mouse_click=True, **int_dict)
 plt.show()
