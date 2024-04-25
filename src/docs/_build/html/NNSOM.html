@@ -755,8 +755,403 @@ Default is None, in which case the input data is returned as-is.</p></li>
 </dd></dl>
 
 </section>
-<section id="nnsom-som-gpu-module">
-<h2>NNSOM.som_gpu module<a class="headerlink" href="#nnsom-som-gpu-module" title="Link to this heading">#</a></h2>
+<section id="module-NNSOM.som_gpu">
+<span id="nnsom-som-gpu-module"></span><h2>NNSOM.som_gpu module<a class="headerlink" href="#module-NNSOM.som_gpu" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">NNSOM.som_gpu.</span></span><span class="sig-name descname"><span class="pre">SOMGpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a Self-Organizing Map (SOM) using GPU acceleration with CuPy.</p>
+<p>A Self-Organizing Map (SOM) is an artificial neural network used for unsupervised learning,
+which projects high-dimensional data into a lower-dimensional (typically two-dimensional) space.
+It is trained using a competitive learning approach to produce a discretized representation
+of the input space of training samples.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.dimensions">
+<span class="sig-name descname"><span class="pre">dimensions</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.dimensions" title="Link to this definition">#</a></dt>
+<dd><p>Dimensions of the SOM grid, defining the layout and number of neurons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple, list, np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.numNeurons">
+<span class="sig-name descname"><span class="pre">numNeurons</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.numNeurons" title="Link to this definition">#</a></dt>
+<dd><p>Total number of neurons, computed as the product of the grid dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.pos">
+<span class="sig-name descname"><span class="pre">pos</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.pos" title="Link to this definition">#</a></dt>
+<dd><p>Positions of neurons within the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.neuron_dist">
+<span class="sig-name descname"><span class="pre">neuron_dist</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.neuron_dist" title="Link to this definition">#</a></dt>
+<dd><p>Precomputed Euclidean distances between neurons in the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.w">
+<span class="sig-name descname"><span class="pre">w</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.w" title="Link to this definition">#</a></dt>
+<dd><p>Weight matrix representing the feature vectors of the neurons.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.sim_flag">
+<span class="sig-name descname"><span class="pre">sim_flag</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.sim_flag" title="Link to this definition">#</a></dt>
+<dd><p>Indicates if the SOM has been simulated/trained.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.output">
+<span class="sig-name descname"><span class="pre">output</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.output" title="Link to this definition">#</a></dt>
+<dd><p>Output from the latest simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.norm_func">
+<span class="sig-name descname"><span class="pre">norm_func</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.norm_func" title="Link to this definition">#</a></dt>
+<dd><p>Function used to normalize input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.sub_som">
+<span class="sig-name descname"><span class="pre">sub_som</span></span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.sub_som" title="Link to this definition">#</a></dt>
+<dd><p>Optional sub-clustering using additional SOMs at neuron positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the SOM with the specified dimensions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.init_w">
+<span class="sig-name descname"><span class="pre">init_w</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.init_w" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the weights using PCA on input data <cite>x</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.sim_som">
+<span class="sig-name descname"><span class="pre">sim_som</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.sim_som" title="Link to this definition">#</a></dt>
+<dd><p>Simulates SOM processing for input <cite>x</cite>, identifying activated neurons.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_neighborhood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.train" title="Link to this definition">#</a></dt>
+<dd><p>Trains the SOM using batch SOM algorithm on input data <cite>x</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.quantization_error">
+<span class="sig-name descname"><span class="pre">quantization_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.quantization_error" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the quantization error of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.topological_error">
+<span class="sig-name descname"><span class="pre">topological_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.topological_error" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the topological error of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.distortion_error">
+<span class="sig-name descname"><span class="pre">distortion_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.distortion_error" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the distortion error of the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.save_pickle">
+<span class="sig-name descname"><span class="pre">save_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pkl'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.save_pickle" title="Link to this definition">#</a></dt>
+<dd><p>Saves the SOM object to a file in pickle format.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.load_pickle">
+<span class="sig-name descname"><span class="pre">load_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pkl'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.load_pickle" title="Link to this definition">#</a></dt>
+<dd><p>Loads the SOM object from a file in pickle format.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu._normalize_position">
+<span class="sig-name descname"><span class="pre">_normalize_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu._normalize_position" title="Link to this definition">#</a></dt>
+<dd><p>Helper method to normalize neuron positions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu._spread_positions">
+<span class="sig-name descname"><span class="pre">_spread_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positionMean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positionBasis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu._spread_positions" title="Link to this definition">#</a></dt>
+<dd><p>Helper method to adjust neuron positions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu._euclidean_distance">
+<span class="sig-name descname"><span class="pre">_euclidean_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XB</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu._euclidean_distance" title="Link to this definition">#</a></dt>
+<dd><p>Computes Euclidean distances between two sets of vectors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu._to_categorical">
+<span class="sig-name descname"><span class="pre">_to_categorical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu._to_categorical" title="Link to this definition">#</a></dt>
+<dd><p>Converts class vector to binary class matrix.</p>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ImportError</strong> – If CuPy is not available, suggests using the NNSOM package for a NumPy-based implementation.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">som</span> <span class="o">=</span> <span class="n">SOMGpu</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">som</span><span class="o">.</span><span class="n">init_w</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm_func</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">som</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm_func</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">sim_som</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.cluster_data">
+<span class="sig-name descname"><span class="pre">cluster_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.cluster_data" title="Link to this definition">#</a></dt>
+<dd><p>Cluster the input data based on the trained SOM reference vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em><em> (</em><em>normalized</em><em>)</em>) – The input data to be clustered.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>clusters</strong> (<em>list of lists</em>) – A list containing sub-lists, where each sublist represents a cluster.
+The indices of the input data points belonging to the same cluster
+are stored in the corresponding sublist, sorted by their proximity
+to the cluster center.</p></li>
+<li><p><strong>cluster_distances</strong> (<em>list of lists</em>) – A list containing sub-lists, where each sublist represents the distances
+of the input data points to the corresponding cluster center, sorted in
+the same order as the indices in the <cite>clusters</cite> list.</p></li>
+<li><p><strong>max_cluster_distances</strong> (<em>ndarray</em>) – A list containing the maximum distance between each cluster center
+and the data points belonging to that cluster.</p></li>
+<li><p><strong>cluster_sizes</strong> (<em>ndarray</em>) – A list containing the number of data points in each cluster.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the SOM has not been trained.</p></li>
+<li><p><strong>ValueError</strong> – If the number of features in the input data and the SOM weights do not match.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">distortion_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dd><p>Calculate distortion</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">init_w</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dd><p>Initializes the weights of the SOM using principal components analysis (PCA) on the input data x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>np.ndarray</em>) – The input data used for weight initialization.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">load_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pkl'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dd><p>Load the SOM object from a file using pickle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the file to load the SOM object from.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – The path to the file to load the SOM object from.</p></li>
+<li><p><strong>data_format</strong> (<em>str</em>) – The format to load the SOM object from. Must be one of: pkl</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.som_gpu.SOMGpu.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.som_gpu.SOMGpu.normalize" title="Link to this definition">#</a></dt>
+<dd><p>Normalize the input data using a custom function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – The input data to be normalized.</p></li>
+<li><p><strong>norm_func</strong> (<em>callable</em><em>, </em><em>optional</em>) – A custom normalization or standardization function to be applied to the input data.
+If provided, it should take the input data as its argument and return the preprocessed data.
+Default is None, in which case the input data is returned as-is.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x_preprocessed</strong> – The preprocessed input data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Warning</strong> – If <cite>norm_func</cite> is None, a warning is raised to indicate the potential inefficiency in SOM training.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Case 1: Tabular data (without normalization)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">som</span> <span class="o">=</span> <span class="n">SOM</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_norm</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">X_norm</span><span class="p">),</span> <span class="n">X</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Case 2: Image data (using custom normalization)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">som</span> <span class="o">=</span> <span class="n">SOM</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom_norm_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">255</span>  <span class="c1"># Custom normalization function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_data_norm</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">image_data</span><span class="p">,</span> <span class="n">norm_func</span><span class="o">=</span><span class="n">custom_norm_func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">image_data_norm</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">image_data_norm</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="go">0.0 1.0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Case 3: Text data (without normalization)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;This is a sample text.&quot;</span><span class="p">,</span> <span class="s2">&quot;Another example sentence.&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">text_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">som</span> <span class="o">=</span> <span class="n">SOM</span><span class="p">(</span><span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_data_norm</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">tfidf_matrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">text_data_norm</span><span class="p">),</span> <span class="n">tfidf_matrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">()))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">quantization_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dd><p>Calculate quantization error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">save_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pkl'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dd><p>Save the SOM object to a file using pickle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the file to save the SOM object to.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – The path to the file to save the SOM object to.</p></li>
+<li><p><strong>data_format</strong> (<em>str</em>) – The format to save the SOM object in. Must be one of: pkl</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">sim_som</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dd><p>Simulates the SOM with x as the input, determining which neurons are activated by the input vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>np.ndarray</em>) – The input data to simulate the SOM with.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The simulated output of the SOM.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">topological_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dd><p>Calculate topological error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_neighborhood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dd><p>Trains the SOM using the batch SOM algorithm on the input data x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – The input data to train the SOM with.</p></li>
+<li><p><strong>init_neighborhood</strong> (<em>int</em><em>, </em><em>optional</em>) – The initial neighborhood size.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of epochs to train for.</p></li>
+<li><p><strong>steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of steps for training.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-NNSOM.plots">
 <span id="nnsom-plots-module"></span><h2>NNSOM.plots module<a class="headerlink" href="#module-NNSOM.plots" title="Link to this heading">#</a></h2>
@@ -764,183 +1159,137 @@ Default is None, in which case the input data is returned as-is.</p></li>
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">NNSOM.plots.</span></span><span class="sig-name descname"><span class="pre">SOMPlots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#NNSOM.som.SOM" title="NNSOM.som.SOM"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOM</span></code></a></p>
-<p>SOMPlots extends the SOM class by adding visualization capabilities to
-the Self-Organizing Map (SOM). It allows for the graphical representation
-of the SOM’s structure, the distribution of input data across its neurons,
-and various other analytical visualizations that aid in the interpretation
-of the SOM’s behavior and characteristics.</p>
+<p>A subclass of either SOM or SOMGpu (based on the availability of CuPy), designed to provide visualization
+and interactive plotting capabilities for Self-Organizing Maps (SOMs). This class is intended to enrich the analysis
+of SOMs by offering a variety of advanced visualization techniques to explore the trained SOM topology,
+distribution of data points, and various statistics derived from the SOM’s learning process.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.dimensions">
 <span class="sig-name descname"><span class="pre">dimensions</span></span><a class="headerlink" href="#NNSOM.plots.SOMPlots.dimensions" title="Link to this definition">#</a></dt>
-<dd><p>The dimensions of the SOM grid.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-</dl>
+<dd><p>A Gird of the SOM topology.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_top">
-<span class="sig-name descname"><span class="pre">plt_top</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_top" title="Link to this definition">#</a></dt>
-<dd><p>Plots the topology of the SOM using hexagonal units.</p>
-</dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">The</span> <span class="pre">class</span> <span class="pre">includes</span> <span class="pre">methods</span> <span class="pre">for</span> <span class="pre">plotting</span> <span class="pre">the</span> <span class="pre">topology</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">SOM,</span> <span class="pre">generating</span> <span class="pre">hit</span> <span class="pre">histograms,</span></span></dt>
+<dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_top_num">
-<span class="sig-name descname"><span class="pre">plt_top_num</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_top_num" title="Link to this definition">#</a></dt>
-<dd><p>Plots the topology of the SOM with numbered neurons.</p>
-</dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">displaying</span> <span class="pre">cluster</span> <span class="pre">information,</span> <span class="pre">and</span> <span class="pre">more.</span> <span class="pre">These</span> <span class="pre">methods</span> <span class="pre">support</span> <span class="pre">interactive</span> <span class="pre">features</span> <span class="pre">through</span></span></dt>
+<dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.hit_hist">
-<span class="sig-name descname"><span class="pre">hit_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textFlag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.hit_hist" title="Link to this definition">#</a></dt>
-<dd><p>Plots a hit histogram showing how many data points are mapped to each neuron.</p>
-</dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">mouse</span> <span class="pre">clicks,</span> <span class="pre">allowing</span> <span class="pre">users</span> <span class="pre">to</span> <span class="pre">engage</span> <span class="pre">with</span> <span class="pre">the</span> <span class="pre">visualizations</span> <span class="pre">dynamically.</span> <span class="pre">Each</span> <span class="pre">method</span></span></dt>
+<dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.gray_hist">
-<span class="sig-name descname"><span class="pre">gray_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.gray_hist" title="Link to this definition">#</a></dt>
-<dd><p>Plots a histogram with neurons colored in shades of gray based on a given percentage value.</p>
-</dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">can</span> <span class="pre">also</span> <span class="pre">handle</span> <span class="pre">additional</span> <span class="pre">parameters</span> <span class="pre">for</span> <span class="pre">customization</span> <span class="pre">and</span> <span class="pre">handles</span> <span class="pre">various</span> <span class="pre">plotting</span> <span class="pre">styles</span></span></dt>
+<dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.color_hist">
-<span class="sig-name descname"><span class="pre">color_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.color_hist" title="Link to this definition">#</a></dt>
-<dd><p>Plots a color-coded histogram based on the average values provided for each neuron.</p>
-</dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">like</span> <span class="pre">hexagonal</span> <span class="pre">units,</span> <span class="pre">numbered</span> <span class="pre">neurons,</span> <span class="pre">color</span> <span class="pre">gradients,</span> <span class="pre">and</span> <span class="pre">complex</span> <span class="pre">cluster</span> <span class="pre">histograms.</span></span></dt>
+<dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.cmplx_hit_hist">
-<span class="sig-name descname"><span class="pre">cmplx_hit_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_gb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind_missClass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind21</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.cmplx_hit_hist" title="Link to this definition">#</a></dt>
-<dd><p>Plots a complex hit histogram showing the distribution of data and misclassifications.</p>
-</dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">The</span> <span class="pre">class</span> <span class="pre">also</span> <span class="pre">provides</span> <span class="pre">a</span> <span class="pre">generic</span> <span class="pre">plot</span> <span class="pre">method</span> <span class="pre">to</span> <span class="pre">handle</span> <span class="pre">different</span> <span class="pre">types</span> <span class="pre">of</span> <span class="pre">SOM</span> <span class="pre">visualizations</span></span></dt>
+<dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_nc">
-<span class="sig-name descname"><span class="pre">plt_nc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_nc" title="Link to this definition">#</a></dt>
-<dd><p>Plots the neighborhood connections between the SOM neurons.</p>
-</dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">and</span> <span class="pre">an</span> <span class="pre">event</span> <span class="pre">handling</span> <span class="pre">method</span> <span class="pre">to</span> <span class="pre">manage</span> <span class="pre">user</span> <span class="pre">interactions</span> <span class="pre">during</span> <span class="pre">the</span> <span class="pre">plotting</span> <span class="pre">sessions.</span></span></dt>
+<dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.neuron_dist_plot">
-<span class="sig-name descname"><span class="pre">neuron_dist_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.neuron_dist_plot" title="Link to this definition">#</a></dt>
-<dd><p>Plots the distances between neurons to visualize the SOM’s topology.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.simple_grid">
-<span class="sig-name descname"><span class="pre">simple_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">avg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sizes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.simple_grid" title="Link to this definition">#</a></dt>
-<dd><p>Plots a simple hexagonal grid with varying colors and sizes based on provided data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.setup_axes">
-<span class="sig-name descname"><span class="pre">setup_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.setup_axes" title="Link to this definition">#</a></dt>
-<dd><p>Sets up the axes for plotting individual neuron statistics.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_dist">
-<span class="sig-name descname"><span class="pre">plt_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_dist" title="Link to this definition">#</a></dt>
-<dd><p>Plots distributions of values across the SOM neurons.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_wgts">
-<span class="sig-name descname"><span class="pre">plt_wgts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_wgts" title="Link to this definition">#</a></dt>
-<dd><p>Plots the weights of the SOM neurons as line graphs.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_pie">
-<span class="sig-name descname"><span class="pre">plt_pie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">argv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_pie" title="Link to this definition">#</a></dt>
-<dd><p>Plots pie charts for each neuron to show data distribution in categories.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_histogram">
-<span class="sig-name descname"><span class="pre">plt_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">som</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_histogram" title="Link to this definition">#</a></dt>
-<dd><p>Plots histograms for each neuron to show the distribution of data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_boxplot">
-<span class="sig-name descname"><span class="pre">plt_boxplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_boxplot" title="Link to this definition">#</a></dt>
-<dd><p>Plots boxplots for each neuron to show the distribution of data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_dispersion_fan_plot">
-<span class="sig-name descname"><span class="pre">plt_dispersion_fan_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_dispersion_fan_plot" title="Link to this definition">#</a></dt>
-<dd><p>Plots dispersion or fan plots for each neuron.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_violin_plot">
-<span class="sig-name descname"><span class="pre">plt_violin_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">som</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_violin_plot" title="Link to this definition">#</a></dt>
-<dd><p>Plots violin plots for each neuron to show the distribution of data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_scatter">
-<span class="sig-name descname"><span class="pre">plt_scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_scatter" title="Link to this definition">#</a></dt>
-<dd><p>Plots scatter graphs for each neuron to show the distribution of two variables.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.multiplot">
-<span class="sig-name descname"><span class="pre">multiplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.multiplot" title="Link to this definition">#</a></dt>
-<dd><p>Facilitates plotting of multiple types of graphs based on the plot_type argument.</p>
-</dd></dl>
-
+<p>This class supports interactivity and offers multiple visualization methods to deeply understand
+and analyze the behaviors and results of SOMs. It’s especially useful for gaining insights into
+the topology, data distribution, and classification performance of SOMs.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.button_click_event">
 <span class="sig-name descname"><span class="pre">button_click_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">button_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuron_ind</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.button_click_event" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">cmplx_hit_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind_missClass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind21</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
-<dd><p>Generates a complex hit histogram.
-It indicates what the majority class in each cluster is, and how many specific class occur in each cluster.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.cmplx_hit_hist">
+<span class="sig-name descname"><span class="pre">cmplx_hit_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind_missClass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind21</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.cmplx_hit_hist" title="Link to this definition">#</a></dt>
+<dd><p>Generates a complex hit histogram for the SOM, incorporating information about cluster quality, misclassifications, and false positives/negatives.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – array-like
-The input data to be clustered</p></li>
-<li><p><strong>clust</strong> – list
-List of indices of inputs that belong in each cluster</p></li>
-<li><p><strong>perc</strong> – array-like
-Percent of the specific class in each cluster</p></li>
-<li><p><strong>ind_missClass</strong> – array-like
-Indices of consistently misclassified inputs</p></li>
-<li><p><strong>ind21</strong> – array-like
-Indices of false positive cases</p></li>
-<li><p><strong>ind12</strong> – array-like
-Indices of false negative cases</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – The input data to be visualized in the histogram.</p></li>
+<li><p><strong>clust</strong> (<em>list</em><em> or </em><em>array-like</em>) – A list or array containing the cluster assignments for each data point.</p></li>
+<li><p><strong>perc</strong> (<em>array-like</em>) – An array containing the percentage values for each cluster, representing the proportion of good binders.</p></li>
+<li><p><strong>ind_missClass</strong> (<em>array-like</em>) – An array containing the indices of misclassified data points.</p></li>
+<li><p><strong>ind21</strong> (<em>array-like</em>) – An array containing the indices of false positive data points (classified as good binders but are actually bad binders).</p></li>
+<li><p><strong>ind12</strong> (<em>array-like</em>) – An array containing the indices of false negative data points (classified as bad binders but are actually good binders).</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the inner hexagons colored and styled based on cluster quality and misclassifications.</p></li>
+<li><p><strong>text</strong> (<em>list</em>) – A list of matplotlib.text.Text objects displaying the hit counts within each hexagon.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">color_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.color_hist">
+<span class="sig-name descname"><span class="pre">color_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.color_hist" title="Link to this definition">#</a></dt>
+<dd><p>Generates a colored histogram for the SOM, where the color of each hexagon represents the corresponding value from the provided average array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – The input data to be visualized in the histogram.</p></li>
+<li><p><strong>avg</strong> (<em>array-like</em>) – An array containing the average values to be represented by the color map, where higher values correspond to warmer colors (e.g., red) and lower values correspond to cooler colors (e.g., blue).</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the inner hexagons colored based on the average values.</p></li>
+<li><p><strong>text</strong> (<em>list, optional</em>) – A list of matplotlib.text.Text objects displaying the hit counts, included if textFlag is True in the underlying <cite>hit_hist</cite> method.</p></li>
+<li><p><strong>cbar</strong> (<em>matplotlib.colorbar.Colorbar</em>) – The Colorbar object attached to the plot, representing the color mapping.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.component_planes">
 <span class="sig-name descname"><span class="pre">component_planes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.component_planes" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Visualizes the weight distribution across different features in a Self-Organizing Map (SOM) using a series of 2D plots.</p>
+<p>This method creates a grid of subplots where each subplot represents the weight distribution for a specific feature of the input data. The weight of each neuron for the given feature is represented in the plot by the color of a hexagonal cell, with darker colors indicating higher weights. This visualization helps in understanding the importance and distribution of each feature across the map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>array-like</em>) – A 2D array of input data where each row represents a feature and each column represents a sample.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.component_positions">
 <span class="sig-name descname"><span class="pre">component_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.component_positions" title="Link to this definition">#</a></dt>
-<dd><p>Plots the SOM weight vectors, the Iris dataset input vectors, and connects neighboring neurons.</p>
-<p>Parameters:
-- som: A trained SOM instance with attributes ‘w’ for weight vectors and ‘dimensions’ for grid dimensions.
-- X_scaled: The normalized Iris dataset input vectors.</p>
+<dd><p>Visualizes the positions of the components in a Self-Organizing Map (SOM) along with the input vectors.</p>
+<p>This method plots the trained SOM weight vectors as gray dots and the input vectors as green dots on a 2D plot.
+It also connects neighboring SOM neurons with red lines to represent the grid structure, illustrating the organization and clustering within the map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>array-like</em>) – A 2D array or sequence of vectors, typically representing input data or test data that has been projected onto the SOM.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -951,30 +1300,29 @@ Indices of false negative cases</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.custom_cmplx_hit_hist">
 <span class="sig-name descname"><span class="pre">custom_cmplx_hit_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.custom_cmplx_hit_hist" title="Link to this definition">#</a></dt>
-<dd><p>Generate cmplex hit hist
-Users can specify the face color, edge width and edge color for each neuron.</p>
-<dl class="simple">
-<dt>x: array-like or sequence of vectors</dt><dd><p>The input data to be clustered</p>
-</dd>
-<dt>face_labels: array-like</dt><dd><p>class labels to determine the face color of the hexagons</p>
-</dd>
-<dt>edge_labels: array-like</dt><dd><p>class labels to determine the edge color of the hexagons</p>
-</dd>
-<dt>edge_width: array-like</dt><dd><p>A list of edge_width standerdised between (1 - 20).
-You can call get_edge_width to get the standardised edge width in the utils function.
-len(edge_width) must be equal to the number of neurons</p>
-</dd>
-<dt>mouse_click: bool</dt><dd><p>If true, the interactive plot and sub-clustering functionalities to be activated</p>
-</dd>
-<dt>kwargs: dict</dt><dd><p>Additional arguments to be passed to the onpick function
-Possible keys include:
-‘data’, ‘clust’, ‘target’, ‘num1’, ‘num2’,
-‘cat’, and ‘topn’</p>
-</dd>
-</dl>
+<dd><p>Generates a custom complex hit histogram for the SOM, allowing for flexible customization of the hexagon face colors, edge colors, and edge widths.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>fig, ax, patches, text</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – The input data to be visualized in the histogram.</p></li>
+<li><p><strong>face_labels</strong> (<em>array-like</em>) – An array containing the labels or values to be represented by the face colors of the hexagons.</p></li>
+<li><p><strong>edge_labels</strong> (<em>array-like</em>) – An array containing the labels or values to be represented by the edge colors of the hexagons.</p></li>
+<li><p><strong>edge_width</strong> (<em>array-like</em>) – An array containing the values for the edge widths of the hexagons.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the inner hexagons colored and styled based on the provided face labels, edge labels, and edge widths.</p></li>
+<li><p><strong>text</strong> (<em>list</em>) – A list of matplotlib.text.Text objects displaying the hit counts within each hexagon.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the input data or label arrays have incorrect dimensions or lengths.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -985,58 +1333,79 @@ Possible keys include:
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">gray_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">hit_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textFlag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
-<dd><p>Generate Hit Histogram</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.gray_hist">
+<span class="sig-name descname"><span class="pre">gray_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.gray_hist" title="Link to this definition">#</a></dt>
+<dd><p>Generates a grayscale histogram for the SOM, where the shade of each hexagon represents the corresponding value from the provided percentage array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array-like</em>) – The input data to be clustered</p></li>
-<li><p><strong>textFlag</strong> (<em>bool</em>) – If true, the number of members of each cluster is printed on the cluster.</p></li>
-<li><p><strong>mouse_click</strong> (<em>bool</em>) – If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em>) – Additional arguments to be passed to the on_pick function
-Possible keys includes:
-‘data’, ‘labels’, ‘clust’, ‘target’, ‘num1’, ‘num2’,
-‘cat’, and ‘topn’</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – The input data to be visualized in the histogram.</p></li>
+<li><p><strong>perc</strong> (<em>array-like</em>) – An array containing the percentage values to be represented by the grayscale shades, where higher values correspond to darker shades.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, patches, text</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the inner hexagons colored based on the grayscale values.</p></li>
+<li><p><strong>text</strong> (<em>list, optional</em>) – A list of matplotlib.text.Text objects displaying the hit counts, included if textFlag is True in the underlying <cite>hit_hist</cite> method.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">neuron_dist_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
-<dd><p>Generates distance map.
-The gray hexagons represent cluster centers.
-The colors of the elongated hexagons between the cluster centers represent the distance between the centers.
-The darker the color the larget the distance.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.hit_hist">
+<span class="sig-name descname"><span class="pre">hit_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textFlag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.hit_hist" title="Link to this definition">#</a></dt>
+<dd><p>Generates a hit histogram for the SOM, which displays the frequency of data points assigned to each neuron.
+Each neuron is represented as a hexagon, and the size of each hexagon is proportional to the number of hits.
+Optionally, the actual number of hits can be displayed within each hexagon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – The input data to be visualized in the histogram.</p></li>
+<li><p><strong>textFlag</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, displays the count of hits within each hexagon, by default True.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as
+querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler <cite>onpick</cite> when an interactive
+element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, pathces, text</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the inner hexagons colored based on hit counts.</p></li>
+<li><p><strong>text</strong> (<em>list, optional</em>) – A list of matplotlib.text.Text objects displaying the hit counts, included if textFlag is True.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.neuron_dist_plot">
+<span class="sig-name descname"><span class="pre">neuron_dist_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.neuron_dist_plot" title="Link to this definition">#</a></dt>
+<dd><p>Generates a neuron distance plot that visualizes the distances between neighboring neurons in the SOM grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the edges between connected neurons, colored based on the distance between their respective neuron weights.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1044,23 +1413,16 @@ Possible keys include:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.onpick">
 <span class="sig-name descname"><span class="pre">onpick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hexagons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hexagon_to_neuron</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.onpick" title="Link to this definition">#</a></dt>
-<dd><p>Interactive Plot Function
-:param event: event</p>
-<blockquote>
-<div><p>a mouse click event</p>
-</div></blockquote>
+<dd><p>Interactive Plot Function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>hexagons</strong> – list
-a list of hexagons</p></li>
-<li><p><strong>hexagon_to_neuron</strong> – dict
-a dictionary mapping hexagons to neurons</p></li>
-<li><p><strong>**kwargs</strong> – </p></li>
+<li><p><strong>event</strong> (<em>event</em>) – a mouse click event</p></li>
+<li><p><strong>hexagons</strong> (<em>list</em>) – a list of hexagons</p></li>
+<li><p><strong>hexagon_to_neuron</strong> (<em>dict</em>) – a dictionary mapping hexagons to neurons</p></li>
+<li><p><strong>**kwargs</strong> – a dictionary with input data</p></li>
+<li><p><strong>Returns</strong> – None</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1094,7 +1456,17 @@ The key is prefixed with the data type and the value is the data itself.
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plot_box">
 <span class="sig-name descname"><span class="pre">plot_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronNum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plot_box" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Generates a box plot for a specific neuron’s data on the provided axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axes object on which the box plot will be drawn.</p></li>
+<li><p><strong>data</strong> (<em>array-like</em>) – The data array for which the box plot is to be generated.</p></li>
+<li><p><strong>neuronNum</strong> (<em>int</em>) – The neuron index that the data is associated with.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plot_hist">
@@ -1109,164 +1481,186 @@ The key is prefixed with the data type and the value is the data itself.
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plot_pie">
 <span class="sig-name descname"><span class="pre">plot_pie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronNum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plot_pie" title="Link to this definition">#</a></dt>
-<dd><p>Helper function to plot pie chart in the interactive plots
-:param ax:
-:param data:
-:param neuronNum:</p>
-<p>Returns:</p>
+<dd><p>Plots a pie chart on the specified matplotlib axes object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The matplotlib axes object where the pie chart will be plotted.</p></li>
+<li><p><strong>data</strong> (<em>array-like</em>) – An array of numeric data which represents the portions of the pie chart.</p></li>
+<li><p><strong>neuronNum</strong> (<em>int</em>) – The neuron number associated with the data, which is used to title the pie chart.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plot_scatter">
 <span class="sig-name descname"><span class="pre">plot_scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronNum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plot_scatter" title="Link to this definition">#</a></dt>
-<dd><p>Helper function to display scatter plot in the interactive plots
-:param ax:
-:param data:
-:param num1:
-:param num2:
-:param neuronNum:</p>
-<p>Returns:</p>
+<dd><p>Plots a scatter plot for a specific neuron’s data on the provided axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axes object on which the scatter plot will be drawn.</p></li>
+<li><p><strong>num1</strong> (<em>array-like</em>) – The x coordinates of the data points.</p></li>
+<li><p><strong>num2</strong> (<em>array-like</em>) – The y coordinates of the data points.</p></li>
+<li><p><strong>neuronNum</strong> (<em>int</em>) – The index of the neuron for which the plot is being generated.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plot_stem">
 <span class="sig-name descname"><span class="pre">plot_stem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronNum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plot_stem" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plots a stem plot for a specific neuron’s data on the given axes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The matplotlib axes object where the stem plot will be drawn.</p></li>
+<li><p><strong>align</strong> (<em>array-like</em>) – The x positions of the stems.</p></li>
+<li><p><strong>height</strong> (<em>array-like</em>) – The y values for each stem, indexed by neuron number.</p></li>
+<li><p><strong>neuronNum</strong> (<em>int</em>) – The index of the neuron for which the plot is being generated.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plot_violin">
 <span class="sig-name descname"><span class="pre">plot_violin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronNum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plot_violin" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">plt_boxplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
-<dd><p>Generate box plot for each neuron.</p>
+<dd><p>Displays a violin plot for a specific neuron’s data on the provided axes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – array-like
-The input data to be plotted in box plot</p></li>
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The axes object where the violin plot will be drawn.</p></li>
+<li><p><strong>data</strong> (<em>array-like</em>) – The data to be used for the violin plot.</p></li>
+<li><p><strong>neuronNum</strong> (<em>int</em>) – The index of the neuron associated with the data.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, h_axes</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">plt_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
-<dd><p>Generate histogram for each neuron.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_boxplot">
+<span class="sig-name descname"><span class="pre">plt_boxplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_boxplot" title="Link to this definition">#</a></dt>
+<dd><p>Generates a boxplot visualization for the SOM, displaying the statistical summary of the data distribution within each neuron’s cluster.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – array-like
-The input data to be plotted in histogram</p></li>
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – A 2D array or sequence of vectors, where each row represents the data points assigned to a single neuron.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, h_axes</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>h_axes</strong> (<em>list</em>) – A list of matplotlib.axes.Axes objects, each containing a boxplot for a single neuron’s data distribution.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id10">
-<span class="sig-name descname"><span class="pre">plt_nc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
-<dd><p>Generates neighborhood connection map.
-The gray hexagons represent cluster centers.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_histogram">
+<span class="sig-name descname"><span class="pre">plt_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_histogram" title="Link to this definition">#</a></dt>
+<dd><p>Generates a histogram visualization for the SOM, displaying the data distribution within each neuron’s cluster.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – A 2D array or sequence of vectors, where each row represents the data points assigned to a single neuron.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, pathces</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>h_axes</strong> (<em>list</em>) – A list of matplotlib.axes.Axes objects, each containing a histogram for a single neuron’s data distribution.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">plt_pie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id11" title="Link to this definition">#</a></dt>
-<dd><p>Generate pie plot for each neuron.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_nc">
+<span class="sig-name descname"><span class="pre">plt_nc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_nc" title="Link to this definition">#</a></dt>
+<dd><p>Generates a Neighborhood Connection Map for the SOM, displaying the connections between neighboring neurons.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – Array or sequence of vectors.
-The wedge size</p></li>
-<li><p><strong>s</strong> – 1-D array-like, optional
-Scale the size of the pie chart according to the percent of the specific class in that cell. (0-100)
-(default: None)</p></li>
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, h_axes</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the edges between connected neurons.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id12">
-<span class="sig-name descname"><span class="pre">plt_scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id12" title="Link to this definition">#</a></dt>
-<dd><p>Generate Scatter Plot for Each Neuron.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_pie">
+<span class="sig-name descname"><span class="pre">plt_pie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_pie" title="Link to this definition">#</a></dt>
+<dd><p>Generates a pie chart visualization for the SOM, displaying the composition of each neuron’s data or cluster.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – input data</p></li>
-<li><p><strong>indices</strong> – array-like indices e.g. (0, 1) or [0, 1]</p></li>
-<li><p><strong>clust</strong> – list of indices of input data for each cluster</p></li>
-<li><p><strong>reg_line</strong> – Flag</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – A 2D array or sequence of vectors, where each row represents the composition or category values for a single neuron.</p></li>
+<li><p><strong>s</strong> (<em>array-like</em><em>, </em><em>optional</em>) – An array containing the percentage values to be used for scaling the pie chart sizes, by default None.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, h_axes</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>h_axes</strong> (<em>list</em>) – A list of matplotlib.axes.Axes objects, each containing a pie chart for a single neuron’s composition.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the length of <cite>x</cite> or <cite>s</cite> (if provided) does not match the number of neurons, or if the percentage values in <cite>s</cite> are not between 0 and 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_scatter">
+<span class="sig-name descname"><span class="pre">plt_scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_scatter" title="Link to this definition">#</a></dt>
+<dd><p>Generates a scatter plot visualization for the SOM, displaying the data points assigned to each neuron and an optional regression line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – A 2D array or sequence of vectors, where each row represents the x-coordinate data points assigned to a single neuron.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – A 2D array or sequence of vectors, where each row represents the y-coordinate data points assigned to a single neuron.</p></li>
+<li><p><strong>reg_line</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a regression line is plotted for each neuron’s data, by default True.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>h_axes</strong> (<em>list</em>) – A list of matplotlib.axes.Axes objects, each containing a scatter plot for a single neuron’s data.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1274,172 +1668,155 @@ Possible keys include:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_stem">
 <span class="sig-name descname"><span class="pre">plt_stem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_stem" title="Link to this definition">#</a></dt>
-<dd><p>Generate stem plot for each neuron.</p>
+<dd><p>Generates a stem plot visualization for the SOM, displaying the input data and neuron responses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – array-like
-The x-axis values (align)</p></li>
-<li><p><strong>y</strong> – array-like or sequence of vectors
-The y-axis values (height)</p></li>
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – The input data or independent variable for the stem plot.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – The neuron responses or dependent variable for the stem plot, where each row corresponds to a neuron.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, h_axes</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>h_axes</strong> (<em>list</em>) – A list of matplotlib.axes.Axes objects, each containing a stem plot for a single neuron.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id13">
-<span class="sig-name descname"><span class="pre">plt_top</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id13" title="Link to this definition">#</a></dt>
-<dd><p>Plots the topology of the SOM using hexagonal units.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_top">
+<span class="sig-name descname"><span class="pre">plt_top</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_top" title="Link to this definition">#</a></dt>
+<dd><p>Plots the topology of the SOM using hexagonal units. This method visualizes the position and the
+boundaries of each neuron within the grid, allowing for interaction if enabled.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing interactive functionality such as
+querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron (hexagon) is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler <cite>onpick</cite> when an interactive
+element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, pathces</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the hexagonal units of the SOM.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id14">
-<span class="sig-name descname"><span class="pre">plt_top_num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id14" title="Link to this definition">#</a></dt>
-<dd><p>Plots the topology of the SOM with numbered neurons.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_top_num">
+<span class="sig-name descname"><span class="pre">plt_top_num</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_top_num" title="Link to this definition">#</a></dt>
+<dd><p>Plots the topology of the SOM with each neuron numbered. This method visualizes each neuron as a hexagon with a
+number indicating its index, which is useful for identifying and referencing specific neurons during analysis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interaction such as detailed queries or
+data manipulation associated with specific neurons, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler <cite>onpick</cite> when an interactive
+element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, pathces, text</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the hexagonal units of the SOM.</p></li>
+<li><p><strong>text</strong> (<em>list</em>) – A list of matplotlib.text.Text objects displaying the neuron indices.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id15">
-<span class="sig-name descname"><span class="pre">plt_violin_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id15" title="Link to this definition">#</a></dt>
-<dd><p>Generate violin plot for each neuron.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_violin_plot">
+<span class="sig-name descname"><span class="pre">plt_violin_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_violin_plot" title="Link to this definition">#</a></dt>
+<dd><p>Generates a violin plot visualization for the SOM, displaying the distribution of data within each neuron’s cluster.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – array-like
-The input data to be plotted in violin plot</p></li>
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>x</strong> (<em>array-like</em>) – A 2D array or sequence of vectors, where each row represents the data points assigned to a single neuron.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, h_axes</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>h_axes</strong> (<em>list</em>) – A list of matplotlib.axes.Axes objects, each containing a violin plot for a single neuron’s data distribution.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id16">
-<span class="sig-name descname"><span class="pre">plt_wgts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id16" title="Link to this definition">#</a></dt>
-<dd><p>Generate line plot for each neuron.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.plt_wgts">
+<span class="sig-name descname"><span class="pre">plt_wgts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.plt_wgts" title="Link to this definition">#</a></dt>
+<dd><p>Generates a line plot visualization for the SOM weights, displaying the weight vectors for each neuron.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, h_axes</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>h_axes</strong> (<em>list</em>) – A list of matplotlib.axes.Axes objects, each containing a line plot for a single neuron’s weight vector.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id17">
-<span class="sig-name descname"><span class="pre">setup_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id17" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.setup_axes">
+<span class="sig-name descname"><span class="pre">setup_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.setup_axes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="id18">
-<span class="sig-name descname"><span class="pre">simple_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">avg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
-<dd><p>Basic hexagon grid plot
-Colors are selected from avg array.
-Sizes of inner hexagons are selected rom sizes array.</p>
+<dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.simple_grid">
+<span class="sig-name descname"><span class="pre">simple_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">avg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sizes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.simple_grid" title="Link to this definition">#</a></dt>
+<dd><p>Generates a simple grid plot that visualizes the SOM neurons as hexagons with varying sizes and colors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>avg</strong> – array-like
-Average values for each neuron</p></li>
-<li><p><strong>sizes</strong> – array-like
-Sizes of inner hexagons</p></li>
-<li><p><strong>mouse_click</strong> – bool
-If true, the interactive plot and sub-clustering functionalities to be activated</p></li>
-<li><p><strong>connect_pick_event</strong> – bool
-If true, the pick event is connected to the plot</p></li>
-<li><p><strong>kwarg</strong> – <p>dict
-Additional arguments to be passed to the onpick function
-Possible keys include:</p>
-<blockquote>
-<div><p>’data’, ‘clust’, ‘target’, ‘num1’, ‘num2’, ‘cat’, and ‘topn’</p>
-</div></blockquote>
-</p></li>
+<li><p><strong>avg</strong> (<em>array-like</em>) – An array containing the average values to be represented by the color map, where higher values correspond to warmer colors (e.g., red) and lower values correspond to cooler colors (e.g., blue).</p></li>
+<li><p><strong>sizes</strong> (<em>array-like</em>) – An array containing the sizes to be used for the inner hexagons within each neuron, where larger values result in larger hexagons.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>fig, ax, pathces, cbar</p>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects representing the inner hexagons colored based on the average values and sized based on the provided sizes.</p></li>
+<li><p><strong>cbar</strong> (<em>matplotlib.colorbar.Colorbar</em>) – The Colorbar object attached to the plot, representing the color mapping.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1447,16 +1824,49 @@ Possible keys include:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.sub_clustering">
 <span class="sig-name descname"><span class="pre">sub_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuron_ind</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.sub_clustering" title="Link to this definition">#</a></dt>
-<dd><p>Helper function for interactive function which create the sub-cluster
-:param data:
-:param neuron_ind:</p>
-<p>Returns:</p>
+<dd><p>Performs sub-clustering on the data associated with a specific neuron within the Self-Organizing Map (SOM).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>array-like</em>) – The dataset from which sub-clusters are to be derived. Typically, this is the subset of the overall dataset that
+has been mapped to the neuron specified by <cite>neuron_ind</cite>.</p></li>
+<li><p><strong>neuron_ind</strong> (<em>int</em>) – The index of the neuron for which sub-clustering is to be performed. This index is used to refer to a specific neuron
+in the SOM’s grid.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of clusters, where each cluster is an array of data points that form a sub-group within the neuron’s data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of array-like</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="NNSOM.plots.SOMPlots.weight_as_image">
 <span class="sig-name descname"><span class="pre">weight_as_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouse_click</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connect_pick_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.plots.SOMPlots.weight_as_image" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Visualizes the weights of a Self-Organizing Map (SOM) as images within a hexagonal grid layout.</p>
+<p>This method maps the weight vectors of each neuron onto a hexagonal cell and optionally enables interaction with each hexagon. The hexagons represent the neurons, and the colors within each hexagon represent the neuron’s weight vector reshaped into either a specified or automatically determined matrix form. This visualization is useful for analyzing the learned patterns and feature representations within the SOM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rows</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of rows to reshape each neuron’s weight vector into. If None, the weight vector is reshaped into a square matrix by default. If specified, the weight vector is reshaped into a matrix with the given number of rows, and the number of columns is determined automatically.</p></li>
+<li><p><strong>mouse_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enables the plot to respond to mouse clicks, allowing for interactive functionality such as querying or modifying neuron data, by default False.</p></li>
+<li><p><strong>connect_pick_event</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, connects a pick event that triggers when a neuron is clicked, by default True.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments that can be passed to the event handler onpick when an interactive element is clicked. Common parameters could include data specific to the plot or visualization settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>fig</strong> (<em>matplotlib.figure.Figure</em>) – The Figure object containing the plot.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em>) – The Axes object containing the plot elements.</p></li>
+<li><p><strong>patches</strong> (<em>list</em>) – A list of matplotlib.patches.Patch objects, each representing a hexagon in the plot.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -1827,8 +2237,8 @@ in the data, and max_value is the maximum value.</p>
 <dt class="sig sig-object py" id="NNSOM.utils.majority_class_cluster">
 <span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">majority_class_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cat_feature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clust</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NNSOM.utils.majority_class_cluster" title="Link to this definition">#</a></dt>
 <dd><p>Returns the cluster array with the majority class for each cluster.</p>
-<section id="id19">
-<h3>Paramters<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<section id="id11">
+<h3>Paramters<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>cat_feature<span class="classifier">array-like</span></dt><dd><p>Categorical feature array.</p>
 </dd>
@@ -1949,40 +2359,58 @@ in the data, and max_value is the maximum value.</p>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nnsom-som-gpu-module">NNSOM.som_gpu module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-NNSOM.som_gpu">NNSOM.som_gpu module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu"><code class="docutils literal notranslate"><span class="pre">SOMGpu</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.dimensions"><code class="docutils literal notranslate"><span class="pre">SOMGpu.dimensions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.numNeurons"><code class="docutils literal notranslate"><span class="pre">SOMGpu.numNeurons</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.pos"><code class="docutils literal notranslate"><span class="pre">SOMGpu.pos</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.neuron_dist"><code class="docutils literal notranslate"><span class="pre">SOMGpu.neuron_dist</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.w"><code class="docutils literal notranslate"><span class="pre">SOMGpu.w</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.sim_flag"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sim_flag</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.output"><code class="docutils literal notranslate"><span class="pre">SOMGpu.output</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.norm_func"><code class="docutils literal notranslate"><span class="pre">SOMGpu.norm_func</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.sub_som"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sub_som</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.__init__"><code class="docutils literal notranslate"><span class="pre">SOMGpu.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.init_w"><code class="docutils literal notranslate"><span class="pre">SOMGpu.init_w()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.sim_som"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sim_som()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.train"><code class="docutils literal notranslate"><span class="pre">SOMGpu.train()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.quantization_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.quantization_error()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.topological_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.topological_error()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.distortion_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.distortion_error()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.save_pickle"><code class="docutils literal notranslate"><span class="pre">SOMGpu.save_pickle()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.load_pickle"><code class="docutils literal notranslate"><span class="pre">SOMGpu.load_pickle()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu._normalize_position"><code class="docutils literal notranslate"><span class="pre">SOMGpu._normalize_position()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu._spread_positions"><code class="docutils literal notranslate"><span class="pre">SOMGpu._spread_positions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu._euclidean_distance"><code class="docutils literal notranslate"><span class="pre">SOMGpu._euclidean_distance()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu._to_categorical"><code class="docutils literal notranslate"><span class="pre">SOMGpu._to_categorical()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.cluster_data"><code class="docutils literal notranslate"><span class="pre">SOMGpu.cluster_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">SOMGpu.distortion_error()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">SOMGpu.init_w()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">SOMGpu.load_pickle()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.som_gpu.SOMGpu.normalize"><code class="docutils literal notranslate"><span class="pre">SOMGpu.normalize()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">SOMGpu.quantization_error()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">SOMGpu.save_pickle()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sim_som()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">SOMGpu.topological_error()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">SOMGpu.train()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-NNSOM.plots">NNSOM.plots module</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots"><code class="docutils literal notranslate"><span class="pre">SOMPlots</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.dimensions"><code class="docutils literal notranslate"><span class="pre">SOMPlots.dimensions</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_top"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_top()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_top_num"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_top_num()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.hit_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.hit_hist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.gray_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.gray_hist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.color_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.color_hist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.cmplx_hit_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.cmplx_hit_hist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_nc"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_nc()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.neuron_dist_plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.neuron_dist_plot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.simple_grid"><code class="docutils literal notranslate"><span class="pre">SOMPlots.simple_grid()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.setup_axes"><code class="docutils literal notranslate"><span class="pre">SOMPlots.setup_axes()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_dist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_dist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_wgts"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_wgts()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_pie"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_pie()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_histogram"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_histogram()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_boxplot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_boxplot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_dispersion_fan_plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_dispersion_fan_plot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_violin_plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_violin_plot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_scatter"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_scatter()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.multiplot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.multiplot()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.button_click_event"><code class="docutils literal notranslate"><span class="pre">SOMPlots.button_click_event()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">SOMPlots.cmplx_hit_hist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">SOMPlots.color_hist()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.cmplx_hit_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.cmplx_hit_hist()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.color_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.color_hist()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.component_planes"><code class="docutils literal notranslate"><span class="pre">SOMPlots.component_planes()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.component_positions"><code class="docutils literal notranslate"><span class="pre">SOMPlots.component_positions()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.create_click_handler"><code class="docutils literal notranslate"><span class="pre">SOMPlots.create_click_handler()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.custom_cmplx_hit_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.custom_cmplx_hit_hist()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.determine_button_types"><code class="docutils literal notranslate"><span class="pre">SOMPlots.determine_button_types()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">SOMPlots.gray_hist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">SOMPlots.hit_hist()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">SOMPlots.neuron_dist_plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.gray_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.gray_hist()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.hit_hist"><code class="docutils literal notranslate"><span class="pre">SOMPlots.hit_hist()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.neuron_dist_plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.neuron_dist_plot()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.onpick"><code class="docutils literal notranslate"><span class="pre">SOMPlots.onpick()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plot()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plot_box"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plot_box()</span></code></a></li>
@@ -1991,18 +2419,18 @@ in the data, and max_value is the maximum value.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plot_scatter"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plot_scatter()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plot_stem"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plot_stem()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plot_violin"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plot_violin()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_boxplot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_histogram()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_nc()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_pie()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_scatter()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_boxplot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_boxplot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_histogram"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_histogram()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_nc"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_nc()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_pie"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_pie()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_scatter"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_scatter()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_stem"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_stem()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_top()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_top_num()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_violin_plot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_wgts()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><code class="docutils literal notranslate"><span class="pre">SOMPlots.setup_axes()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">SOMPlots.simple_grid()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_top"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_top()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_top_num"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_top_num()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_violin_plot"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_violin_plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.plt_wgts"><code class="docutils literal notranslate"><span class="pre">SOMPlots.plt_wgts()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.setup_axes"><code class="docutils literal notranslate"><span class="pre">SOMPlots.setup_axes()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.simple_grid"><code class="docutils literal notranslate"><span class="pre">SOMPlots.simple_grid()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.sub_clustering"><code class="docutils literal notranslate"><span class="pre">SOMPlots.sub_clustering()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#NNSOM.plots.SOMPlots.weight_as_image"><code class="docutils literal notranslate"><span class="pre">SOMPlots.weight_as_image()</span></code></a></li>
 </ul>
