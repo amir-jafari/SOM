@@ -46,21 +46,21 @@ Just make sure you are setting the mouse_click flag to True to see interactive p
 Output:
 ^^^^^^^
 
-.. figure:: _build/html/_images/iris_interactive_0_0.jpg
+.. figure:: images_int/iris_interactive_0_0.jpg
    :alt: Plot Output 1
    :width: 500px
    :align: center
 
    Initial interactive window (on clicking cluster center opens a menu)
 
-.. figure:: _build/html/_images/iris_interactive_2_0.jpg
+.. figure:: images_int/iris_interactive_2_0.jpg
    :alt: Cluster center as pie chart
    :width: 500px
    :align: center
 
    Cluster center as pie chart ( on clicking pie )
 
-.. figure:: _build/html/_images/iris_interactive_1_0.jpg
+.. figure:: images_int/iris_interactive_1_0.jpg
    :alt: Cluster center as stem plot
    :width: 500px
    :align: center
