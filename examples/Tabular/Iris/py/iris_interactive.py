@@ -1,6 +1,12 @@
-"""
-This script demonstrates interactive plotting the Iris dataset using matplotlib.
-"""
+# %% [markdown]
+# # Iris Interactive Plots
+#
+# This is the content of your Python script.
+# You can include Markdown content here, such as explanations, headers, and lists.
+#
+# ```python
+# # Your Python code goes here
+# ```
 from NNSOM.plots import SOMPlots
 from NNSOM.utils import *
 
