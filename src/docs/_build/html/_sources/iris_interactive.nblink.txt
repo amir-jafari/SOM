@@ -1,3 +1,0 @@
-{
-  "path": "../../examples/Tabular/Iris/py/iris_interactive.py"
-}
