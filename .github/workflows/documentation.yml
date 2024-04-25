@@ -23,7 +23,8 @@ jobs:
           sudo apt-get install -y pandoc
           python -m pip install --upgrade pip
           pip install setuptools  # Ensure setuptools is installed first
-          pip install -r requirements.txt
+          pip install -r requirements.txt --upgrade
+
       - name: Install additional dependencies
         run: |
           pip install sphinx pandoc
