@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Training SOM &#8212; NNSOM 1.7.9 documentation</title>
+    <title>Iris Training &#8212; NNSOM 1.7.9 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'iris_training';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Visualization" href="iris_plot.html" />
+    <link rel="next" title="Iris Plotting" href="iris_plot.html" />
     <link rel="prev" title="Tutorial" href="examples.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -371,12 +371,24 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Notebook:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Training SOM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Iris Training</a></li>
 
 
 
-<li class="toctree-l1"><a class="reference internal" href="iris_plot.html">Visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="iris_post_training_analysis.html">Visualization</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="iris_plot.html">Iris Plotting</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="iris_post_training_analysis.html">Iris Post Training Analysis</a></li>
+
+
+
+
+
+
+
 </ul>
 </div>
 </nav></div>
@@ -417,7 +429,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="examples.html" class="nav-link">Tutorial</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Training SOM</li>
+    <li class="breadcrumb-item active" aria-current="page">Iris Training</li>
   </ul>
 </nav>
 </div>
@@ -436,7 +448,8 @@ document.write(`
                   
   <a href="https://colab.research.google.com/github/amir-jafari/SOM/blob/main/examples/Tabular/Iris/notebook/iris_training.ipynb" target="_blank" rel="noopener noreferrer">
     <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" style="vertical-align:text-bottom"/>
-</a><p><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></p>
+</a><section id="Iris-Training">
+<h1>Iris Training<a class="headerlink" href="#Iris-Training" title="Link to this heading">#</a></h1>
 <p>In this notebook we will see the basics of how to use NNSOM with Iris dataset.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -515,6 +528,7 @@ Successfully installed NNSOM-1.5.8
 </pre></div>
 </div>
 </div>
+</section>
 <section id="Training-SOM">
 <h1>Training SOM<a class="headerlink" href="#Training-SOM" title="Link to this heading">#</a></h1>
 <p>We will use SOMPlots which is child class of SOM because we want to plot SOM.</p>
@@ -706,7 +720,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_22_0.png" src="_images/iris_training_22_0.png" />
+<img alt="_images/iris_training_23_0.png" src="_images/iris_training_23_0.png" />
 </div>
 </div>
 <p>SOM Topology with neuron number</p>
@@ -723,7 +737,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_24_0.png" src="_images/iris_training_24_0.png" />
+<img alt="_images/iris_training_25_0.png" src="_images/iris_training_25_0.png" />
 </div>
 </div>
 <p>Hit Histogram</p>
@@ -740,7 +754,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_26_0.png" src="_images/iris_training_26_0.png" />
+<img alt="_images/iris_training_27_0.png" src="_images/iris_training_27_0.png" />
 </div>
 </div>
 <p>Neighborhood Connection Map</p>
@@ -757,7 +771,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_28_0.png" src="_images/iris_training_28_0.png" />
+<img alt="_images/iris_training_29_0.png" src="_images/iris_training_29_0.png" />
 </div>
 </div>
 <p>Distance map</p>
@@ -774,7 +788,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_30_0.png" src="_images/iris_training_30_0.png" />
+<img alt="_images/iris_training_31_0.png" src="_images/iris_training_31_0.png" />
 </div>
 </div>
 <p>Weight Position Plot</p>
@@ -792,7 +806,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_33_0.png" src="_images/iris_training_33_0.png" />
+<img alt="_images/iris_training_34_0.png" src="_images/iris_training_34_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -807,7 +821,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_34_0.png" src="_images/iris_training_34_0.png" />
+<img alt="_images/iris_training_35_0.png" src="_images/iris_training_35_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -823,7 +837,7 @@ Distortion (d=3) = 2.013895098651144
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/iris_training_35_0.png" src="_images/iris_training_35_0.png" />
+<img alt="_images/iris_training_36_0.png" src="_images/iris_training_36_0.png" />
 </div>
 </div>
 </section>
@@ -853,7 +867,7 @@ Distortion (d=3) = 2.013895098651144
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Visualization</p>
+        <p class="prev-next-title">Iris Plotting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -875,7 +889,8 @@ Distortion (d=3) = 2.013895098651144
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Training SOM</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Iris Training</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#Training-SOM">Training SOM</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Save-the-trained-model">Save the trained model</a></li>
 </ul>
 </li>
