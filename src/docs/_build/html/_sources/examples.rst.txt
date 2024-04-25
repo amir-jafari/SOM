@@ -11,3 +11,4 @@ Tutorial
    iris_training
    iris_plot
    iris_post_training_analysis
+   iris_interactive
