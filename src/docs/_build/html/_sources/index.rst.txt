@@ -16,7 +16,7 @@ The library is designed with two main goals in mind:
 
 With NNSOM, researchers and students alike can leverage the power of SOM for various applications, such as data visualization, clustering, and dimensionality reduction, while benefiting from the flexibility and educational value offered by this library.
 
-Visit the :doc:`installation page <installing>` to see how you can download the package and get started with it. You can browse the :doc:`Tutorials <examples>` to see some of the things that you can do with NNSOM,
+Visit the :doc:`installation page <usage>` to see how you can download the package and get started with it. You can browse the :doc:`Tutorials <examples>` to see some of the things that you can do with NNSOM,
 and then check out the :doc:`NNSOM package <modules>` to find out how.
 
 To see the code or report a bug, please visit the `GitHub repository <https://github.com/amir-jafari/SOM>`_.
