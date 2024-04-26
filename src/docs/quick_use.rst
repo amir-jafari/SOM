@@ -16,7 +16,7 @@ Here's a quick overview of how to set up and train an SOM model using NNSOM.
     np.random.seed(42)
     data = np.random.rand(3000, 10)  # Random data for demonstration
 
-2. Define the normalizing function for the data
+2. Define the normalizing function for the data.
 
 .. code-block:: python
 
