@@ -58,14 +58,14 @@ Output:
    :width: 500px
    :align: center
 
-   Cluster center as pie chart ( on clicking pie )
+   Clustered items as pie chart ( on clicking pie )
 
 .. figure:: images_int/iris_interactive_2_0.jpg
    :alt: Cluster center as stem plot
    :width: 500px
    :align: center
 
-   Cluster center as stem plot ( on clicking stem )
+   Clustered items as stem plot ( on clicking stem )
 
 Conclusion
 ----------
