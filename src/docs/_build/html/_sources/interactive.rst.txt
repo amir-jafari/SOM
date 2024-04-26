@@ -53,14 +53,14 @@ Output:
 
    Initial interactive window (on clicking cluster center opens a menu)
 
-.. figure:: images_int/iris_interactive_2_0.jpg
+.. figure:: images_int/iris_interactive_1_0.jpg
    :alt: Cluster center as pie chart
    :width: 500px
    :align: center
 
    Cluster center as pie chart ( on clicking pie )
 
-.. figure:: images_int/iris_interactive_1_0.jpg
+.. figure:: images_int/iris_interactive_2_0.jpg
    :alt: Cluster center as stem plot
    :width: 500px
    :align: center
