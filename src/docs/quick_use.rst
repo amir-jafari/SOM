@@ -16,13 +16,13 @@ Here's a quick overview of how to set up and train an SOM model using NNSOM.
     np.random.seed(42)
     data = np.random.rand(3000, 10)  # Random data for demonstration
 
-2. Normalize your data.
+2. Define the normalizing function for the data
 
 .. code-block:: python
 
     from sklearn.preprocessing import MinMaxScaler
     scaler = MinMaxScaler(feature_range=(-1, 1))
-    norm_func = scaler.fit_transform(data)
+    norm_func = scaler.fit_transform()
 
 3. Set the SOM grid and training parameters.
 
@@ -41,7 +41,7 @@ Here's a quick overview of how to set up and train an SOM model using NNSOM.
 
     from NNSOM.plots import SOMPlots
     som = SOMPlots(Dimensions)
-    som.init_w(data, norm_func=norm_func)
+    som.init_w(data, norm_func=norm_func)   # data is normalized based on user specific normalized function
     som.train(data, Init_neighborhood, Epochs, Steps)
 
 5. Save and load the trained model.
