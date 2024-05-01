@@ -8,4 +8,4 @@ This folder contains the presentation slides and link to the video for our proje
 
 Click on the image below to watch the presentation:
 
-[Watch the Presentation](https://drive.google.com/file/d/1wQn3S0nXHNmjPFVIGUN4vDNzzpYrdkCm/view?usp=sharing](https://drive.google.com/file/d/1wQn3S0nXHNmjPFVIGUN4vDNzzpYrdkCm/view?usp=sharing))
+[Watch the Presentation](https://drive.google.com/file/d/1wQn3S0nXHNmjPFVIGUN4vDNzzpYrdkCm/view?usp=sharing](https://drive.google.com/file/d/1wQn3S0nXHNmjPFVIGUN4vDNzzpYrdkCm/view?usp=sharing)
