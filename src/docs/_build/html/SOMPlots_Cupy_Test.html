@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Welcome to NNSOM’s documentation! &#8212; NNSOM 1.8.0 documentation</title>
+    <title>Cupy Implementation &#8212; NNSOM 1.8.0 documentation</title>
   
   
   
@@ -29,6 +29,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
@@ -39,10 +40,13 @@
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'SOMPlots_Cupy_Test';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quick Start" href="usage.html" />
+    <link rel="next" title="CuPy Functionality" href="cupy.html" />
+    <link rel="prev" title="Iris Interactive Plots" href="interactive.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -108,7 +112,7 @@
 
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -143,7 +147,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="examples.html">
                         Tutorial
                       </a>
@@ -260,9 +264,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -289,7 +291,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="examples.html">
                         Tutorial
                       </a>
@@ -362,6 +364,34 @@ document.write(`
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Notebook:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="iris_training.html">Iris Training</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="iris_plot.html">Iris Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iris_post_training_analysis.html">Iris Post Training Analysis</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="interactive.html">Iris Interactive Plots</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cupy Implementation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -377,7 +407,36 @@ document.write(`
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article"></div>
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="examples.html" class="nav-link">Tutorial</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Cupy Implementation</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
               
               
               
@@ -385,81 +444,193 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="welcome-to-nnsom-s-documentation">
-<h1>Welcome to NNSOM’s documentation!<a class="headerlink" href="#welcome-to-nnsom-s-documentation" title="Link to this heading">#</a></h1>
-<p>NNSOM is a Python library that provides an implementation of Self-Organizing Maps (SOM) using NumPy and CuPy.
-SOM is a type of Artificial Neural Network that can transform complex, nonlinear statistical relationships between high-dimensional data into simple topological relationships on a low-dimensional display (typically 2-dimensional).</p>
-<p>The library is designed with two main goals in mind:</p>
-<ul class="simple">
-<li><p>Extensibility: NNSOM aims to provide a solid foundation for researchers to build upon and extend its functionality according to their specific requirements.</p></li>
-<li><p>Educational Value: The implementation is structured in a way that allows students to quickly understand the inner workings of SOM, fostering a better grasp of the algorithm’s details.</p></li>
-</ul>
-<p>With NNSOM, researchers and students alike can leverage the power of SOM for various applications, such as data visualization, clustering, and dimensionality reduction, while benefiting from the flexibility and educational value offered by this library.</p>
-<p>Visit the <a class="reference internal" href="usage.html"><span class="doc">installation page</span></a> to see how you can download the package and get started with it. You can browse the <a class="reference internal" href="examples.html"><span class="doc">Tutorials</span></a> to see some of the things that you can do with NNSOM,
-and then check out the <a class="reference internal" href="modules.html"><span class="doc">NNSOM package</span></a> to find out how.</p>
-<p>To see the code or report a bug, please visit the <a class="reference external" href="https://github.com/amir-jafari/SOM">GitHub repository</a>.</p>
-<p>read the research paper for more information <a class="reference external" href="https://github.com/amir-jafari/SOM/blob/main/research_paper/DATS_6501_NNSOM_paper.pdf">paper</a></p>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html#dependencies">Dependencies</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#supported-python-versions">Supported Python versions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html#quick-start-guide-for-nnsom">Quick Start Guide for NNSOM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#basic-usage">Basic Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#visualizing-results">Visualizing Results</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html#getting-help">Getting help</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">NNSOM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="NNSOM.html">NNSOM package</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="iris_training.html">Iris Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_training.html#Training-SOM">Training SOM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_training.html#Extract-SOM-Cluster-Details">Extract SOM Cluster Details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_training.html#Error-Analysis">Error Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_training.html#Visualize-the-SOM">Visualize the SOM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_plot.html">Iris Plotting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html">Iris Post Training Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html#Data-Preprocessing">Data Preprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html#Grey-Hist">Grey Hist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html#Color-hist">Color hist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html#Complex-hit-hist">Complex hit hist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html#Simple-grid">Simple grid</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html#Pie-Chart">Pie Chart</a></li>
-<li class="toctree-l2"><a class="reference internal" href="iris_post_training_analysis.html#Stem-Plot">Stem Plot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interactive.html">Iris Interactive Plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SOMPlots_Cupy_Test.html">Cupy Implementation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cupy.html">Cupy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cupy.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cupy.html#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cupy.html#benefits">Benefits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cupy.html#limitations">Limitations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cupy.html#automatic-cupy-detection">Automatic CuPy Detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cupy.html#conclusion">Conclusion</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="authors.html#contributors">Contributors</a></li>
-</ul>
-</li>
-</ul>
+  <a href="https://colab.research.google.com/github/amir-jafari/SOM/blob/main/examples/Tabular/Iris/notebook/SOMPlots_Cupy_Test.ipynb" target="_blank" rel="noopener noreferrer">
+    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" style="vertical-align:text-bottom"/>
+</a><section id="Cupy-Implementation">
+<h1>Cupy Implementation<a class="headerlink" href="#Cupy-Implementation" title="Link to this heading">#</a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
 </div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">NNSOM</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Requirement already satisfied: NNSOM in /usr/local/lib/python3.10/dist-packages (1.6.8)
+Collecting NNSOM
+  Downloading nnsom-1.6.9-py3-none-any.whl (32 kB)
+Installing collected packages: NNSOM
+  Attempting uninstall: NNSOM
+    Found existing installation: NNSOM 1.6.8
+    Uninstalling NNSOM-1.6.8:
+      Successfully uninstalled NNSOM-1.6.8
+Successfully installed NNSOM-1.6.9
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">NNSOM.plots</span> <span class="kn">import</span> <span class="n">SOMPlots</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+You are using GPU acceleration with Cupy
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data Prep.</span>
+<span class="c1"># Generate a random DataFrame with 10 features and 15000 samples</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># For reproducibility</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">30000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">Rows</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">Dimensions</span> <span class="o">=</span> <span class="p">(</span><span class="n">Rows</span><span class="p">,</span> <span class="n">Rows</span><span class="p">)</span>
+
+<span class="n">som</span> <span class="o">=</span> <span class="n">SOMPlots</span><span class="p">(</span><span class="n">Dimensions</span><span class="p">)</span>
+<span class="n">som</span><span class="o">.</span><span class="n">init_w</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">som</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Beginning Initialization
+Current Time = 17:58:28
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/NNSOM/som_gpu.py:110: UserWarning: Without normalization function: SOM training may be inefficient if you are not normalized.
+  x = self.normalize(x, norm_func)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Ending Initialization
+Current Time = 17:58:33
+Beginning Training
+Current Time = 17:58:33
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/NNSOM/som_gpu.py:213: UserWarning: Without normalization function: SOM training may be inefficient if you are not normalized.
+  x = self.normalize(x, norm_func)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+50
+Current Time = 17:58:37
+100
+Current Time = 17:58:37
+150
+Current Time = 17:58:38
+200
+Current Time = 17:58:38
+Ending Training
+Current Time = 17:58:38
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clust</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">mdist</span><span class="p">,</span> <span class="n">clustSizes</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">cluster_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.10/dist-packages/NNSOM/som_gpu.py:324: UserWarning: Without normalization function: SOM training may be inefficient if you are not normalized.
+  x = self.normalize(x, self.norm_func)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+    <span class="s2">&quot;clust&quot;</span><span class="p">:</span> <span class="n">clust</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">patches</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;hit_hist&#39;</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/SOMPlots_Cupy_Test_7_0.png" src="_images/SOMPlots_Cupy_Test_7_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">patches</span> <span class="o">=</span> <span class="n">som</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;neuron_dist&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/SOMPlots_Cupy_Test_8_0.png" src="_images/SOMPlots_Cupy_Test_8_0.png" />
+</div>
+</div>
 </section>
 
 
@@ -472,12 +643,21 @@ and then check out the <a class="reference internal" href="modules.html"><span c
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="interactive.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Iris Interactive Plots</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="usage.html"
+       href="cupy.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Quick Start</p>
+        <p class="prev-next-title">CuPy Functionality</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -492,24 +672,10 @@ and then check out the <a class="reference internal" href="modules.html"><span c
 
 
   <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Welcome to NNSOM’s documentation!</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/amir-jafari/SOM/edit/main/index.rst">
+    <a href="https://github.com/amir-jafari/SOM/edit/main/SOMPlots_Cupy_Test.nblink">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -524,7 +690,7 @@ and then check out the <a class="reference internal" href="modules.html"><span c
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/index.rst.txt">
+    <a href="_sources/SOMPlots_Cupy_Test.nblink.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
