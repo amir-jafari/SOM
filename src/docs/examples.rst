@@ -12,3 +12,4 @@ Tutorial
    iris_plot
    iris_post_training_analysis
    interactive
+   SOMPlots_Cupy_Test
