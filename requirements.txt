@@ -1,4 +1,4 @@
-NNSOM~=1.8.0
+NNSOM~=1.8.1
 numpy~=1.25.1
 scipy~=1.9.3
 datetime~=5.4
