@@ -21,6 +21,8 @@ and then check out the :doc:`NNSOM package <modules>` to find out how.
 
 To see the code or report a bug, please visit the `GitHub repository <https://github.com/amir-jafari/SOM>`_.
 
+read the research paper for more information `paper <https://github.com/amir-jafari/SOM/blob/main/research_paper/DATS_6501_NNSOM_paper.pdf>`_
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
