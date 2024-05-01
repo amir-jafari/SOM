@@ -1,1 +1,11 @@
-here's the link for the presentaiton video: [link] ()
+# Presentation
+
+## Overview
+
+This folder contains the presentation slides and link to the video for our project. 
+
+## Watch the Video
+
+Click on the image below to watch the presentation:
+
+[![Watch the Presentation](https://img.youtube.com/vi/URL/0.jpg)]([https://drive.google.com/file/d/1wQn3S0nXHNmjPFVIGUN4vDNzzpYrdkCm/view?usp=sharing](https://drive.google.com/file/d/1wQn3S0nXHNmjPFVIGUN4vDNzzpYrdkCm/view?usp=sharing))
