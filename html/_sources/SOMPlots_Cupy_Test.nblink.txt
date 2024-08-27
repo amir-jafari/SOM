@@ -1,0 +1,3 @@
+{
+  "path": "../../examples/Tabular/Iris/notebook/SOMPlots_Cupy_Test.ipynb"
+}
