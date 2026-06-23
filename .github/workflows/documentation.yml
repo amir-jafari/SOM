@@ -28,7 +28,7 @@ jobs:
         run: sudo apt-get install -y pandoc
 
       - name: Install package and docs dependencies
-        run: pip install -e ".[docs]" pypandoc-binary
+        run: pip install ".[docs]" pypandoc-binary
 
       - name: Build HTML docs
         run: |
