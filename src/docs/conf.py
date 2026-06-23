@@ -11,7 +11,7 @@ os.environ.setdefault("MPLBACKEND", "Agg")
 project   = "NNSOM"
 author    = "Martin Hagan, Amir Jafari, Lakshmi Sravya Chalapati, Ei Tanaka"
 copyright = "2024, Martin Hagan, Amir Jafari, Lakshmi Sravya Chalapati, Ei Tanaka"
-release   = "1.8.2"
+release   = "1.8.3"
 version   = "1.8"
 
 # ── Extensions ────────────────────────────────────────────────────────────────

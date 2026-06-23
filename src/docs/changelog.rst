@@ -1,6 +1,17 @@
 Changelog
 =========
 
+1.8.3 (2025)
+------------
+
+* Declared missing runtime dependencies (``numpy``, ``scipy``, ``matplotlib``,
+  ``networkx``) in ``pyproject.toml`` so ``pip install NNSOM`` installs them
+  automatically.
+* Overhauled Sphinx documentation: RTD theme, full API reference generated
+  from docstrings, Quick Start and Installation guides, Changelog page.
+* Added NumPy-style docstrings to all previously undocumented utility
+  functions in ``utils.py``.
+
 1.8.2 (2024)
 ------------
 
