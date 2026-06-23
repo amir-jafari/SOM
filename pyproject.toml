@@ -23,6 +23,12 @@ authors = [
 
 ]
 
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.7",
+    "matplotlib>=3.5",
+]
+
 keywords = ["SOM", "Neural Network", "Machine Learning", "Unsupervised Learning", "Clustering"]
 
 [project.optional-dependencies]
