@@ -27,6 +27,7 @@ dependencies = [
     "numpy>=1.21",
     "scipy>=1.7",
     "matplotlib>=3.5",
+    "networkx>=2.6",
 ]
 
 keywords = ["SOM", "Neural Network", "Machine Learning", "Unsupervised Learning", "Clustering"]
