@@ -1,43 +1,45 @@
-name: demo
+name: Build and Deploy Docs
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  docs:
+  build:
+    name: Build Sphinx docs
     runs-on: ubuntu-latest
+
+    env:
+      MPLBACKEND: Agg
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2.2.1
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
-          
-      - name: Upgrade pip and install  dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc
-          python -m pip install --upgrade pip
-          pip install setuptools  # Ensure setuptools is installed first
-          pip install -r requirements.txt --upgrade
+          python-version: "3.11"
 
-      - name: Install additional dependencies
-        run: |
-          pip install sphinx pandoc
+      - name: Install system dependencies
+        run: sudo apt-get install -y pandoc
 
-      - name: Sphinx build
+      - name: Install package and docs dependencies
+        run: pip install -e ".[docs]" pypandoc-binary
+
+      - name: Build HTML docs
         run: |
-          sphinx-build src/docs src/docs/_build
+          cd src/docs
+          make html SPHINXOPTS="--keep-going"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: src/docs/_build/
+          publish_dir: src/docs/_build/html
           force_orphan: true
