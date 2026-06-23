@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NNSOM.utils.calculate_button_positions &mdash; NNSOM Toolbox</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=bef60a29" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=82e6e318"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SOMGpu — GPU Implementation" href="../som_gpu.html" />
+    <link rel="prev" title="NNSOM.utils.create_buttons" href="NNSOM.utils.create_buttons.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NNSOM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#installing-from-pypi">Installing from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#optional-dependencies">Optional dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#verifying-the-installation">Verifying the installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#getting-help">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/quickstart.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-1-prepare-your-data">Step 1 — Prepare your data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-2-choose-the-grid-size">Step 2 — Choose the grid size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-3-initialize-and-train">Step 3 — Initialize and train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-4-cluster-the-data">Step 4 — Cluster the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-5-visualize-the-map">Step 5 — Visualize the map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#save-and-reload-the-trained-model">Save and reload the trained model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#quality-metrics">Quality metrics</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html">Iris Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Training-SOM">Training SOM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_training.html#Save-the-trained-model">Save the trained model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Extract-SOM-Cluster-Details">Extract SOM Cluster Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Error-Analysis">Error Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Visualize-the-SOM">Visualize the SOM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_training.html#SOM-Topology">SOM Topology</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_plot.html">Iris Plotting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Visualization">Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Data-Preparation">Data Preparation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Gray-Hist">Gray Hist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Color-Hist">Color Hist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Basic-Plots">Basic Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Pie-Chart">Pie Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Stem-Plot">Stem Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Histogram">Histogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Box-Plot">Box Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Violin-Plot">Violin Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Scatter-Plot">Scatter Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Component-Planes">Component Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html">Iris Post Training Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_post_training_analysis.html#Visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Data-Preprocessing">Data Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Grey-Hist">Grey Hist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Color-hist">Color hist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Complex-hit-hist">Complex hit hist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Simple-grid">Simple grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Pie-Chart">Pie Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Stem-Plot">Stem Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interactive.html">Iris Interactive Plots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#data-preparation">Data Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../interactive.html#output">Output:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../SOMPlots_Cupy_Test.html">Cupy Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cupy.html">Cupy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#benefits">Benefits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#automatic-cupy-detection">Automatic CuPy Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../som.html">SOM — CPU Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../som.html#NNSOM.som.SOM"><code class="docutils literal notranslate"><span class="pre">SOM</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.dimensions"><code class="docutils literal notranslate"><span class="pre">SOM.dimensions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.numNeurons"><code class="docutils literal notranslate"><span class="pre">SOM.numNeurons</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.pos"><code class="docutils literal notranslate"><span class="pre">SOM.pos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.neuron_dist"><code class="docutils literal notranslate"><span class="pre">SOM.neuron_dist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.w"><code class="docutils literal notranslate"><span class="pre">SOM.w</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.sim_flag"><code class="docutils literal notranslate"><span class="pre">SOM.sim_flag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.quantization_error"><code class="docutils literal notranslate"><span class="pre">SOM.quantization_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.topological_error"><code class="docutils literal notranslate"><span class="pre">SOM.topological_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som.html#NNSOM.som.SOM.distortion_error"><code class="docutils literal notranslate"><span class="pre">SOM.distortion_error()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som.html#initialization-and-training">Initialization and training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.init_w.html">NNSOM.som.SOM.init_w</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.train.html">NNSOM.som.SOM.train</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.sim_som.html">NNSOM.som.SOM.sim_som</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som.html#clustering">Clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.cluster_data.html">NNSOM.som.SOM.cluster_data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som.html#quality-metrics">Quality metrics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.quantization_error.html">NNSOM.som.SOM.quantization_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.topological_error.html">NNSOM.som.SOM.topological_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.distortion_error.html">NNSOM.som.SOM.distortion_error</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som.html#persistence">Persistence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.save_pickle.html">NNSOM.som.SOM.save_pickle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som.SOM.load_pickle.html">NNSOM.som.SOM.load_pickle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../plots.html">SOMPlots — Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plots.html#NNSOM.plots.SOMPlots"><code class="docutils literal notranslate"><span class="pre">SOMPlots</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../plots.html#NNSOM.plots.SOMPlots.dimensions"><code class="docutils literal notranslate"><span class="pre">SOMPlots.dimensions</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../plots.html#constructor">Constructor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.__init__.html">NNSOM.plots.SOMPlots.__init__</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../plots.html#topology-plots">Topology plots</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_top.html">NNSOM.plots.SOMPlots.plt_top</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_top_num.html">NNSOM.plots.SOMPlots.plt_top_num</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../plots.html#hit-and-distance-maps">Hit and distance maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.hit_hist.html">NNSOM.plots.SOMPlots.hit_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.neuron_dist_plot.html">NNSOM.plots.SOMPlots.neuron_dist_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.gray_hist.html">NNSOM.plots.SOMPlots.gray_hist</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../plots.html#cluster-and-class-plots">Cluster and class plots</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.cmplx_hit_hist.html">NNSOM.plots.SOMPlots.cmplx_hit_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.custom_cmplx_hit_hist.html">NNSOM.plots.SOMPlots.custom_cmplx_hit_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.simple_grid.html">NNSOM.plots.SOMPlots.simple_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_nc.html">NNSOM.plots.SOMPlots.plt_nc</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../plots.html#color-coded-and-component-maps">Color-coded and component maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.color_hist.html">NNSOM.plots.SOMPlots.color_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_stem.html">NNSOM.plots.SOMPlots.plt_stem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_pie.html">NNSOM.plots.SOMPlots.plt_pie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_wgts.html">NNSOM.plots.SOMPlots.plt_wgts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_histogram.html">NNSOM.plots.SOMPlots.plt_histogram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_boxplot.html">NNSOM.plots.SOMPlots.plt_boxplot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_violin_plot.html">NNSOM.plots.SOMPlots.plt_violin_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plt_scatter.html">NNSOM.plots.SOMPlots.plt_scatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.component_positions.html">NNSOM.plots.SOMPlots.component_positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.component_planes.html">NNSOM.plots.SOMPlots.component_planes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.weight_as_image.html">NNSOM.plots.SOMPlots.weight_as_image</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../plots.html#interactive-plot">Interactive plot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.plots.SOMPlots.plot.html">NNSOM.plots.SOMPlots.plot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="../utils.html">Utility Functions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../utils.html#data-normalization">Data normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.preminmax.html">NNSOM.utils.preminmax</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../utils.html#topology-geometry">Topology geometry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.calculate_positions.html">NNSOM.utils.calculate_positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.distances.html">NNSOM.utils.distances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.normalize_position.html">NNSOM.utils.normalize_position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.spread_positions.html">NNSOM.utils.spread_positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_hexagon_shape.html">NNSOM.utils.get_hexagon_shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_edge_shape.html">NNSOM.utils.get_edge_shape</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../utils.html#coordinate-transforms">Coordinate transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.cart2pol.html">NNSOM.utils.cart2pol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.pol2cart.html">NNSOM.utils.pol2cart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.rotate_xy.html">NNSOM.utils.rotate_xy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../utils.html#cluster-data-extraction">Cluster data extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_cluster_data.html">NNSOM.utils.get_cluster_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_cluster_array.html">NNSOM.utils.get_cluster_array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_cluster_avg.html">NNSOM.utils.get_cluster_avg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.count_classes_in_cluster.html">NNSOM.utils.count_classes_in_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.cal_class_cluster_intersect.html">NNSOM.utils.cal_class_cluster_intersect</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../utils.html#class-and-label-analysis">Class and label analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.closest_class_cluster.html">NNSOM.utils.closest_class_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.majority_class_cluster.html">NNSOM.utils.majority_class_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_perc_cluster.html">NNSOM.utils.get_perc_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_color_labels.html">NNSOM.utils.get_color_labels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_edge_widths.html">NNSOM.utils.get_edge_widths</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../utils.html#error-and-misclassification-analysis">Error and misclassification analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_ind_misclassified.html">NNSOM.utils.get_ind_misclassified</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_perc_misclassified.html">NNSOM.utils.get_perc_misclassified</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_conf_indices.html">NNSOM.utils.get_conf_indices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_dominant_class_error_types.html">NNSOM.utils.get_dominant_class_error_types</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="../utils.html#miscellaneous">Miscellaneous</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.flatten.html">NNSOM.utils.flatten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.get_global_min_max.html">NNSOM.utils.get_global_min_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.utils.create_buttons.html">NNSOM.utils.create_buttons</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NNSOM.utils.calculate_button_positions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../som_gpu.html">SOMGpu — GPU Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu"><code class="docutils literal notranslate"><span class="pre">SOMGpu</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.dimensions"><code class="docutils literal notranslate"><span class="pre">SOMGpu.dimensions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.numNeurons"><code class="docutils literal notranslate"><span class="pre">SOMGpu.numNeurons</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.pos"><code class="docutils literal notranslate"><span class="pre">SOMGpu.pos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.neuron_dist"><code class="docutils literal notranslate"><span class="pre">SOMGpu.neuron_dist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.w"><code class="docutils literal notranslate"><span class="pre">SOMGpu.w</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.sim_flag"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sim_flag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.output"><code class="docutils literal notranslate"><span class="pre">SOMGpu.output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.norm_func"><code class="docutils literal notranslate"><span class="pre">SOMGpu.norm_func</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.sub_som"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sub_som</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.__init__"><code class="docutils literal notranslate"><span class="pre">SOMGpu.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.init_w"><code class="docutils literal notranslate"><span class="pre">SOMGpu.init_w()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.sim_som"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sim_som()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.train"><code class="docutils literal notranslate"><span class="pre">SOMGpu.train()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.quantization_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.quantization_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.topological_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.topological_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.distortion_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.distortion_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.save_pickle"><code class="docutils literal notranslate"><span class="pre">SOMGpu.save_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu.load_pickle"><code class="docutils literal notranslate"><span class="pre">SOMGpu.load_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu._normalize_position"><code class="docutils literal notranslate"><span class="pre">SOMGpu._normalize_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu._spread_positions"><code class="docutils literal notranslate"><span class="pre">SOMGpu._spread_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu._euclidean_distance"><code class="docutils literal notranslate"><span class="pre">SOMGpu._euclidean_distance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../som_gpu.html#NNSOM.som_gpu.SOMGpu._to_categorical"><code class="docutils literal notranslate"><span class="pre">SOMGpu._to_categorical()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som_gpu.html#initialization-and-training">Initialization and training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.init_w.html">NNSOM.som_gpu.SOMGpu.init_w</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.train.html">NNSOM.som_gpu.SOMGpu.train</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.sim_som.html">NNSOM.som_gpu.SOMGpu.sim_som</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som_gpu.html#clustering">Clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.cluster_data.html">NNSOM.som_gpu.SOMGpu.cluster_data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som_gpu.html#quality-metrics">Quality metrics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.quantization_error.html">NNSOM.som_gpu.SOMGpu.quantization_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.topological_error.html">NNSOM.som_gpu.SOMGpu.topological_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.distortion_error.html">NNSOM.som_gpu.SOMGpu.distortion_error</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../som_gpu.html#persistence">Persistence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.save_pickle.html">NNSOM.som_gpu.SOMGpu.save_pickle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NNSOM.som_gpu.SOMGpu.load_pickle.html">NNSOM.som_gpu.SOMGpu.load_pickle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id1">1.8.3 (2025)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id2">1.8.2 (2024)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id3">1.8.1 (2024)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id4">1.8.0 (2024)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../authors.html#contributors">Contributors</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NNSOM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../utils.html">Utility Functions</a></li>
+      <li class="breadcrumb-item active">NNSOM.utils.calculate_button_positions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/generated/NNSOM.utils.calculate_button_positions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nnsom-utils-calculate-button-positions">
+<h1>NNSOM.utils.calculate_button_positions<a class="headerlink" href="#nnsom-utils-calculate-button-positions" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="NNSOM.utils.calculate_button_positions">
+<span class="sig-prename descclassname"><span class="pre">NNSOM.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_button_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_buttons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sidebar_width</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/NNSOM/utils.html#calculate_button_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#NNSOM.utils.calculate_button_positions" title="Link to this definition"></a></dt>
+<dd><p>Calculate evenly-spaced button positions within a figure sidebar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_buttons</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of buttons to lay out.</p></li>
+<li><p><strong>sidebar_width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Fractional width of the sidebar relative to the figure width
+(e.g. <code class="docutils literal notranslate"><span class="pre">0.2</span></code> for 20 %).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>button_config</strong> – List of <code class="docutils literal notranslate"><span class="pre">[left,</span> <span class="pre">bottom,</span> <span class="pre">width,</span> <span class="pre">height]</span></code> axes rectangles in
+figure coordinates, one per button.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a> of [<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="NNSOM.utils.create_buttons.html" class="btn btn-neutral float-left" title="NNSOM.utils.create_buttons" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../som_gpu.html" class="btn btn-neutral float-right" title="SOMGpu — GPU Implementation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Martin Hagan, Amir Jafari, Lakshmi Sravya Chalapati, Ei Tanaka.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

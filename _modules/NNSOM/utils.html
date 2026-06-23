@@ -1,0 +1,1320 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NNSOM.utils &mdash; NNSOM Toolbox</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=bef60a29" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=82e6e318"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+      <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NNSOM
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#installing-from-pypi">Installing from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#installing-from-source">Installing from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#optional-dependencies">Optional dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#verifying-the-installation">Verifying the installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/installation.html#getting-help">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/quickstart.html">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-1-prepare-your-data">Step 1 — Prepare your data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-2-choose-the-grid-size">Step 2 — Choose the grid size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-3-initialize-and-train">Step 3 — Initialize and train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-4-cluster-the-data">Step 4 — Cluster the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#step-5-visualize-the-map">Step 5 — Visualize the map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#save-and-reload-the-trained-model">Save and reload the trained model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guide/quickstart.html#quality-metrics">Quality metrics</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html">Iris Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Training-SOM">Training SOM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_training.html#Save-the-trained-model">Save the trained model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Extract-SOM-Cluster-Details">Extract SOM Cluster Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Error-Analysis">Error Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_training.html#Visualize-the-SOM">Visualize the SOM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_training.html#SOM-Topology">SOM Topology</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_plot.html">Iris Plotting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Visualization">Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Data-Preparation">Data Preparation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Gray-Hist">Gray Hist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Color-Hist">Color Hist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Basic-Plots">Basic Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Pie-Chart">Pie Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Stem-Plot">Stem Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Histogram">Histogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Box-Plot">Box Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Violin-Plot">Violin Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Scatter-Plot">Scatter Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_plot.html#Component-Planes">Component Planes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html">Iris Post Training Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../iris_post_training_analysis.html#Visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Data-Preprocessing">Data Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Grey-Hist">Grey Hist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Color-hist">Color hist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Complex-hit-hist">Complex hit hist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Simple-grid">Simple grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Pie-Chart">Pie Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../iris_post_training_analysis.html#Stem-Plot">Stem Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interactive.html">Iris Interactive Plots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#data-preparation">Data Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../interactive.html#output">Output:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../interactive.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../SOMPlots_Cupy_Test.html">Cupy Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cupy.html">Cupy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#benefits">Benefits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#automatic-cupy-detection">Automatic CuPy Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cupy.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/som.html">SOM — CPU Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM"><code class="docutils literal notranslate"><span class="pre">SOM</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.dimensions"><code class="docutils literal notranslate"><span class="pre">SOM.dimensions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.numNeurons"><code class="docutils literal notranslate"><span class="pre">SOM.numNeurons</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.pos"><code class="docutils literal notranslate"><span class="pre">SOM.pos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.neuron_dist"><code class="docutils literal notranslate"><span class="pre">SOM.neuron_dist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.w"><code class="docutils literal notranslate"><span class="pre">SOM.w</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.sim_flag"><code class="docutils literal notranslate"><span class="pre">SOM.sim_flag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.quantization_error"><code class="docutils literal notranslate"><span class="pre">SOM.quantization_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.topological_error"><code class="docutils literal notranslate"><span class="pre">SOM.topological_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som.html#NNSOM.som.SOM.distortion_error"><code class="docutils literal notranslate"><span class="pre">SOM.distortion_error()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som.html#initialization-and-training">Initialization and training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.init_w.html">NNSOM.som.SOM.init_w</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.train.html">NNSOM.som.SOM.train</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.sim_som.html">NNSOM.som.SOM.sim_som</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som.html#clustering">Clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.cluster_data.html">NNSOM.som.SOM.cluster_data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som.html#quality-metrics">Quality metrics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.quantization_error.html">NNSOM.som.SOM.quantization_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.topological_error.html">NNSOM.som.SOM.topological_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.distortion_error.html">NNSOM.som.SOM.distortion_error</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som.html#persistence">Persistence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.save_pickle.html">NNSOM.som.SOM.save_pickle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som.SOM.load_pickle.html">NNSOM.som.SOM.load_pickle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/plots.html">SOMPlots — Visualization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/plots.html#NNSOM.plots.SOMPlots"><code class="docutils literal notranslate"><span class="pre">SOMPlots</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/plots.html#NNSOM.plots.SOMPlots.dimensions"><code class="docutils literal notranslate"><span class="pre">SOMPlots.dimensions</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/plots.html#constructor">Constructor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.__init__.html">NNSOM.plots.SOMPlots.__init__</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/plots.html#topology-plots">Topology plots</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_top.html">NNSOM.plots.SOMPlots.plt_top</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_top_num.html">NNSOM.plots.SOMPlots.plt_top_num</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/plots.html#hit-and-distance-maps">Hit and distance maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.hit_hist.html">NNSOM.plots.SOMPlots.hit_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.neuron_dist_plot.html">NNSOM.plots.SOMPlots.neuron_dist_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.gray_hist.html">NNSOM.plots.SOMPlots.gray_hist</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/plots.html#cluster-and-class-plots">Cluster and class plots</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.cmplx_hit_hist.html">NNSOM.plots.SOMPlots.cmplx_hit_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.custom_cmplx_hit_hist.html">NNSOM.plots.SOMPlots.custom_cmplx_hit_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.simple_grid.html">NNSOM.plots.SOMPlots.simple_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_nc.html">NNSOM.plots.SOMPlots.plt_nc</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/plots.html#color-coded-and-component-maps">Color-coded and component maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.color_hist.html">NNSOM.plots.SOMPlots.color_hist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_stem.html">NNSOM.plots.SOMPlots.plt_stem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_pie.html">NNSOM.plots.SOMPlots.plt_pie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_wgts.html">NNSOM.plots.SOMPlots.plt_wgts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_histogram.html">NNSOM.plots.SOMPlots.plt_histogram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_boxplot.html">NNSOM.plots.SOMPlots.plt_boxplot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_violin_plot.html">NNSOM.plots.SOMPlots.plt_violin_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plt_scatter.html">NNSOM.plots.SOMPlots.plt_scatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.component_positions.html">NNSOM.plots.SOMPlots.component_positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.component_planes.html">NNSOM.plots.SOMPlots.component_planes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.weight_as_image.html">NNSOM.plots.SOMPlots.weight_as_image</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/plots.html#interactive-plot">Interactive plot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.plots.SOMPlots.plot.html">NNSOM.plots.SOMPlots.plot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/utils.html">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils.html#data-normalization">Data normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.preminmax.html">NNSOM.utils.preminmax</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils.html#topology-geometry">Topology geometry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.calculate_positions.html">NNSOM.utils.calculate_positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.distances.html">NNSOM.utils.distances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.normalize_position.html">NNSOM.utils.normalize_position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.spread_positions.html">NNSOM.utils.spread_positions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_hexagon_shape.html">NNSOM.utils.get_hexagon_shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_edge_shape.html">NNSOM.utils.get_edge_shape</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils.html#coordinate-transforms">Coordinate transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.cart2pol.html">NNSOM.utils.cart2pol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.pol2cart.html">NNSOM.utils.pol2cart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.rotate_xy.html">NNSOM.utils.rotate_xy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils.html#cluster-data-extraction">Cluster data extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_cluster_data.html">NNSOM.utils.get_cluster_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_cluster_array.html">NNSOM.utils.get_cluster_array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_cluster_avg.html">NNSOM.utils.get_cluster_avg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.count_classes_in_cluster.html">NNSOM.utils.count_classes_in_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.cal_class_cluster_intersect.html">NNSOM.utils.cal_class_cluster_intersect</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils.html#class-and-label-analysis">Class and label analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.closest_class_cluster.html">NNSOM.utils.closest_class_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.majority_class_cluster.html">NNSOM.utils.majority_class_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_perc_cluster.html">NNSOM.utils.get_perc_cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_color_labels.html">NNSOM.utils.get_color_labels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_edge_widths.html">NNSOM.utils.get_edge_widths</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils.html#error-and-misclassification-analysis">Error and misclassification analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_ind_misclassified.html">NNSOM.utils.get_ind_misclassified</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_perc_misclassified.html">NNSOM.utils.get_perc_misclassified</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_conf_indices.html">NNSOM.utils.get_conf_indices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_dominant_class_error_types.html">NNSOM.utils.get_dominant_class_error_types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils.html#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.flatten.html">NNSOM.utils.flatten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.get_global_min_max.html">NNSOM.utils.get_global_min_max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.create_buttons.html">NNSOM.utils.create_buttons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.utils.calculate_button_positions.html">NNSOM.utils.calculate_button_positions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/som_gpu.html">SOMGpu — GPU Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu"><code class="docutils literal notranslate"><span class="pre">SOMGpu</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.dimensions"><code class="docutils literal notranslate"><span class="pre">SOMGpu.dimensions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.numNeurons"><code class="docutils literal notranslate"><span class="pre">SOMGpu.numNeurons</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.pos"><code class="docutils literal notranslate"><span class="pre">SOMGpu.pos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.neuron_dist"><code class="docutils literal notranslate"><span class="pre">SOMGpu.neuron_dist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.w"><code class="docutils literal notranslate"><span class="pre">SOMGpu.w</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.sim_flag"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sim_flag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.output"><code class="docutils literal notranslate"><span class="pre">SOMGpu.output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.norm_func"><code class="docutils literal notranslate"><span class="pre">SOMGpu.norm_func</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.sub_som"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sub_som</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.__init__"><code class="docutils literal notranslate"><span class="pre">SOMGpu.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.init_w"><code class="docutils literal notranslate"><span class="pre">SOMGpu.init_w()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.sim_som"><code class="docutils literal notranslate"><span class="pre">SOMGpu.sim_som()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.train"><code class="docutils literal notranslate"><span class="pre">SOMGpu.train()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.quantization_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.quantization_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.topological_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.topological_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.distortion_error"><code class="docutils literal notranslate"><span class="pre">SOMGpu.distortion_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.save_pickle"><code class="docutils literal notranslate"><span class="pre">SOMGpu.save_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu.load_pickle"><code class="docutils literal notranslate"><span class="pre">SOMGpu.load_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu._normalize_position"><code class="docutils literal notranslate"><span class="pre">SOMGpu._normalize_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu._spread_positions"><code class="docutils literal notranslate"><span class="pre">SOMGpu._spread_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu._euclidean_distance"><code class="docutils literal notranslate"><span class="pre">SOMGpu._euclidean_distance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/som_gpu.html#NNSOM.som_gpu.SOMGpu._to_categorical"><code class="docutils literal notranslate"><span class="pre">SOMGpu._to_categorical()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som_gpu.html#initialization-and-training">Initialization and training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.init_w.html">NNSOM.som_gpu.SOMGpu.init_w</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.train.html">NNSOM.som_gpu.SOMGpu.train</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.sim_som.html">NNSOM.som_gpu.SOMGpu.sim_som</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som_gpu.html#clustering">Clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.cluster_data.html">NNSOM.som_gpu.SOMGpu.cluster_data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som_gpu.html#quality-metrics">Quality metrics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.quantization_error.html">NNSOM.som_gpu.SOMGpu.quantization_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.topological_error.html">NNSOM.som_gpu.SOMGpu.topological_error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.distortion_error.html">NNSOM.som_gpu.SOMGpu.distortion_error</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/som_gpu.html#persistence">Persistence</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.save_pickle.html">NNSOM.som_gpu.SOMGpu.save_pickle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/generated/NNSOM.som_gpu.SOMGpu.load_pickle.html">NNSOM.som_gpu.SOMGpu.load_pickle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id1">1.8.3 (2025)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id2">1.8.2 (2024)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id3">1.8.1 (2024)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../changelog.html#id4">1.8.0 (2024)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../authors.html#contributors">Contributors</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NNSOM</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">NNSOM.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for NNSOM.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">cdist</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">sparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.widgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Button</span>
+
+
+<div class="viewcode-block" id="preminmax">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.preminmax.html#NNSOM.utils.preminmax">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">preminmax</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize input data row-wise to the range [-1, 1].</span>
+
+<span class="sd">    If a row&#39;s minimum equals its maximum, that row is mapped to the</span>
+<span class="sd">    range ``[-1, 1]`` by treating the single value as the midpoint</span>
+<span class="sd">    (min shifted by -1, max shifted by +1).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p : np.ndarray, shape (R, Q)</span>
+<span class="sd">        Input matrix with R features and Q samples.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pn : np.ndarray, shape (R, Q)</span>
+<span class="sd">        Normalized input matrix with values in [-1, 1].</span>
+<span class="sd">    minp : np.ndarray, shape (R,)</span>
+<span class="sd">        Per-row minimum values of the original data.</span>
+<span class="sd">    maxp : np.ndarray, shape (R,)</span>
+<span class="sd">        Per-row maximum values of the original data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">minp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">maxp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">equal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">minp</span><span class="p">,</span> <span class="n">maxp</span><span class="p">)</span>
+    <span class="n">nequal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">equal</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">equal</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Some maximums and minimums are equal. Those inputs won&#39;&#39;t be transformed.&#39;</span><span class="p">)</span>
+        <span class="n">minp0</span> <span class="o">=</span> <span class="n">minp</span><span class="o">*</span><span class="n">nequal</span> <span class="o">-</span> <span class="mi">1</span><span class="o">*</span><span class="n">equal</span>
+        <span class="n">maxp0</span> <span class="o">=</span> <span class="n">maxp</span><span class="o">*</span><span class="n">nequal</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="n">equal</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">minp0</span> <span class="o">=</span> <span class="n">minp</span>
+        <span class="n">maxp0</span> <span class="o">=</span> <span class="n">maxp</span>
+
+    <span class="n">minp0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">minp0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">maxp0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">maxp0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">pn</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">minp0</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">maxp0</span><span class="o">-</span><span class="n">minp0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">pn</span><span class="p">,</span> <span class="n">minp</span><span class="p">,</span> <span class="n">maxp</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_positions">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.calculate_positions.html#NNSOM.utils.calculate_positions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_positions</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the 2-D hexagonal grid positions of SOM neurons.</span>
+
+<span class="sd">    Lays out neurons in a hexagonal topology where odd columns are</span>
+<span class="sd">    offset by half a unit in the x-direction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim : array-like of int, length 2</span>
+<span class="sd">        Grid dimensions ``(rows, cols)`` of the SOM.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    position : np.ndarray, shape (2, rows*cols)</span>
+<span class="sd">        X/Y coordinates of each neuron.  Row 0 is the x-axis,</span>
+<span class="sd">        row 1 is the y-axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dims</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dim</span><span class="p">)))</span>
+    <span class="n">len1</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">center</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">dimi</span> <span class="o">=</span> <span class="n">dim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">newlen</span> <span class="o">=</span> <span class="n">len1</span> <span class="o">*</span> <span class="n">dimi</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">center</span><span class="o">*</span><span class="n">center</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dimi</span><span class="p">):</span>
+                <span class="n">ishift</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)]</span>
+                <span class="n">doshift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ishift</span><span class="o">*</span><span class="n">len1</span><span class="p">)</span>
+                <span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">len1</span><span class="p">)</span><span class="o">+</span><span class="n">len1</span><span class="o">*</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">len1</span><span class="p">)]</span> <span class="o">+</span> <span class="n">doshift</span>
+
+        <span class="n">posi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">dimi</span><span class="p">))</span> <span class="o">*</span> <span class="n">offset</span>
+        <span class="n">ind2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">newlen</span><span class="p">)</span> <span class="o">/</span> <span class="n">len1</span><span class="p">)</span>
+        <span class="n">ind2</span> <span class="o">=</span> <span class="n">ind2</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">position</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">newlen</span><span class="p">)]</span> <span class="o">=</span> <span class="n">posi</span><span class="p">[</span><span class="n">ind2</span><span class="p">]</span>
+
+        <span class="n">len1</span> <span class="o">=</span> <span class="n">newlen</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+    <span class="k">return</span> <span class="n">position</span></div>
+
+
+
+<div class="viewcode-block" id="cart2pol">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.cart2pol.html#NNSOM.utils.cart2pol">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cart2pol</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert Cartesian coordinates to polar coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : float or np.ndarray</span>
+<span class="sd">        X-coordinate(s).</span>
+<span class="sd">    y : float or np.ndarray</span>
+<span class="sd">        Y-coordinate(s).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    theta : float or np.ndarray</span>
+<span class="sd">        Angle in radians, measured counter-clockwise from the positive</span>
+<span class="sd">        x-axis (output of ``np.arctan2``).</span>
+<span class="sd">    rho : float or np.ndarray</span>
+<span class="sd">        Radial distance(s) from the origin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">theta</span><span class="p">,</span> <span class="n">rho</span></div>
+
+
+
+<div class="viewcode-block" id="pol2cart">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.pol2cart.html#NNSOM.utils.pol2cart">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pol2cart</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert polar coordinates to Cartesian coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    theta : float or np.ndarray</span>
+<span class="sd">        Angle(s) in radians.</span>
+<span class="sd">    rho : float or np.ndarray</span>
+<span class="sd">        Radial distance(s) from the origin.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : float or np.ndarray</span>
+<span class="sd">        X-coordinate(s).</span>
+<span class="sd">    y : float or np.ndarray</span>
+<span class="sd">        Y-coordinate(s).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+
+<div class="viewcode-block" id="rotate_xy">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.rotate_xy.html#NNSOM.utils.rotate_xy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rotate_xy</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate 2-D coordinates by a given angle.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x1 : float or np.ndarray</span>
+<span class="sd">        Original X-coordinate(s).</span>
+<span class="sd">    y1 : float or np.ndarray</span>
+<span class="sd">        Original Y-coordinate(s).</span>
+<span class="sd">    angle : float</span>
+<span class="sd">        Rotation angle in radians (counter-clockwise).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x2 : float or np.ndarray</span>
+<span class="sd">        Rotated X-coordinate(s).</span>
+<span class="sd">    y2 : float or np.ndarray</span>
+<span class="sd">        Rotated Y-coordinate(s).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">cart2pol</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">angle</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">pol2cart</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span></div>
+
+
+
+<div class="viewcode-block" id="normalize_position">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.normalize_position.html#NNSOM.utils.normalize_position">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_position</span><span class="p">(</span><span class="n">position</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize neuron positions to the range [-1, 1] along each axis.</span>
+
+<span class="sd">    If the minimum and maximum positions along an axis are equal, that</span>
+<span class="sd">    axis is left unchanged (division by 1 instead of 0).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    position : np.ndarray, shape (2, N)</span>
+<span class="sd">        Raw neuron positions; row 0 is x, row 1 is y.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    posit : np.ndarray, shape (2, N)</span>
+<span class="sd">        Normalized positions with values in [-1, 1].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shap</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">numPos</span> <span class="o">=</span> <span class="n">shap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">minPos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">maxPos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">difPos</span> <span class="o">=</span> <span class="n">maxPos</span> <span class="o">-</span> <span class="n">minPos</span>
+    <span class="n">equal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">minPos</span><span class="p">,</span> <span class="n">maxPos</span><span class="p">)</span>
+    <span class="n">difPos</span><span class="p">[</span><span class="n">equal</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">minPos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">minPos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">minPos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">minPos</span><span class="p">,</span> <span class="n">numPos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">difPos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">difPos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">difPos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">difPos</span><span class="p">,</span> <span class="n">numPos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">posit</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">position</span> <span class="o">-</span> <span class="n">minPos</span><span class="p">)</span><span class="o">/</span><span class="n">difPos</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">posit</span></div>
+
+
+
+<div class="viewcode-block" id="spread_positions">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.spread_positions.html#NNSOM.utils.spread_positions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spread_positions</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">positionMean</span><span class="p">,</span> <span class="n">positionBasis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map normalized neuron positions into data space using a basis.</span>
+
+<span class="sd">    Applies the affine transform ``positionMean + positionBasis @ position``</span>
+<span class="sd">    to project unit-square positions into the principal-component subspace</span>
+<span class="sd">    of the training data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    position : np.ndarray, shape (2, N)</span>
+<span class="sd">        Normalized neuron positions.</span>
+<span class="sd">    positionMean : np.ndarray, shape (R, 1)</span>
+<span class="sd">        Mean of the training data (column vector), used as the translation.</span>
+<span class="sd">    positionBasis : np.ndarray, shape (R, 2)</span>
+<span class="sd">        Basis matrix (two principal components) used for the linear map.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    position1 : np.ndarray, shape (R, N)</span>
+<span class="sd">        Neuron positions expressed in data space.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shappos</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">numPos</span> <span class="o">=</span> <span class="n">shappos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">position1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">positionMean</span><span class="p">,</span> <span class="n">numPos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">positionBasis</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">position1</span></div>
+
+
+
+<div class="viewcode-block" id="distances">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.distances.html#NNSOM.utils.distances">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">distances</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute shortest-path distances between all pairs of SOM neurons.</span>
+
+<span class="sd">    Builds an adjacency graph where two neurons are connected if their</span>
+<span class="sd">    Euclidean distance is at most 1 (i.e., immediate hex neighbours),</span>
+<span class="sd">    then uses Floyd-Warshall to compute all-pairs shortest paths.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pos : np.ndarray, shape (2, N)</span>
+<span class="sd">        Neuron positions as returned by :func:`calculate_positions`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dist : np.ndarray, shape (N, N)</span>
+<span class="sd">        Matrix of topological (graph-hop) distances between neurons.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">posT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">posT</span><span class="p">,</span> <span class="n">posT</span><span class="p">,</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+
+    <span class="n">link</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">&lt;=</span> <span class="mf">1.00001</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="n">link</span><span class="p">)</span>
+
+    <span class="n">g</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">floyd_warshall_numpy</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dist</span></div>
+
+
+
+<div class="viewcode-block" id="get_hexagon_shape">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_hexagon_shape.html#NNSOM.utils.get_hexagon_shape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_hexagon_shape</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the vertex offsets for drawing a unit hexagon.</span>
+
+<span class="sd">    The hexagon is centred at the origin. Add the neuron&#39;s ``(x, y)``</span>
+<span class="sd">    position to these offsets to draw its hexagonal patch.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    shapex : np.ndarray, shape (6,)</span>
+<span class="sd">        X-offsets of the six hexagon vertices.</span>
+<span class="sd">    shapey : np.ndarray, shape (6,)</span>
+<span class="sd">        Y-offsets of the six hexagon vertices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shapex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">shapey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="n">shapex</span><span class="p">,</span> <span class="n">shapey</span></div>
+
+
+
+<div class="viewcode-block" id="get_edge_shape">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_edge_shape.html#NNSOM.utils.get_edge_shape">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_edge_shape</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the vertex offsets for drawing the elongated diamond between two neurons.</span>
+
+<span class="sd">    Used to render the edge between adjacent clusters in topology plots.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    edgex : np.ndarray, shape (4,)</span>
+<span class="sd">        X-offsets of the four diamond vertices.</span>
+<span class="sd">    edgey : np.ndarray, shape (4,)</span>
+<span class="sd">        Y-offsets of the four diamond vertices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">edgex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">edgey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+
+    <span class="k">return</span> <span class="n">edgex</span><span class="p">,</span> <span class="n">edgey</span></div>
+
+
+
+<span class="c1"># Helper Functions to extract information from the input data for passing to the plot</span>
+<div class="viewcode-block" id="get_cluster_data">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_cluster_data.html#NNSOM.utils.get_cluster_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cluster_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For each cluster, extract the corresponding data points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : np.ndarray</span>
+<span class="sd">        The dataset from which to extract cluster data.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list where each element holds the indices of data points</span>
+<span class="sd">        belonging to that cluster.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cluster_data_list : list of np.ndarray</span>
+<span class="sd">        A list where each element is an array of data points for one</span>
+<span class="sd">        cluster.  Empty clusters produce an empty array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cluster_data_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">cluster_indices</span> <span class="ow">in</span> <span class="n">clust</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cluster_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">cluster_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">cluster_indices</span><span class="p">]</span>
+            <span class="n">cluster_data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cluster_data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cluster_data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
+
+    <span class="k">return</span> <span class="n">cluster_data_list</span></div>
+
+
+
+<div class="viewcode-block" id="get_cluster_array">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_cluster_array.html#NNSOM.utils.get_cluster_array">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cluster_array</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an object array whose elements are per-cluster feature values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    feature : array-like, shape (N,)</span>
+<span class="sd">        Feature values for all data points.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays sorted by distance to the winning</span>
+<span class="sd">        neuron.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cluster_array : np.ndarray of object, shape (numNeurons,)</span>
+<span class="sd">        Each element is a 1-D array of feature values for that cluster.</span>
+<span class="sd">        Empty clusters store an empty array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cluster_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cluster_indices</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clust</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cluster_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature</span><span class="p">[</span><span class="n">cluster_indices</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cluster_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="k">return</span> <span class="n">cluster_array</span></div>
+
+
+
+<div class="viewcode-block" id="get_cluster_avg">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_cluster_avg.html#NNSOM.utils.get_cluster_avg">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cluster_avg</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the mean feature value for each cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    feature : array-like, shape (N,)</span>
+<span class="sd">        Feature values for all data points.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays sorted by distance to the winning</span>
+<span class="sd">        neuron.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cluster_avg : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Mean feature value per cluster.  Zero for empty clusters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cluster_array</span> <span class="o">=</span> <span class="n">get_cluster_array</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">)</span>
+    <span class="n">cluster_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cluster_array</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cluster_array</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cluster_avg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cluster_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">cluster_avg</span></div>
+
+
+
+<div class="viewcode-block" id="closest_class_cluster">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.closest_class_cluster.html#NNSOM.utils.closest_class_cluster">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">closest_class_cluster</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the class of the closest data point in each cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cat_feature : array-like, shape (N,)</span>
+<span class="sd">        Categorical feature values for all data points.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays sorted by distance to the winning</span>
+<span class="sd">        neuron (closest first).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    closest_class : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Class label of the nearest data point in each cluster.</span>
+<span class="sd">        ``None`` for empty clusters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">closest_class</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">)):</span>
+        <span class="n">cluster_indices</span> <span class="o">=</span> <span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">closest_class</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cat_feature</span><span class="p">[</span><span class="n">cluster_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">closest_class</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">closest_class</span></div>
+
+
+
+<div class="viewcode-block" id="majority_class_cluster">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.majority_class_cluster.html#NNSOM.utils.majority_class_cluster">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">majority_class_cluster</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the majority class label for each cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cat_feature : array-like of int, shape (N,)</span>
+<span class="sd">        Integer-encoded categorical feature for all data points.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays sorted by distance to the winning</span>
+<span class="sd">        neuron.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    majority_class : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Most frequent class label in each cluster.</span>
+<span class="sd">        ``None`` for empty clusters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">majority_class</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">)):</span>
+        <span class="n">cluster_indices</span> <span class="o">=</span> <span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">majority_class</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">[</span><span class="n">cluster_indices</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">majority_class</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">majority_class</span></div>
+
+
+
+<div class="viewcode-block" id="get_perc_cluster">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_perc_cluster.html#NNSOM.utils.get_perc_cluster">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_perc_cluster</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the percentage of a target class in each cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cat_feature : array-like, shape (N,)</span>
+<span class="sd">        Categorical feature values for all data points.</span>
+<span class="sd">    target : int or str</span>
+<span class="sd">        The class label whose proportion is computed.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays sorted by distance to the winning</span>
+<span class="sd">        neuron.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cluster_array : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Percentage (0–100) of ``target`` class in each cluster.</span>
+<span class="sd">        Zero for empty clusters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cluster_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">)):</span>
+        <span class="n">cluster_indices</span> <span class="o">=</span> <span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cluster_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">[</span><span class="n">cluster_indices</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cluster_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">cluster_array</span> <span class="o">*</span> <span class="mi">100</span></div>
+
+
+
+<div class="viewcode-block" id="count_classes_in_cluster">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.count_classes_in_cluster.html#NNSOM.utils.count_classes_in_cluster">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_classes_in_cluster</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count occurrences of each class in every cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cat_feature : array-like, shape (N,)</span>
+<span class="sd">        Categorical feature values for all data points.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cluster_counts : np.ndarray of int, shape (numNeurons, numClasses)</span>
+<span class="sd">        Entry ``[i, j]`` is the count of class ``j`` in cluster ``i``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">unique_classes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">num_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">)</span>
+
+    <span class="n">cluster_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">),</span> <span class="n">num_classes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">indices</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clust</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cluster_counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cat_feature</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">==</span> <span class="bp">cls</span><span class="p">)</span> <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">unique_classes</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cluster_counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cluster_counts</span></div>
+
+
+
+<div class="viewcode-block" id="cal_class_cluster_intersect">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.cal_class_cluster_intersect.html#NNSOM.utils.cal_class_cluster_intersect">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cal_class_cluster_intersect</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the intersection sizes of each class with each neuron cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    clust : list of list of int</span>
+<span class="sd">        A collection of neuron clusters; each element is a list of</span>
+<span class="sd">        data-point indices assigned to that neuron.</span>
+<span class="sd">    *args : array-like of int</span>
+<span class="sd">        One array per class, each holding the data-point indices that</span>
+<span class="sd">        belong to that class.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cluster_sizes_matrix : np.ndarray, shape (numNeurons, numClasses)</span>
+<span class="sd">        Entry ``[i, j]`` is the number of data points in class ``j``</span>
+<span class="sd">        that are also in neuron cluster ``i``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; clust = [[4, 5, 9], [1, 7], [2, 10, 11], [3, 6, 8]]</span>
+<span class="sd">    &gt;&gt;&gt; ind1 = np.array([1, 2, 3])</span>
+<span class="sd">    &gt;&gt;&gt; ind2 = np.array([4, 5, 6])</span>
+<span class="sd">    &gt;&gt;&gt; ind3 = np.array([7, 8, 9])</span>
+<span class="sd">    &gt;&gt;&gt; ind4 = np.array([10, 11, 12])</span>
+<span class="sd">    &gt;&gt;&gt; cal_class_cluster_intersect(clust, ind1, ind2, ind3, ind4)</span>
+<span class="sd">    array([[0, 2, 1, 0],</span>
+<span class="sd">           [1, 0, 1, 0],</span>
+<span class="sd">           [1, 0, 0, 2],</span>
+<span class="sd">           [1, 1, 1, 0]])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">numst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="n">cluster_sizes_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">numst</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">numst</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clust</span><span class="p">):</span>
+            <span class="n">cluster_sizes_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">ind</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">cluster_sizes_matrix</span><span class="o">.</span><span class="n">T</span></div>
+
+
+
+<span class="c1"># Helper function to extract information from the post-training model for passing to the plot</span>
+<div class="viewcode-block" id="get_ind_misclassified">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_ind_misclassified.html#NNSOM.utils.get_ind_misclassified">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ind_misclassified</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return indices of misclassified samples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    target : array-like, shape (N,)</span>
+<span class="sd">        True class labels.</span>
+<span class="sd">    prediction : array-like, shape (N,)</span>
+<span class="sd">        Predicted class labels.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    misclassified_indices : np.ndarray of int</span>
+<span class="sd">        Indices where ``target != prediction``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">misclassified_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">target</span> <span class="o">!=</span> <span class="n">prediction</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">misclassified_indices</span></div>
+
+
+
+<div class="viewcode-block" id="get_perc_misclassified">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_perc_misclassified.html#NNSOM.utils.get_perc_misclassified">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_perc_misclassified</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the percentage of misclassified samples in each cluster.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    target : array-like, shape (N,)</span>
+<span class="sd">        True class labels.</span>
+<span class="sd">    prediction : array-like, shape (N,)</span>
+<span class="sd">        Predicted class labels.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    proportion_misclassified : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Percentage (0–100) of misclassified samples per cluster.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">misclassified_indices</span> <span class="o">=</span> <span class="n">get_ind_misclassified</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+
+    <span class="n">proportion_misclassified</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cluster_indices</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clust</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">misclassified_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">,</span> <span class="n">misclassified_indices</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">proportion_misclassified</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">misclassified_count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="k">return</span> <span class="n">proportion_misclassified</span></div>
+
+
+
+<div class="viewcode-block" id="get_conf_indices">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_conf_indices.html#NNSOM.utils.get_conf_indices">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_conf_indices</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">target_class</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return TP, TN, FP, FN indices for a given class in a binary sense.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    target : array-like, shape (N,)</span>
+<span class="sd">        True class labels.</span>
+<span class="sd">    results : array-like, shape (N,)</span>
+<span class="sd">        Predicted class labels.</span>
+<span class="sd">    target_class : int</span>
+<span class="sd">        The class label treated as the positive class.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tp_index : np.ndarray of int</span>
+<span class="sd">        Indices of True Positives.</span>
+<span class="sd">    tn_index : np.ndarray of int</span>
+<span class="sd">        Indices of True Negatives.</span>
+<span class="sd">    fp_index : np.ndarray of int</span>
+<span class="sd">        Indices of False Positives.</span>
+<span class="sd">    fn_index : np.ndarray of int</span>
+<span class="sd">        Indices of False Negatives.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tp_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">target</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">tn_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">target</span> <span class="o">!=</span> <span class="n">target_class</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span> <span class="o">!=</span> <span class="n">target_class</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fp_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">target</span> <span class="o">!=</span> <span class="n">target_class</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fn_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">target</span> <span class="o">==</span> <span class="n">target_class</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span> <span class="o">!=</span> <span class="n">target_class</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">tp_index</span><span class="p">,</span> <span class="n">tn_index</span><span class="p">,</span> <span class="n">fp_index</span><span class="p">,</span> <span class="n">fn_index</span></div>
+
+
+
+<div class="viewcode-block" id="get_dominant_class_error_types">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_dominant_class_error_types.html#NNSOM.utils.get_dominant_class_error_types">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dominant_class_error_types</span><span class="p">(</span><span class="n">dominant_classes</span><span class="p">,</span> <span class="n">error_types</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map each cluster&#39;s dominant class to its majority error type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dominant_classes : array-like, shape (numNeurons,)</span>
+<span class="sd">        Dominant class label for each cluster.  May contain ``NaN``</span>
+<span class="sd">        for empty clusters.</span>
+<span class="sd">    error_types : list of array-like, each shape (numNeurons,)</span>
+<span class="sd">        One array per class; ``error_types[k][i]`` is the majority</span>
+<span class="sd">        error type in cluster ``i`` for class ``k``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    output_error_types : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Majority error type per cluster, selected according to the</span>
+<span class="sd">        dominant class.  ``NaN`` where the dominant class is ``NaN``.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If fewer ``error_types`` arrays are provided than required by</span>
+<span class="sd">        the maximum dominant class index, or if a dominant class index</span>
+<span class="sd">        is out of bounds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_types</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">dc</span> <span class="k">for</span> <span class="n">dc</span> <span class="ow">in</span> <span class="n">dominant_classes</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">dc</span><span class="p">)])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough error type arrays provided for all classes.&quot;</span><span class="p">)</span>
+
+    <span class="n">output_error_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dominant_classes</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">dominant_class</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dominant_classes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">dominant_class</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dominant_class</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_types</span><span class="p">):</span>
+                <span class="n">output_error_types</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_types</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">dominant_class</span><span class="p">)][</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Class </span><span class="si">{</span><span class="n">dominant_class</span><span class="si">}</span><span class="s2"> is out of the provided error type array bounds.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output_error_types</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="k">return</span> <span class="n">output_error_types</span></div>
+
+
+
+<div class="viewcode-block" id="flatten">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.flatten.html#NNSOM.utils.flatten">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively flatten a nested list of numbers into a single list.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : int, float, or nested list</span>
+<span class="sd">        A number or arbitrarily nested list of numbers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    flat_list : list of float</span>
+<span class="sd">        All numbers from ``data`` in depth-first order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flat_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">flat_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">flat_list</span></div>
+
+
+
+<div class="viewcode-block" id="get_global_min_max">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_global_min_max.html#NNSOM.utils.get_global_min_max">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_global_min_max</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the global minimum and maximum in a nested list.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : nested list of numbers</span>
+<span class="sd">        Input data of arbitrary nesting depth.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    min_value : float</span>
+<span class="sd">        Minimum value across all elements.</span>
+<span class="sd">    max_value : float</span>
+<span class="sd">        Maximum value across all elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flat_list</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">flat_list</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">flat_list</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_edge_widths">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_edge_widths.html#NNSOM.utils.get_edge_widths">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_edge_widths</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">clust</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate edge line widths per cluster based on class membership fraction.</span>
+
+<span class="sd">    Width is proportional to the fraction of cluster members that belong</span>
+<span class="sd">    to the given class, scaled to a maximum of 20.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    indices : array-like of int</span>
+<span class="sd">        Indices of data points belonging to the target class.</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lwidth : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Line width for each cluster edge.  ``None`` for empty clusters</span>
+<span class="sd">        or clusters with no class members.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lwidth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">indices</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lwidth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">indices</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lwidth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lwidth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">lwidth</span></div>
+
+
+
+<div class="viewcode-block" id="get_color_labels">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.get_color_labels.html#NNSOM.utils.get_color_labels">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_color_labels</span><span class="p">(</span><span class="n">clust</span><span class="p">,</span> <span class="o">*</span><span class="n">listOfIndices</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a colour label per cluster based on majority class membership.</span>
+
+<span class="sd">    When a single class index array is provided, clusters where that</span>
+<span class="sd">    class is the majority are labelled ``1``; others are labelled ``0``.</span>
+<span class="sd">    When multiple arrays are provided, each cluster is labelled with the</span>
+<span class="sd">    index of the class that has the most members in it.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    clust : list of array-like</span>
+<span class="sd">        A list of cluster index arrays.</span>
+<span class="sd">    *listOfIndices : array-like of int</span>
+<span class="sd">        One array per class holding data-point indices for that class.</span>
+<span class="sd">        At least one array is required.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    color_labels : np.ndarray, shape (numNeurons,)</span>
+<span class="sd">        Integer colour label for each cluster.  ``None`` for empty</span>
+<span class="sd">        clusters.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If no class index arrays are provided, or if any argument is</span>
+<span class="sd">        not a list or ``np.ndarray``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">listOfIndices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;At least one class indices must be provided.&#39;</span><span class="p">)</span>
+
+    <span class="n">numst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">listOfIndices</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The arguments must be a list or numpy array.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">numst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+    <span class="n">color_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">numst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">num_class</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">indices</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">num_class</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">color_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">color_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">color_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">intersection</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">clust</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">numst</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">numst</span><span class="p">))]</span>
+                <span class="n">color_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">intersection</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">color_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">color_labels</span></div>
+
+
+
+<span class="c1"># Helper functions to create button objects in the interactive plot</span>
+<div class="viewcode-block" id="create_buttons">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.create_buttons.html#NNSOM.utils.create_buttons">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_buttons</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">button_types</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create labelled matplotlib Button widgets in a sidebar.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fig : matplotlib.figure.Figure</span>
+<span class="sd">        The figure to which buttons are added.</span>
+<span class="sd">    button_types : list of str</span>
+<span class="sd">        Labels for the buttons to create.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    buttons : dict of {str: matplotlib.widgets.Button}</span>
+<span class="sd">        Mapping from button label to its ``Button`` widget.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sidebar_width</span> <span class="o">=</span> <span class="mf">0.2</span>
+    <span class="n">button_config</span> <span class="o">=</span> <span class="n">calculate_button_positions</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">button_types</span><span class="p">),</span> <span class="n">sidebar_width</span><span class="p">)</span>
+
+    <span class="n">buttons</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">button_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">button_types</span><span class="p">):</span>
+        <span class="n">button_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">(</span><span class="n">button_config</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">buttons</span><span class="p">[</span><span class="n">button_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">button_ax</span><span class="p">,</span> <span class="n">button_type</span><span class="o">.</span><span class="n">capitalize</span><span class="p">(),</span> <span class="n">hovercolor</span><span class="o">=</span><span class="s1">&#39;0.975&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">buttons</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_button_positions">
+<a class="viewcode-back" href="../../api/generated/NNSOM.utils.calculate_button_positions.html#NNSOM.utils.calculate_button_positions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_button_positions</span><span class="p">(</span><span class="n">num_buttons</span><span class="p">,</span> <span class="n">sidebar_width</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate evenly-spaced button positions within a figure sidebar.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_buttons : int</span>
+<span class="sd">        Number of buttons to lay out.</span>
+<span class="sd">    sidebar_width : float</span>
+<span class="sd">        Fractional width of the sidebar relative to the figure width</span>
+<span class="sd">        (e.g. ``0.2`` for 20 %).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    button_config : list of [float, float, float, float]</span>
+<span class="sd">        List of ``[left, bottom, width, height]`` axes rectangles in</span>
+<span class="sd">        figure coordinates, one per button.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">button_ratio</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">/</span> <span class="mi">9</span>
+    <span class="n">single_button_width</span> <span class="o">=</span> <span class="n">sidebar_width</span> <span class="o">*</span> <span class="mf">0.8</span>
+    <span class="n">single_button_height</span> <span class="o">=</span> <span class="n">single_button_width</span> <span class="o">/</span> <span class="n">button_ratio</span>
+    <span class="n">margin</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">total_buttons_height</span> <span class="o">=</span> <span class="n">num_buttons</span> <span class="o">*</span> <span class="n">single_button_height</span> <span class="o">+</span> <span class="p">(</span><span class="n">num_buttons</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">margin</span>
+
+    <span class="n">button_config</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_buttons</span><span class="p">):</span>
+        <span class="n">y_pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">total_buttons_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">num_buttons</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">single_button_height</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span>
+        <span class="n">x_centered</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.2</span> <span class="o">-</span> <span class="n">single_button_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">button_config</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x_centered</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">single_button_width</span><span class="p">,</span> <span class="n">single_button_height</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">button_config</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Martin Hagan, Amir Jafari, Lakshmi Sravya Chalapati, Ei Tanaka.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
